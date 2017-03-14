@@ -1,8 +1,10 @@
 package seedu.address.logic.commands;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.label.Label;
@@ -30,19 +32,62 @@ public class AddCommand extends Command {
     private final Task toAdd;
 
     /**
-     * Creates an AddCommand using raw values.
+     * Creates an AddCommand with no date using raw values.
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public AddCommand(String title, String deadline, Set<String> labels)
-            throws IllegalValueException {
+    public AddCommand(String title, Set<String> labels) throws IllegalValueException {
         final Set<Label> labelSet = new HashSet<>();
         for (String labelName : labels) {
             labelSet.add(new Label(labelName));
         }
         this.toAdd = new Task(
                 new Title(title),
-                new Deadline(deadline),
+                Optional.empty(),
+                Optional.empty(),
+                false,
+                new UniqueLabelList(labelSet)
+        );
+    }
+
+    /**
+     * Creates an AddCommand using raw values.
+     *
+     * @throws IllegalValueException if any of the raw values are invalid
+     * @throws IllegalDateTimeValueException if deadline values are invalid
+     */
+    public AddCommand(String title, String deadline, Set<String> labels)
+            throws IllegalValueException, IllegalDateTimeValueException {
+        final Set<Label> labelSet = new HashSet<>();
+        for (String labelName : labels) {
+            labelSet.add(new Label(labelName));
+        }
+        this.toAdd = new Task(
+                new Title(title),
+                Optional.empty(),
+                Optional.ofNullable(new Deadline(deadline)),
+                false,
+                new UniqueLabelList(labelSet)
+        );
+    }
+
+    /**
+     * Creates an AddCommand using raw values.
+     *
+     * @throws IllegalValueException if any of the raw values are invalid
+     * @throws IllegalDateTimeValueException if deadline values are invalid
+     */
+    public AddCommand(String title, String startDate, String deadline, Set<String> labels)
+            throws IllegalValueException, IllegalDateTimeValueException {
+        final Set<Label> labelSet = new HashSet<>();
+        for (String labelName : labels) {
+            labelSet.add(new Label(labelName));
+        }
+        this.toAdd = new Task(
+                new Title(title),
+                Optional.ofNullable(new Deadline(startDate)),
+                Optional.ofNullable(new Deadline(deadline)),
+                false,
                 new UniqueLabelList(labelSet)
         );
     }

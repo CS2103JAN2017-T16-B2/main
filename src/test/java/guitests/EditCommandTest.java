@@ -22,13 +22,13 @@ public class EditCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void edit_allFieldsSpecified_success() throws Exception {
-        String detailsToEdit = "Meet Bob by Sunday 2359 t/husband";
-        int addressBookIndex = 1;
+        String detailsToEdit = "Meet Bob from 20-04-2017 0900 to 20-04-2017 2359 t/husband";
+        int taskManagerIndex = 1;
 
-        TestTask editedTask = new TaskBuilder().withTitle("Meet Bob")
-                .withDeadline("Sunday 2359").withLabels("husband").build();
+        TestTask editedTask = new TaskBuilder().withTitle("Meet Bob").withStartTime("20-04-2017 0900")
+                .withDeadline("20-04-2017 2359").withLabels("husband").withStatus(false).build();
 
-        assertEditSuccess(addressBookIndex, addressBookIndex, detailsToEdit, editedTask);
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
     @Test
@@ -96,8 +96,10 @@ public class EditCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void edit_duplicateTask_failure() {
-        commandBox.runCommand("edit 3 Complete task 4"
-                                + " by 11-11-2017 2300 t/friends");
+        commandBox.runCommand("add Complete task 5 from 10-10-2017 0100 to 11-11-2017 "
+                + "2300 t/friends");
+        commandBox.runCommand("edit 3 Complete task 5"
+                                + " from 10-10-2017 0100 to 11-11-2017 2300 t/friends");
         assertResultMessage(EditCommand.MESSAGE_DUPLICATE_TASK);
     }
 
@@ -113,9 +115,12 @@ public class EditCommandTest extends TaskManagerGuiTest {
     private void assertEditSuccess(int filteredTaskListIndex, int addressBookIndex,
                                     String detailsToEdit, TestTask editedTask) {
         commandBox.runCommand("edit " + filteredTaskListIndex + " " + detailsToEdit);
+        System.out.println("details to edit: " + detailsToEdit);
+        System.out.println("edited task: " + editedTask);
 
         // confirm the new card contains the right data
         TaskCardHandle editedCard = taskListPanel.navigateToTask(editedTask.getTitle().title);
+        System.out.println("Edited card: " + editedCard);
         assertMatching(editedTask, editedCard);
 
         // confirm the list now contains all previous tasks plus the task with updated details
