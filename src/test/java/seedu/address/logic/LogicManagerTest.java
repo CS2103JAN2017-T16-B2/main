@@ -185,18 +185,23 @@ public class LogicManagerTest {
 
     @Test
     public void execute_add_invalidArgsFormat() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
-        assertCommandFailure("add wrong args wrong args", expectedMessage);
-        assertCommandFailure("add Valid Name 12345 e/valid@email.butNoPhonePrefix a/valid,address", expectedMessage);
-        assertCommandFailure("add Valid Name p/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
-        assertCommandFailure("add Valid Name p/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
+        String expectedTitleErrorMessage = "A Task's title should only contain alphanumeric characters and spaces,"
+                + " and it should not be blank";
+
+        assertCommandFailure("add 1234 / wrong args wrong args", expectedTitleErrorMessage);
+        assertCommandFailure("add Valid Name 12345 e/valid@email.butNoPhonePrefix a/valid,address",
+                expectedTitleErrorMessage);
+        assertCommandFailure("add Valid Name p/12345 valid@email.butNoPrefix a/valid, address",
+                expectedTitleErrorMessage);
+        assertCommandFailure("add Valid Name p/12345 e/valid@email.butNoAddressPrefix valid,"
+                + " address", expectedTitleErrorMessage);
     }
 
     @Test
     public void execute_add_invalidTaskData() {
         assertCommandFailure("add []\\[;] by sunday 0900",
                 Title.MESSAGE_TITLE_CONSTRAINTS);
-        assertCommandFailure("add Valid Name by friday t/invalid_-[.label",
+        assertCommandFailure("add Valid Name by friday #invalid_-[.label",
                 Label.MESSAGE_LABEL_CONSTRAINTS);
 
     }
@@ -315,7 +320,11 @@ public class LogicManagerTest {
     @Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("delete", expectedMessage);
+        String commandWord = "delete";
+        assertCommandFailure(commandWord , expectedMessage); //label or index missing
+        assertCommandFailure(commandWord + " +1", expectedMessage); //signed index treated as invalid label
+        assertCommandFailure(commandWord + " -1", expectedMessage); //signed index treated as invalid label
+        assertCommandFailure(commandWord + " 0", expectedMessage); //index cannot be 0
     }
 
     @Test
@@ -337,7 +346,6 @@ public class LogicManagerTest {
                 expectedAB,
                 expectedAB.getTaskList());
     }
-
 
     @Test
     public void execute_find_invalidArgsFormat() {
@@ -446,7 +454,7 @@ public class LogicManagerTest {
 
             UniqueLabelList labels = p.getLabels();
             for (Label t: labels) {
-                cmd.append(" t/").append(t.labelName);
+                cmd.append(" #").append(t.labelName);
             }
 
             return cmd.toString();
