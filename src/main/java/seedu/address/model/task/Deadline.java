@@ -3,7 +3,9 @@ package seedu.address.model.task;
 import java.util.Date;
 import java.util.List;
 
+import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.dateparser.DateTimeParserManager;
 import seedu.address.logic.parser.DateTimeParser;
 
 /**
@@ -14,27 +16,70 @@ public class Deadline {
 
     public static final String MESSAGE_DEADLINE_CONSTRAINTS =
             "Deadline can have zero or more characters";
+    public static final String DATE_VALIDATION_REGEX = "[a-zA-Z]+";
 
     /*
      * The deadline must have at least one visible character
      * TODO: change regex once deadline can be translated to a date
      */
     public static final String DEADLINE_VALIDATION_REGEX = ".*";
+    private static final DateTimeParser dateParser = new DateTimeParserManager();
 
     private Date deadline;
+    private String value;
+
+    public Deadline() {
+        value = "";
+    }
+
+    /**
+     * Validates given deadline.
+     *
+     * @throws IllegalValueException if given deadline string is invalid.
+     * @throws IllegalDateTimeValueException if given deadline could be parse to a valid date
+     */
+    public Deadline(String strDeadline) throws IllegalValueException, IllegalDateTimeValueException {
+        assert strDeadline != null;
+        if (!isValidDeadline(strDeadline)) {
+            throw new IllegalValueException(MESSAGE_DEADLINE_CONSTRAINTS);
+        } else {
+            if (!isEmptyDeadline(strDeadline)) {
+                try {
+                    List<Date> dateList;
+                    if (strDeadline.matches(DATE_VALIDATION_REGEX)) {
+                        dateList = dateParser.parse(strDeadline + " 235959").get(0).getDates();
+                    } else {
+                        dateList = dateParser.parse(strDeadline).get(0).getDates();
+                    }
+
+                    if (dateList != null && dateList.size() > 0) {
+                        this.deadline = dateList.get(0);
+                        this.value = deadline.toString();
+                    }
+                } catch (Exception e) {
+                    throw new IllegalDateTimeValueException();
+                }
+            } else {
+                value = "";
+            }
+        }
+    }
 
     /**
      * Validates given deadline.
      *
      * @throws IllegalValueException if given deadline string is invalid.
      */
-    public Deadline(String strDeadline) throws IllegalValueException {
-        assert strDeadline != null;
-        List<Date> dateList = new DateTimeParser().parse(strDeadline).get(0).getDates();
-        if (!isValidDeadline(strDeadline) && dateList.size() == 0) {
+    public Deadline(String startDeadline, String endDeadline) throws IllegalValueException {
+        assert startDeadline != null;
+        if (!isValidDeadline(startDeadline) && !isValidDeadline(endDeadline)) {
             throw new IllegalValueException(MESSAGE_DEADLINE_CONSTRAINTS);
         }
-        this.deadline = dateList.get(0);
+        //TODO
+        List<Date> startDateList = dateParser.parse(startDeadline).get(0).getDates();
+        List<Date> endDateList = dateParser.parse(endDeadline).get(0).getDates();
+        this.deadline = startDateList.get(0);
+        this.value = deadline.toString();
     }
 
     /**
@@ -44,13 +89,27 @@ public class Deadline {
         return test.matches(DEADLINE_VALIDATION_REGEX);
     }
 
+    /**
+     * Returns true if a given string has no date.
+     */
+    public static boolean isEmptyDeadline(String test) {
+        return test.equals("");
+    }
+
+    /**
+     * Returns true if a given string is a valid date.
+     */
+    public static boolean isParsableDate(String test) {
+        return !dateParser.parse(test).isEmpty();
+    }
+
     public Date getDateTime() {
         return deadline;
     }
 
     @Override
     public String toString() {
-        return deadline.toString();
+        return value;
     }
 
     @Override

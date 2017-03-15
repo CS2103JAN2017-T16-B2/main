@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.Deadline;
@@ -18,12 +19,12 @@ import seedu.address.model.task.UniqueTaskList;
  */
 public class EditCommand extends Command {
 
-    public static final String COMMAND_WORD = "edit";
+    public static final String COMMAND_WORD = "EDIT";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the task identified "
             + "by the index number used in the last task listing. "
             + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) [TITLE] [by DEADLINE] [t/LABEL]...\n"
+            + "Parameters: INDEX (must be a positive integer) [TITLE] [by DEADLINE] [#LABEL]...\n"
             + "Example: " + COMMAND_WORD + " 1 by Sunday t/new";
 
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Edited Task: %1$s";
@@ -43,7 +44,6 @@ public class EditCommand extends Command {
 
         // converts filteredTaskListIndex from one-based to zero-based.
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
-
         this.editTaskDescriptor = new EditTaskDescriptor(editTaskDescriptor);
     }
 
@@ -59,6 +59,7 @@ public class EditCommand extends Command {
         Task editedTask = createEditedTask(taskToEdit, editTaskDescriptor);
 
         try {
+            saveCurrentState();
             model.updateTask(filteredTaskListIndex, editedTask);
         } catch (UniqueTaskList.DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
@@ -115,7 +116,7 @@ public class EditCommand extends Command {
             return title;
         }
 
-        public void setAddress(Optional<Deadline> deadline) {
+        public void setDeadline(Optional<Deadline> deadline) {
             assert deadline != null;
             this.deadline = deadline;
         }
@@ -132,5 +133,24 @@ public class EditCommand extends Command {
         public Optional<UniqueLabelList> getLabels() {
             return labels;
         }
+    }
+
+    /**
+     * Save the data in task manager if command is mutating the data
+     */
+    public void saveCurrentState() {
+        if (isMutating()) {
+            try {
+                LogicManager.undoCommandHistory.addStorageHistory(model.getRawTaskManager().getImmutableTaskList(),
+                        model.getRawTaskManager().getImmutableLabelList());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean isMutating() {
+        return true;
     }
 }
