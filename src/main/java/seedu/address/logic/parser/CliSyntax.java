@@ -12,7 +12,7 @@ public class CliSyntax {
     /* Prefix definitions */
     public static final Prefix PREFIX_BOOK_ADD_DATE = new Prefix("add");
     public static final Prefix PREFIX_BOOK_CHANGE_DATE = new Prefix("change");
-    public static final Prefix PREFIX_BOOK_DATE = new Prefix("on ");
+    public static final Prefix PREFIX_BOOK_DATE = new Prefix(" on ");
     public static final Prefix PREFIX_BOOK_DATE_DELIMITER = new Prefix(",");
     public static final Prefix PREFIX_BOOK_REMOVE_DATE = new Prefix("remove");
     public static final Prefix PREFIX_DEADLINE = new Prefix("by ");

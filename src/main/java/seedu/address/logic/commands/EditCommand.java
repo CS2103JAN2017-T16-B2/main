@@ -67,7 +67,6 @@ public class EditCommand extends Command {
         } catch (UniqueTaskList.DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
-        model.updateFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_EDIT_TASK_SUCCESS, taskToEdit));
     }
 
@@ -93,11 +92,13 @@ public class EditCommand extends Command {
         }
         Boolean isCompleted = editTaskDescriptor.isCompleted().orElseGet(taskToEdit::isCompleted);
         UniqueLabelList updatedLabels = editTaskDescriptor.getLabels().orElseGet(taskToEdit::getLabels);
-        Boolean isRecurring = editTaskDescriptor.getIsRecurring().orElseGet(taskToEdit::isRecurring);
+        Boolean isRecurring;
         if (editTaskDescriptor.isRecurrenceEdited()) {
+            isRecurring = editTaskDescriptor.getIsRecurring().get();
             updatedRecurrence = editTaskDescriptor.getRecurrence();
         } else {
             updatedRecurrence = taskToEdit.getRecurrence();
+            isRecurring = taskToEdit.isRecurring();
         }
         UniqueBookingList updatedBookings = editTaskDescriptor.getBookings().orElseGet(taskToEdit::getBookings);
         Task newTask = new Task(updatedTitle, updatedStartTime, updatedDeadline, isCompleted, updatedLabels,
@@ -155,7 +156,7 @@ public class EditCommand extends Command {
         }
 
         public boolean isRecurrenceEdited() {
-            return CollectionUtil.isAnyPresent(this.recurrence);
+            return CollectionUtil.isAnyPresent(this.recurrence, this.isRecurring);
         }
 
         public void setName(Optional<Title> title) {

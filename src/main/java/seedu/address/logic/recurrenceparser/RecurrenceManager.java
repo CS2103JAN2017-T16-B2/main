@@ -5,6 +5,7 @@ import java.util.Date;
 
 import seedu.address.model.task.Recurrence;
 
+//@@author A0105287E
 /**
  *
  * Parses string into interval and returns the next date for a task

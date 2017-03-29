@@ -43,7 +43,8 @@ public class Task implements ReadOnlyTask {
      * Every field except bookingList must be present and not null.
      */
     public Task(Title title, Optional<Deadline> startTime, Optional<Deadline> deadline,
-            boolean isCompleted, UniqueLabelList labels, UniqueBookingList bookings) {
+            boolean isCompleted, UniqueLabelList labels, UniqueBookingList bookings, boolean isRecurring,
+            Optional<Recurrence> recurrence) {
         assert !CollectionUtil.isAnyNull(title, isCompleted, labels);
         this.title = title;
         this.deadline = deadline;
@@ -51,8 +52,8 @@ public class Task implements ReadOnlyTask {
         this.isCompleted = isCompleted;
         this.labels = new UniqueLabelList(labels); // protect internal labels from changes in the arg list
         this.bookings = new UniqueBookingList(bookings);
-        this.isRecurring = false;
-        this.recurrence = Optional.empty();
+        this.isRecurring = isRecurring;
+        this.recurrence = recurrence;
     }
 
     /**
@@ -60,7 +61,8 @@ public class Task implements ReadOnlyTask {
      */
     public Task(ReadOnlyTask source) {
         this(source.getTitle(), source.getStartTime(), source.getDeadline()
-                , source.isCompleted(), source.getLabels(), source.getBookings());
+                , source.isCompleted(), source.getLabels(), source.getBookings(), source.isRecurring(),
+                source.getRecurrence());
     }
 
     public void setName(Title title) {
