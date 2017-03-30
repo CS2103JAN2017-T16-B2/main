@@ -419,7 +419,6 @@ Vbox, SplitPane {
 
 #labelListCard {
     -fx-opacity: 0.75;
-    -fx-padding: 0 0 0 45;
 }
 
 #labelText {
