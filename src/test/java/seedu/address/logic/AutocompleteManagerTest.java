@@ -42,6 +42,7 @@ public class AutocompleteManagerTest {
         LinkedList<String> suggestions = new LinkedList<String>();
         suggestions.add("edit");
         suggestions.add("editlabel");
+        suggestions.add("editbooking");
         AutocompleteResponse response = new AutocompleteResponse("edit", 4, suggestions);
         assertTrue(ac.getSuggestions(request).equals(response));
     }

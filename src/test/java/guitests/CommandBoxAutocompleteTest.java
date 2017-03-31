@@ -22,10 +22,10 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     @Test
     public void autocomplete_MultipleSuggestions() {
         //Multiple suggestions
-        commandBox.enterCommand("ex");
-        moveCursorRight("ex".length());
+        commandBox.enterCommand("co");
+        moveCursorRight("co".length());
         commandBox.pressTab();
-        assertEquals("ex", commandBox.getCommandInput());
+        assertEquals("co", commandBox.getCommandInput());
     }
 
     @Test

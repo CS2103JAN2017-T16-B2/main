@@ -14,13 +14,13 @@ public class AutocompleteManager {
     private final Logger logger = LogsCenter.getLogger(AutocompleteManager.class);
     public static final String[] AUTOCOMPLETE_DATA = { "help", "add", "by", "repeat", "list"
             , "edit", "find", "delete", "select", "book"
-            , "confirm", "editlabel", "undo", "clear", "push"
-            , "pull", "exit", "to", "from", "on"
+            , "confirm", "editlabel", "undo", "clear", "exit"
+            , "to", "from", "on", "mark", "unmark"
             , "hourly", "daily", "weekly", "monthly", "yearly"
             , "overdue", "outstanding", "completed", "today", "yesterday"
-            , "tomorrow", "bookings", "incomplete", "confirm", "load", "saveas"
+            , "tomorrow", "bookings", "incomplete", "load", "saveas"
             , "remove", "change", "editbooking", "days", "months"
-            , "years", "every", "mark", "unmark"};
+            , "years", "every" };
 
     private AutocompleteDataStructure data;
 
