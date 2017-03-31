@@ -15,7 +15,7 @@ public class AutocompleteManager {
     public static final String[] AUTOCOMPLETE_DATA = { "help", "add", "by", "repeat", "list"
             , "edit", "find", "delete", "select", "book"
             , "confirm", "editlabel", "undo", "clear", "push"
-            , "pull", "export", "exit", "to", "from", "on"
+            , "pull", "exit", "to", "from", "on"
             , "hourly", "daily", "weekly", "monthly", "yearly"
             , "overdue", "outstanding", "completed", "today", "yesterday"
             , "tomorrow", "bookings", "incomplete", "confirm", "load", "saveas"

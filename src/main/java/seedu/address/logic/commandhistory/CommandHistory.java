@@ -2,7 +2,7 @@ package seedu.address.logic.commandhistory;
 
 //@@author A0140042A
 /**
- * Interface for iterating through the command history
+ * Represents the command history of the task manager
  */
 public interface CommandHistory {
 

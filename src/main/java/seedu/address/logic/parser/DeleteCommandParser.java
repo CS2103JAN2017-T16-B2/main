@@ -26,7 +26,6 @@ public class DeleteCommandParser {
      * and returns an DeleteCommand object for execution.
      */
     public Command parse(String args) {
-
         ArgumentTokenizer argsTokenizer = new ArgumentTokenizer();
         argsTokenizer.tokenize(args);
 
@@ -42,9 +41,10 @@ public class DeleteCommandParser {
             } else {
                 return new DeleteLabelCommand(arguments[ARGUMENT_LABEL_TO_DELETE_INDEX]);
             }
-        } catch (Exception e) { }
-        return new IncorrectCommand(
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        } catch (Exception e) {
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        }
     }
 
     /**
