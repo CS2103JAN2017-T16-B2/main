@@ -964,7 +964,7 @@ Use case ends
 
 > 2a1. System notifies the user that such a booking is invalid/does not exist<br />
   Use case ends
-  
+
 2b. Date specified by user is invalid
 
 > 2b1. System notifies the user that the date specified is invalid<br />
@@ -987,7 +987,7 @@ Use case ends
 
 > 2a1. System notifies the user that such a booking is invalid/does not exist<br />
   Use case ends
-  
+
 2b. Date specified by user is invalid
 
 > 2b1. System notifies the user that the date specified is invalid<br />
