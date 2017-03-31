@@ -31,7 +31,6 @@
 #### External Libraries
 
 * [Natty](http://natty.joestelmach.com/) by joestelmach - A framework to parse relative dates into absolute dates
-* [itextPDF](http://itextpdf.com/) by iText Software - For exporting data to PDF files
 * [FontAwesomeFX](https://bintray.com/jerady/maven/FontAwesomeFX) by Jens Deters - For icons used in the GUI
 
 #### Licence : [MIT](LICENSE)
