@@ -23,7 +23,6 @@ import seedu.address.logic.Logic;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.label.Label;
-import seedu.address.model.task.ReadOnlyTask;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -44,13 +43,9 @@ public class MainWindow extends UiPart<Region> {
     private StatusBarFooter statusBarFooter;
 
     // Independent Ui parts residing in this Ui container
-    //private BrowserPanel browserPanel;
     private TaskListPanel taskListPanel;
     private LeftPanel leftPanel;
     private Config config;
-
-    //@FXML
-    //private AnchorPane browserPlaceholder;
 
     @FXML
     private AnchorPane commandBoxPlaceholder;
@@ -267,14 +262,6 @@ public class MainWindow extends UiPart<Region> {
 
     public TaskListPanel getTaskListPanel() {
         return this.taskListPanel;
-    }
-
-    public void loadTaskPage(ReadOnlyTask task) {
-        //browserPanel.loadTaskPage(task);
-    }
-
-    public void releaseResources() {
-        //browserPanel.freeResources();
     }
 
     public void setLogic(Logic logic) {
