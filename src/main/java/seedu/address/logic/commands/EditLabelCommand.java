@@ -6,6 +6,7 @@ import java.util.Set;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.label.Label;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.ReadOnlyTask;
@@ -52,6 +53,7 @@ public class EditLabelCommand extends Command {
      */
     private boolean replaceLabelInTasks(List<ReadOnlyTask> allTaskList) throws CommandException {
         boolean labelExist = false;
+        saveCurrentState();
         for (int i = 0; i < allTaskList.size(); i++) {
             Task task = new Task(allTaskList.get(i));
             UniqueLabelList labels = task.getLabels();
@@ -64,13 +66,17 @@ public class EditLabelCommand extends Command {
                 labelExist = true;
 
                 try {
-                    saveCurrentState();
                     model.updateTask(i, task);
                 } catch (DuplicateTaskException dpe) {
                     throw new CommandException(MESSAGE_DUPLICATE_TASK);
                 }
             }
         }
+
+        if (!labelExist) {
+            deleteCurrentState();
+        }
+
         return labelExist;
     }
 
@@ -86,6 +92,13 @@ public class EditLabelCommand extends Command {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Deletes the data in task manager if command is mutating the data
+     */
+    public void deleteCurrentState() {
+        UndoManager.getInstance().getUndoData();
     }
 
     @Override
