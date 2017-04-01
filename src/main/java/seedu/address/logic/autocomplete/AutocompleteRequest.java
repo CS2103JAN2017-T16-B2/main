@@ -55,4 +55,9 @@ public class AutocompleteRequest {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Phrase: " + phrase + ", Caret Position: " + caretPosition;
+    }
 }

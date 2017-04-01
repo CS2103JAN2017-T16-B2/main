@@ -53,6 +53,7 @@ public class AutocompleteManager {
      * @return a list of suggestions for the given term
      */
     public AutocompleteResponse getSuggestions(AutocompleteRequest request) {
+        logger.info("Received request (" + request + ")");
         String wordAtCursor = getWordAtCursor(request);
         List<String> suggestions = data.findCompletions(wordAtCursor);
         AutocompleteResponse response = new AutocompleteResponse(request, suggestions);
