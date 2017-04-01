@@ -168,4 +168,8 @@ public class CommandBox extends UiPart<Region> {
     public void setLogic(Logic logic) {
         this.logic = logic;
     }
+
+    public TextField getCommandTextField() {
+        return commandTextField;
+    }
 }

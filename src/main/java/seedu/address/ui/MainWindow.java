@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
@@ -29,6 +31,7 @@ import seedu.address.model.label.Label;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Region> {
+    private final Logger logger = LogsCenter.getLogger(MainWindow.class);
 
     private static final String ICON = "/images/app_icon.png";
     private static final String FXML = "MainWindow.fxml";
@@ -119,6 +122,8 @@ public class MainWindow extends UiPart<Region> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
                 menuItem.getOnAction().handle(new ActionEvent());
                 event.consume();
+            } else if (!commandBox.getCommandTextField().isFocused()) {
+                commandBox.getCommandTextField().requestFocus();
             }
         });
     }
