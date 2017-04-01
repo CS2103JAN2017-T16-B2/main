@@ -122,6 +122,7 @@ public class MainWindow extends UiPart<Region> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
                 menuItem.getOnAction().handle(new ActionEvent());
                 event.consume();
+                //@@author A0140042A
             } else if (!commandBox.getCommandTextField().isFocused()) {
                 commandBox.getCommandTextField().requestFocus();
                 commandBox.getCommandTextField().positionCaret(
@@ -130,7 +131,6 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
-    //@@author A0140042A
     /**
      * Fill up components in the main window,
      * but only update appropriate components if already initialized
