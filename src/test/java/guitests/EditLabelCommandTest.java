@@ -28,7 +28,7 @@ public class EditLabelCommandTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void editLabel_invalidCommands() {
+    public void editLabel_invalidCommands_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         //No change should occur for any of these commands
         runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " notEnoughArguments", currentList);

@@ -13,6 +13,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TIMEINTERVAL_START;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditTaskDescriptor;
+import seedu.address.logic.commands.EditLabelCommand;
 import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.model.label.UniqueLabelList;
 
@@ -28,6 +30,10 @@ import seedu.address.model.label.UniqueLabelList;
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser {
+
+    private static final int EDIT_LABEL_ARGUMENT_LENGTH = 2;
+    private static final int EDIT_LABEL_ARGUMENT_NEW_LABEL_INDEX = 1;
+    private static final int EDIT_LABEL_ARGUMENT_LABEL_TO_CHANGE_INDEX = 0;
 
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
@@ -42,10 +48,18 @@ public class EditCommandParser {
         argsTokenizer.tokenize(args);
         List<Optional<String>> preambleFields = ParserUtil.splitPreamble(argsTokenizer.getPreamble().orElse(""), 2);
 
+        //@@author A0140042A
         Optional<Integer> index = preambleFields.get(0).flatMap(ParserUtil::parseIndex);
-        if (!index.isPresent()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        if (isEditLabel(preambleFields, argsTokenizer)) {
+            List<String> labelInputs = argsTokenizer.getAllValues(PREFIX_LABEL).get();
+            try {
+                return new EditLabelCommand(labelInputs.get(EDIT_LABEL_ARGUMENT_LABEL_TO_CHANGE_INDEX),
+                                                labelInputs.get(EDIT_LABEL_ARGUMENT_NEW_LABEL_INDEX));
+            } catch (IllegalValueException e) {
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
         }
+        //@@author
 
         EditTaskDescriptor editTaskDescriptor = new EditTaskDescriptor();
         try {
@@ -87,6 +101,22 @@ public class EditCommandParser {
 
         return new EditCommand(index.get(), editTaskDescriptor);
     }
+
+    //@@author A0140042A
+    /**
+     * Checks if the intention of the edit command is to edit labels or not
+     * An edit command format that edits a label: edit #OLD_LABEL #NEW_LABEL
+     */
+    private boolean isEditLabel(List<Optional<String>> preambleFields, ArgumentTokenizer argsTokenizer) {
+        Optional<Integer> index = preambleFields.get(0).flatMap(ParserUtil::parseIndex);
+        List<String> labelInputs = argsTokenizer.getAllValues(PREFIX_LABEL).orElse(new LinkedList<String>());
+        if (!index.isPresent() && labelInputs.size() == EDIT_LABEL_ARGUMENT_LENGTH) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //@@author
 
     /**
      * Parses {@code Collection<String> labels} into an {@code Optional<UniqueTagList>} if {@code labels} is non-empty.
