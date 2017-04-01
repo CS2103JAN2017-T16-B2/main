@@ -9,7 +9,6 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 import guitests.guihandles.TaskCardHandle;
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.EditCommand;
-import seedu.address.model.label.Label;
 import seedu.address.model.task.Title;
 import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
@@ -91,9 +90,6 @@ public class EditCommandTest extends TaskManagerGuiTest {
     public void edit_invalidValues_failure() {
         commandBox.runCommand("edit 1 *&");
         assertResultMessage(Title.MESSAGE_TITLE_CONSTRAINTS);
-
-        commandBox.runCommand("edit 1 #*&");
-        assertResultMessage(Label.MESSAGE_LABEL_CONSTRAINTS);
     }
 
     @Test

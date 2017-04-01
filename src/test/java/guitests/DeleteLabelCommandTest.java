@@ -22,7 +22,7 @@ public class DeleteLabelCommandTest extends TaskManagerGuiTest {
     public void deleteLabel_LabelDoesNotExist_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         //No change should occur
-        runAndAssertTrue(DeleteCommand.COMMAND_WORD + " nonexistentlabel", currentList);
+        runAndAssertTrue(DeleteCommand.COMMAND_WORD + " #nonexistentlabel", currentList);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class DeleteLabelCommandTest extends TaskManagerGuiTest {
         TestTask[] currentList = td.getTypicalTasks();
         //No change should occur
         runAndAssertTrue(DeleteCommand.COMMAND_WORD, currentList);
-        runAndAssertTrue(DeleteCommand.COMMAND_WORD + " !@#asdajn", currentList);
+        runAndAssertTrue(DeleteCommand.COMMAND_WORD + " #!@#asdajn", currentList);
     }
 
     @Test

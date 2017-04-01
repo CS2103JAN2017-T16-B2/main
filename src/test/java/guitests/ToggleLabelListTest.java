@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ToggleLabelListTest extends TaskManagerGuiTest {
 
     @Test
-    public void testToggleLabelListView() {
+    public void gui_TestToggleLabelListView_ReturnTrue() {
         leftPanel.clickOnLabelHeader();
         assertTrue(leftPanel.isVisible() == false);
         leftPanel.clickOnLabelHeader();

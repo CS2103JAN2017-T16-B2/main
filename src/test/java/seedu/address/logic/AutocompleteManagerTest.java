@@ -11,6 +11,8 @@ import org.junit.Test;
 import seedu.address.logic.autocomplete.AutocompleteManager;
 import seedu.address.logic.autocomplete.AutocompleteRequest;
 import seedu.address.logic.autocomplete.AutocompleteResponse;
+import seedu.address.logic.commands.EditBookingCommand;
+import seedu.address.logic.commands.EditCommand;
 
 //@@author A0140042A
 /**
@@ -45,8 +47,8 @@ public class AutocompleteManagerTest {
         AutocompleteManager ac = new AutocompleteManager();
         AutocompleteRequest request = new AutocompleteRequest("edi", 0);
         LinkedList<String> suggestions = new LinkedList<String>();
-        suggestions.add("edit");
-        suggestions.add("editbooking");
+        suggestions.add(EditCommand.COMMAND_WORD);
+        suggestions.add(EditBookingCommand.COMMAND_WORD);
         AutocompleteResponse response = new AutocompleteResponse("edit", 4, suggestions);
         assertTrue(ac.getSuggestions(request).equals(response));
     }

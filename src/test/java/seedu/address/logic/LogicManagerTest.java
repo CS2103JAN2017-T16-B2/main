@@ -194,9 +194,6 @@ public class LogicManagerTest {
     public void execute_add_invalidTaskData() {
         assertCommandFailure("add []\\[;] by sunday 0900",
                 Title.MESSAGE_TITLE_CONSTRAINTS);
-        assertCommandFailure("add Valid Name by friday #invalid_-[.label",
-                Label.MESSAGE_LABEL_CONSTRAINTS);
-
     }
 
     @Test

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import seedu.address.commons.core.Config;
 import seedu.address.commons.util.ConfigUtil;
+import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.LoadCommand;
 import seedu.address.logic.commands.SaveAsCommand;
 import seedu.address.testutil.TestTask;
@@ -18,7 +19,7 @@ import seedu.address.testutil.TestUtil;
 
 //@@author A0140042A
 /**
- * Test cases to check if command saveas and command load works as intended
+ * Test cases to test `saveas` and `load` commands
  */
 public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
 
@@ -37,20 +38,20 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
         tasks = TestUtil.addTasksToList(tasks, td.task8);
 
         //Save current data to a new location
-        commandBox.runCommand("saveas " + file1);
+        commandBox.runCommand(SaveAsCommand.COMMAND_WORD + " " + file1);
 
         //Save data to a new location (file1 : 1-8 | file2 : 1-8)
-        commandBox.runCommand("saveas " + file2);
+        commandBox.runCommand(SaveAsCommand.COMMAND_WORD + " " + file2);
 
         //Delete the newly added task and add task 9
-        commandBox.runCommand("delete 8");
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 8");
         tasks = TestUtil.removeTasksFromList(tasks, td.task8);
         commandBox.runCommand(td.task9.getAddCommand());
         tasks = TestUtil.addTasksToList(tasks, td.task9);
         assertTrue(taskListPanel.isListMatching(tasks));
 
         //Load the newly saved file (file1 : 1-8 | file2 : 1-7, 9)
-        commandBox.runCommand("load " + file1);
+        commandBox.runCommand(LoadCommand.COMMAND_WORD + " " + file1);
         tasks = TestUtil.removeTasksFromList(tasks, td.task9);
 
         //Check if file1 still has task 8
@@ -60,8 +61,8 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
         //Now add something to file 1 (file1 : 1-8 | file2 : 1-7, 9)
         tasks = TestUtil.removeTasksFromList(tasks, td.task8);
         tasks = TestUtil.removeTasksFromList(tasks, td.task7);
-        commandBox.runCommand("delete 8");
-        commandBox.runCommand("delete 7");
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 8");
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 7");
         commandBox.runCommand(td.task9.getAddCommand());
         tasks = TestUtil.addTasksToList(tasks, td.task9);
         assertTrue(taskListPanel.isListMatching(tasks));
@@ -69,7 +70,7 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
 
         //Load back the new file and check if 8 is deleted
         tasks = TestUtil.addTasksToList(td.getTypicalTasks(), td.task9);
-        commandBox.runCommand("load " + file2);
+        commandBox.runCommand(LoadCommand.COMMAND_WORD + " " + file2);
         assertTrue(taskListPanel.isListMatching(tasks));
     }
 
