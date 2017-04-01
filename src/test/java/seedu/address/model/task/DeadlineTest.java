@@ -2,6 +2,7 @@ package seedu.address.model.task;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,11 +10,8 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.dateparser.DateTimeParser;
 
 public class DeadlineTest {
-
-    private DateTimeParser dp;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -70,18 +68,48 @@ public class DeadlineTest {
     }
 
     @Test
-    public void deadline_ParseInvalidDate_ReturnFalse() throws IllegalValueException, IllegalDateTimeValueException {
+    public void deadline_ParseInvalidDateString_ReturnFalse()
+            throws IllegalValueException, IllegalDateTimeValueException {
         // invalid deadlines
         exception.expect(IllegalDateTimeValueException.class);
         new Deadline("test");
+        fail("Should not reach here");
+    }
+
+    @Test
+    public void deadline_ParseInvalidDateSymbols_ReturnFalse()
+            throws IllegalValueException, IllegalDateTimeValueException {
+        // invalid deadlines
         exception.expect(IllegalDateTimeValueException.class);
         new Deadline("--");
+        fail("Should not reach here");
+    }
+
+    @Test
+    public void deadline_ParseInvalidDateSymbol_ReturnFalse()
+            throws IllegalValueException, IllegalDateTimeValueException {
+        // invalid deadlines
         exception.expect(IllegalDateTimeValueException.class);
         new Deadline("-");
+        fail("Should not reach here");
+    }
+
+    @Test
+    public void deadline_ParseInvalidDateCharacter_ReturnFalse()
+            throws IllegalValueException, IllegalDateTimeValueException {
+        // invalid deadlines
         exception.expect(IllegalDateTimeValueException.class);
         new Deadline("a");
+        fail("Should not reach here");
+    }
+
+    @Test
+    public void deadline_ParseInvalidDateLongString_ReturnFalse()
+            throws IllegalValueException, IllegalDateTimeValueException {
+        // invalid deadlines
         exception.expect(IllegalDateTimeValueException.class);
         new Deadline(" SAC AKBC");
+        fail("Should not reach here");
     }
 
     @Test

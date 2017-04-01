@@ -15,10 +15,6 @@ import seedu.address.testutil.TestTask;
 //@@author A0105287E
 public class MarkCommandTest extends TaskManagerGuiTest {
 
-    // The list of tasks in the task list panel is expected to match this list.
-    // This list is updated with every successful call to assertEditSuccess().
-    private TestTask[] expectedTasksList = td.getTypicalTasks();
-
     @Test
     public void mark_statusSpecified_success() throws Exception {
 
@@ -65,6 +61,8 @@ public class MarkCommandTest extends TaskManagerGuiTest {
      */
     private void assertMarkSuccess(int filteredTaskListIndex, int taskManagerIndex,
                                     String status, TestTask editedTask) {
+        TestTask[] expectedTasksList = td.getTypicalTasks();
+
         commandBox.runCommand("mark " + filteredTaskListIndex + " " + status);
         System.out.println("details to edit: " + status);
         System.out.println("edited task: " + editedTask);

@@ -2,10 +2,13 @@ package seedu.address.logic;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.LinkedList;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.autocomplete.AutocompleteRequest;
 import seedu.address.logic.autocomplete.AutocompleteResponse;
@@ -16,13 +19,14 @@ import seedu.address.logic.autocomplete.AutocompleteResponse;
  */
 public class AutocompleteRequestResponseTest {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Test
     public void request_TestNegativeCaretPosition_ThrowError() {
-        try {
-            new AutocompleteRequest("", -1);
-        } catch (AssertionError e) {
-            assertTrue(e instanceof AssertionError);
-        }
+        exception.expect(AssertionError.class);
+        new AutocompleteRequest("", -1);
+        fail("Should not reach here");
     }
 
     @Test

@@ -19,7 +19,7 @@ public class Booking implements Comparable<Booking> {
 
     public static final String MESSAGE_BOOKING_CONSTRAINTS =
             "Input dates are in the wrong format, please try again!";
-    public static DateTimeParser dtParser;
+    private static DateTimeParser dtParser;
 
     public boolean confirm;
     public Date startTime;

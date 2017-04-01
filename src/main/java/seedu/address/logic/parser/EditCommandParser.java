@@ -113,11 +113,7 @@ public class EditCommandParser {
     private boolean isEditLabel(List<Optional<String>> preambleFields, ArgumentTokenizer argsTokenizer) {
         Optional<Integer> index = preambleFields.get(0).flatMap(ParserUtil::parseIndex);
         List<String> labelInputs = argsTokenizer.getAllValues(PREFIX_LABEL).orElse(new LinkedList<String>());
-        if (!index.isPresent() && labelInputs.size() == EDIT_LABEL_ARGUMENT_LENGTH) {
-            return true;
-        } else {
-            return false;
-        }
+        return !index.isPresent() && labelInputs.size() == EDIT_LABEL_ARGUMENT_LENGTH;
     }
     //@@author
 

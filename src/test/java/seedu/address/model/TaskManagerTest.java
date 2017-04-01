@@ -98,7 +98,7 @@ public class TaskManagerTest {
         assertFalse(typicalTaskManager1.equals(typicalTaskManager2));
 
         //Test null
-        assertFalse(typicalTaskManager1.equals(null));
+        assertFalse(typicalTaskManager1 == null);
     }
 
     /**
