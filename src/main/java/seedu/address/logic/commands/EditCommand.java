@@ -28,7 +28,9 @@ public class EditCommand extends Command {
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) [TITLE] [by DEADLINE] [#LABEL]...\n"
             + "Parameters: INDEX (must be a positive integer) [TITLE] [by DEADLINE] [from START to END][#LABEL]...\n"
-            + "Example: " + COMMAND_WORD + " 1 by Sunday #new";
+            + "Parameters: #OLD_LABEL #NEW_LABEL\n"
+            + "Example: " + COMMAND_WORD + " 1 by Sunday #new"
+            + "Example: " + COMMAND_WORD + " #friends #allies";
 
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Edited Task: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";

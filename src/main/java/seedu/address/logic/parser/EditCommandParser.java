@@ -57,7 +57,7 @@ public class EditCommandParser {
                                                 labelInputs.get(EDIT_LABEL_ARGUMENT_NEW_LABEL_INDEX));
             } catch (IllegalValueException e) {
                 return new IncorrectCommand(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditLabelCommand.MESSAGE_USAGE));
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
             }
         } else if (!index.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
