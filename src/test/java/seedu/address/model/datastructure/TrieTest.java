@@ -66,6 +66,7 @@ public class TrieTest {
         assertTrue(node1.equals(node2));
         assertFalse(node1.equals(node3));
         assertFalse(node1 == null);
+        assertFalse(node1.equals(new Object()));
     }
 
     @Test

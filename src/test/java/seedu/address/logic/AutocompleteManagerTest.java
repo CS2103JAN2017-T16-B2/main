@@ -40,6 +40,7 @@ public class AutocompleteManagerTest {
     public void autocomplete_TestEqualsNull_ReturnFalse() {
         AutocompleteManager ac1 = new AutocompleteManager("phrase1", "phrase2");
         assertFalse(ac1 == null);
+        assertFalse(ac1.equals(new Object()));
     }
 
     @Test
