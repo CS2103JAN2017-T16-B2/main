@@ -249,10 +249,6 @@ _Figure 2.7.3 : Component interactions for `list` command when user types `list 
 The diagram below shows the interaction between different components for the `AutoComplete` feature. <br><br>
 <img src="images\SDforAutocomplete.png" width="800"><br>
 _Figure 2.7.4 : Component interactions for `Autocomplete` feature when user presses the `tab` key_
-<br /><br />
-The AutocompleteManager implements a request and response design. To use the Autocomplete feature, a response object is created with the command and the current cursor position and sent to the AutomcompleteManager. <br />
-The AutocompleteManager will create a response with the new command with the autocompleted command as well as the new cursor position.
-<br /><br />
 
 The diagram below shows the interaction between different components for the `book` command. <br><br>
 <img src="images\SDforBook.png" width="800"><br>
@@ -261,10 +257,6 @@ _Figure 2.7.5 : Component interactions for `book` command_
 The diagram below shows the interaction between different components for the `Command History` feature. <br><br>
 <img src="images\SDforCommandHistory.png" width="800"><br>
 _Figure 2.7.6 : Component interactions for `Command History` feature when user iterate through their command history for the session by pressing the up or down key_
-<br /><br />
-CommandHistoryManager implements a Singleton design as all command history should go to the same manager.<br />
-The CommandHistoryManager can be accessed through the getInstance() method.
-<br /><br />
 
 The diagram below shows the interaction between different components for the delete label command via `delete`. <br><br>
 <img src="images\SDforDeleteLabel.png" width="800"><br>
@@ -304,6 +296,18 @@ and logging destinations.
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file
 (default: `config.json`):
 
+### 3.3 Design Decisions
+
+#### 3.3.1 AutocompleteManager
+* The AutocompleteManager implements a request and response design.
+* To use the Autocomplete feature, a response object is created with the command and the current cursor position and sent to the AutomcompleteManager.
+* The AutocompleteManager will create a response with the new command with the autocompleted command as well as the new cursor position.
+
+#### 3.3.2 CommandHistoryManager
+* CommandHistoryManager implements a Singleton design as all command history that has been typed previous affect data that persists throughout the application.
+
+#### 3.3.3 SaveAs & Load Feature
+* SaveAs and Load feature utilizes the EventsCenter to update the managers of each component (UI, Storage, Model, Logic)
 
 ## 4. Testing
 
@@ -1006,17 +1010,13 @@ Use case ends
 8. Should allow user to exit the program with no data loss
 9. Should allow user to enter the program with previous data if the storage file is present and valid
 10. Should create sample data and data storage file when the data storage file is missing
-11. Should have basic security features in place
-12. Should be able to document the unhandled errors
-13. Should come with the user guide and other documentations
-14. Intent of the user should be extracted instead of forcing them to adhere to a specific order or keyword
-15. Should run on Java 8 and above
-16. User should be notified if there is a task that overlaps another task
-17. Commands should take less than 5 second to run
-18. When pulling from google calendar, priority is given to google calendar if there is a conflict
-19. When pushing to google calendar, priority is given to the application if there is a conflict
-20. Persistent storage should be updated each time a command that modifies data is executed
-21. Translate relative dates into absolute dates
+11. Should be able to document the unhandled errors
+12. Should come with the user guide and other documentations
+13. Intent of the user should be extracted instead of forcing them to adhere to a specific order or keyword
+14. User should be notified if there is a task that overlaps another task
+15. Commands should take less than 5 second to run
+16. Persistent storage should be updated each time a command that modifies data is executed
+17. Translate [relative dates](#relative-dates) into absolute dates
 
 ## Appendix D : Glossary
 
@@ -1031,6 +1031,10 @@ Use case ends
 ##### Bookings
 
 > Tasks with multiple time slots selected due to the lack of a confirmed slot.
+
+##### Relative Dates
+
+> Dates that are relative to the current day. e.g. Today, Tomorrow, Yesterday, etc.
 
 
 ## Appendix E : Product Survey
