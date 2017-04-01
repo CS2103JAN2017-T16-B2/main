@@ -283,7 +283,11 @@ Pressing the UP or DOWN key will allow you to iterate through previous commands 
 ### 2.17. Autocompletion of commands and reserved keywords
 Pressing the TAB key will auto complete the word at the current cursor if there is a match, otherwise a list of suggestions will be displayed.
 
-### 2.18. Edit booking time slots : `editbooking`
+### 2.18. Autofocus back to command line
+There is no need to click on the text box to start typing.<br />
+Typing any letter will set the focus back to the command line and sets the cursor to the end of the text field before entering that key
+
+### 2.19. Edit booking time slots : `editbooking`
 Edits booking time slots.<br />
 Format: `editbooking INDEX (remove SLOT_NUMBER | change SLOT_NUMBER NEW_DATE | add DATE, MORE DATES)`
 

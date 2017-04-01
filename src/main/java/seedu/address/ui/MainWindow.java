@@ -124,6 +124,8 @@ public class MainWindow extends UiPart<Region> {
                 event.consume();
             } else if (!commandBox.getCommandTextField().isFocused()) {
                 commandBox.getCommandTextField().requestFocus();
+                commandBox.getCommandTextField().positionCaret(
+                        commandBox.getCommandTextField().lengthProperty().intValue());
             }
         });
     }
