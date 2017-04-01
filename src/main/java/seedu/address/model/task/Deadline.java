@@ -73,7 +73,7 @@ public class Deadline {
      * Returns true if a given string has no date.
      */
     public static boolean isEmptyDeadline(String test) {
-        return test.equals("");
+        return "".equals(test);
     }
 
     /**

@@ -30,6 +30,6 @@ public class UndoPairTest {
         assertFalse(undoPair1.equals(undoPair3));
         assertFalse(undoPair1.equals(undoPair4));
         assertFalse(undoPair1.equals(undoPair5));
-        assertFalse(undoPair1.equals(null));
+        assertFalse(undoPair1 == null);
     }
 }

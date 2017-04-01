@@ -21,7 +21,7 @@ import seedu.address.logic.commands.EditCommand;
 public class AutocompleteManagerTest {
 
     @Test
-    public void setup() {
+    public void setUp() {
         AutocompleteManager ac = new AutocompleteManager();
         AutocompleteRequest request = new AutocompleteRequest("", 0);
         assertTrue(ac.getSuggestions(request).getSuggestions().
@@ -39,7 +39,7 @@ public class AutocompleteManagerTest {
     @Test
     public void autocomplete_TestEqualsNull_ReturnFalse() {
         AutocompleteManager ac1 = new AutocompleteManager("phrase1", "phrase2");
-        assertFalse(ac1.equals(null));
+        assertFalse(ac1 == null);
     }
 
     @Test

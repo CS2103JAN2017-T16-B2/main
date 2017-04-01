@@ -156,7 +156,7 @@ public class UniqueTaskList implements Iterable<Task>, Cloneable {
             public int compare(ReadOnlyTask task1, ReadOnlyTask task2) {
                 return task1.compareTo(task2);
             }
-        };;
+        };
         FXCollections.sort(internalList, comparator);
     }
 

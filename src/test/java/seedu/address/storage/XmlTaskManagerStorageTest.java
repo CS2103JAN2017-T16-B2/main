@@ -2,6 +2,7 @@ package seedu.address.storage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -30,6 +31,7 @@ public class XmlTaskManagerStorageTest {
     public void readAddressBook_nullFilePath_assertionFailure() throws Exception {
         thrown.expect(AssertionError.class);
         readTaskManager(null);
+        fail("Should not reach here");
     }
 
     private java.util.Optional<ReadOnlyTaskManager> readTaskManager(String filePath) throws Exception {
@@ -52,6 +54,7 @@ public class XmlTaskManagerStorageTest {
 
         thrown.expect(DataConversionException.class);
         readTaskManager("NotXmlFormatTaskManager.xml");
+        fail("Should not reach here");
 
         /* IMPORTANT: Any code below an exception-throwing line (like the one above) will be ignored.
          * That means you should not have more than one exception test in one method
@@ -89,6 +92,7 @@ public class XmlTaskManagerStorageTest {
     public void saveAddressBook_nullTaskManager_assertionFailure() throws IOException {
         thrown.expect(AssertionError.class);
         saveTaskManager(null, "SomeFile.xml");
+        fail("Should not reach here");
     }
 
     private void saveTaskManager(ReadOnlyTaskManager addressBook, String filePath) throws IOException {
@@ -99,6 +103,7 @@ public class XmlTaskManagerStorageTest {
     public void saveTaskManager_nullFilePath_assertionFailure() throws IOException {
         thrown.expect(AssertionError.class);
         saveTaskManager(new TaskManager(), null);
+        fail("Should not reach here");
     }
 
 

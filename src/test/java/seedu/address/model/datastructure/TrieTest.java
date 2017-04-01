@@ -20,7 +20,7 @@ public class TrieTest {
     private Trie trie;
 
     @Before
-    public void setup() {
+    public void setUp() {
         trie = new Trie();
         for (String line : AutocompleteManager.AUTOCOMPLETE_DATA) {
             trie.load(line);
@@ -29,23 +29,22 @@ public class TrieTest {
 
     @Test
     public void trie_TestValid_ReturnTrue() {
-        testAutocomplete("exp", "export");
+        testAutocomplete("ad", "add");
     }
 
     @Test
     public void trie_TestOrderMatchNotMatter_ReturnTrue() {
         //Check if test order matters
-        testAutocomplete("ex", "export", "exit");
-        testAutocomplete("ex", "exit", "export");
-        testAutocomplete("pu", "pull", "push");
+        testAutocomplete("ed", "editbooking", "edit");
+        testAutocomplete("ex", "exit");
     }
 
     @Test
     public void trie_TestInvalidCommands_ReturnTrue() {
         //Check if test order matters
-        testAutocomplete("aNonExistentCommand", "");
+        testAutocomplete("aNonExistentCommand");
         testAutocomplete("", AutocompleteManager.AUTOCOMPLETE_DATA);
-        testAutocomplete("!@#!@!@@@!", "");
+        testAutocomplete("!@#!@!@@@!");
     }
 
     @Test
@@ -66,7 +65,7 @@ public class TrieTest {
 
         assertTrue(node1.equals(node2));
         assertFalse(node1.equals(node3));
-        assertFalse(node1.equals(null));
+        assertFalse(node1 == null);
     }
 
     @Test
@@ -93,7 +92,7 @@ public class TrieTest {
         for (String expectedString : expected) {
             expectedList.add(expectedString);
         }
-        assertTrue(expectedList.containsAll(actual));
+        assertTrue(expectedList.equals(actual));
     }
 
 }

@@ -2,6 +2,7 @@ package seedu.address.storage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class JsonUserPrefsStorageTest {
     public void readUserPrefs_nullFilePath_assertionFailure() throws DataConversionException {
         thrown.expect(AssertionError.class);
         readUserPrefs(null);
+        fail("Should not reach here");
     }
 
     private Optional<UserPrefs> readUserPrefs(String userPrefsFileInTestDataFolder) throws DataConversionException {
@@ -85,12 +87,14 @@ public class JsonUserPrefsStorageTest {
     public void savePrefs_nullPrefs_assertionFailure() throws IOException {
         thrown.expect(AssertionError.class);
         saveUserPrefs(null, "SomeFile.json");
+        fail("Should not reach here");
     }
 
     @Test
     public void saveUserPrefs_nullFilePath_assertionFailure() throws IOException {
         thrown.expect(AssertionError.class);
         saveUserPrefs(new UserPrefs(), null);
+        fail("Should not reach here");
     }
 
     private void saveUserPrefs(UserPrefs userPrefs, String prefsFileInTestDataFolder) throws IOException {

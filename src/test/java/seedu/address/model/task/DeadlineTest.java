@@ -13,7 +13,7 @@ import seedu.address.logic.dateparser.DateTimeParser;
 
 public class DeadlineTest {
 
-    DateTimeParser dp;
+    private DateTimeParser dp;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -31,7 +31,7 @@ public class DeadlineTest {
 
         assertTrue(deadline1.equals(deadline2));
         assertTrue(deadline1.equals(deadline1));
-        assertFalse(deadline1.equals(null));
+        assertFalse(deadline1 == null);
         assertFalse(deadline1.equals(deadline3));
 
 
@@ -44,7 +44,6 @@ public class DeadlineTest {
         assertTrue(Deadline.isValidDeadline("11-12-2106")); // date
         assertTrue(Deadline.isValidDeadline("Tomorrow"));
         assertTrue(Deadline.isValidDeadline("9pm")); // two characters only
-        assertTrue(new Deadline("").isValidDeadline(""));
         assertTrue(Deadline.isValidDeadline("")); // empty string
         assertTrue(Deadline.isValidDeadline(" ")); // spaces only
     }

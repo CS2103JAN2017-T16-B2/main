@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import guitests.guihandles.TaskCardHandle;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.testutil.TestTask;
 import seedu.address.testutil.TestUtil;
 
@@ -16,7 +16,7 @@ public class UndoCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void undo_EditLabel_invalidCommand() {
-        LogicManager.undoCommandHistory.clear();
+        UndoManager.getInstance().clear();
         TestTask[] currentList = td.getTypicalTasks();
         commandBox.runCommand("undo");
         //No change should occur and show error message
@@ -26,7 +26,7 @@ public class UndoCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void undo_EditLabelValid_ReturnTrue() throws IllegalValueException {
-        LogicManager.undoCommandHistory.clear();
+        UndoManager.getInstance().clear();
         TestTask[] currentList = td.getTypicalTasks();
         commandBox.runCommand("editlabel friends allies");
         commandBox.runCommand("undo");
@@ -38,7 +38,7 @@ public class UndoCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void undo_addTask_ReturnTrue() {
-        LogicManager.undoCommandHistory.clear();
+        UndoManager.getInstance().clear();
         //add one task
         TestTask[] currentList = td.getTypicalTasks();
         TestTask taskToAdd = td.task8;

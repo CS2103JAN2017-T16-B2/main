@@ -128,8 +128,8 @@ public class CommandBox extends UiPart<Region> {
      * Sets the command to the string input given along with the cursor at the end
      */
     private void setCommandAndCursorToEnd(String command) {
-        command = command == null ? commandTextField.getText() : command;
-        commandTextField.setText(command);
+        String commandToSet = command == null ? commandTextField.getText() : command;
+        commandTextField.setText(commandToSet);
         moveCursorToEndOfField();
     }
 

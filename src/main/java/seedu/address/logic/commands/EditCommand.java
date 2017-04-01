@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.util.CollectionUtil;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.Deadline;
@@ -84,7 +84,7 @@ public class EditCommand extends Command {
         Optional<Deadline> updatedDeadline;
         Optional<Recurrence> updatedRecurrence;
         Title updatedTitle = editTaskDescriptor.getTitle().orElseGet(taskToEdit::getTitle);
-        if ((editTaskDescriptor.getClearDates().isPresent() && editTaskDescriptor.getClearDates().get() == true)
+        if ((editTaskDescriptor.getClearDates().isPresent() && editTaskDescriptor.getClearDates().get())
                 || editTaskDescriptor.isDateEdited()) {
             updatedStartTime = editTaskDescriptor.getStartTime();
             updatedDeadline = editTaskDescriptor.getDeadline();
@@ -249,7 +249,7 @@ public class EditCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();

@@ -36,7 +36,7 @@ public class AutocompleteRequestResponseTest {
         assertFalse(request1.equals(request3));
         assertFalse(request1.equals(request4));
         assertFalse(request1.equals(request5));
-        assertFalse(request1.equals(null));
+        assertFalse(request1 == null);
     }
 
     @Test
@@ -62,6 +62,6 @@ public class AutocompleteRequestResponseTest {
         assertFalse(response1.equals(response3));
         assertFalse(response1.equals(response4));
         assertFalse(response1.equals(response5));
-        assertFalse(response1.equals(null));
+        assertFalse(response1 == null);
     }
 }

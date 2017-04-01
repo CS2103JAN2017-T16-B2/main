@@ -16,7 +16,7 @@ public class CommandHistoryTest {
     private CommandHistory history;
 
     @Before
-    public void setup() {
+    public void setUp() {
         history = CommandHistoryManager.getInstance();
     }
 

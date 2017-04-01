@@ -13,8 +13,8 @@ public class ToggleLabelListTest extends TaskManagerGuiTest {
     @Test
     public void gui_TestToggleLabelListView_ReturnTrue() {
         leftPanel.clickOnLabelHeader();
-        assertTrue(leftPanel.isVisible() == false);
+        assertTrue(!leftPanel.isVisible());
         leftPanel.clickOnLabelHeader();
-        assertTrue(leftPanel.isVisible() == true);
+        assertTrue(leftPanel.isVisible());
     }
 }

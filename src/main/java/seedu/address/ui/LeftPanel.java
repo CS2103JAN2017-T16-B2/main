@@ -133,11 +133,10 @@ public class LeftPanel extends UiPart<Region> {
                         || task.getDeadline().get().getDateTime().equals(endTime)) {
                     count++;
                 }
-            } else if (task.getDeadline().isPresent()) {
-                if (task.getDeadline().get().getDateTime().before(endTime)
-                        || task.getDeadline().get().getDateTime().equals(endTime)) {
-                    count++;
-                }
+            } else if (task.getDeadline().isPresent() &&
+                        (task.getDeadline().get().getDateTime().before(endTime)
+                                || task.getDeadline().get().getDateTime().equals(endTime))) {
+                count++;
             }
         }
         todayCounterLabel.setText(Integer.toString(count));

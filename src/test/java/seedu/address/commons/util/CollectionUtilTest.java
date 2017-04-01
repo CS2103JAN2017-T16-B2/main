@@ -2,6 +2,7 @@ package seedu.address.commons.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -80,6 +81,7 @@ public class CollectionUtilTest {
     public void isAnyNullCollection_nullReference_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         CollectionUtil.isAnyNull((Collection<Object>) null);
+        fail("Should not reach here");
     }
 
     @Test

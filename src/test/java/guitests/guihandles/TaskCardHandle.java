@@ -128,7 +128,7 @@ public class TaskCardHandle extends GuiHandle {
 
     private Boolean isCompleted() {
         String text = getTextFromLabel(STATUS_FIELD_ID);
-        if (text.equals("Completed")) {
+        if ("Completed".equals(text)) {
             return true;
         } else {
             return false;

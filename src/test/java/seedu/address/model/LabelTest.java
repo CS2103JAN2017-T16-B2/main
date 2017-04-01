@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +31,7 @@ public class LabelTest {
     public void label_TestLabelNull_ThrowAssertionError() throws IllegalValueException {
         exception.expect(AssertionError.class);
         new Label(null);
+        fail("Should not reach here");
     }
 
     @Test
