@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public class CommandBoxIterateCommandTest extends TaskManagerGuiTest {
     @Test
-    public void commandBox_IterateCommandTest() {
+    public void commandBox_IterateCommandTest_Success() {
         commandBox.runCommand("add task1");
         commandBox.runCommand("add task2");
         commandBox.pressUp();

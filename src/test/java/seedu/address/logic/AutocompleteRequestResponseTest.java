@@ -17,11 +17,11 @@ import seedu.address.logic.autocomplete.AutocompleteResponse;
 public class AutocompleteRequestResponseTest {
 
     @Test
-    public void request_TestNegativeCaretPosition() {
+    public void request_TestNegativeCaretPosition_ThrowError() {
         try {
             new AutocompleteRequest("", -1);
         } catch (AssertionError e) {
-            assertTrue(null == e.getMessage());
+            assertTrue(e instanceof AssertionError);
         }
     }
 

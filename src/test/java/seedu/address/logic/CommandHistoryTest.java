@@ -21,7 +21,7 @@ public class CommandHistoryTest {
     }
 
     @Test
-    public void test() {
+    public void commandHistory_TestCommandHistoryInputSequence_Success() {
         history.addCommand("command1");
         history.addCommand("command2");
         history.addCommand("command3");

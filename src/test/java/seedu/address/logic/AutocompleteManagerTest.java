@@ -27,16 +27,21 @@ public class AutocompleteManagerTest {
     }
 
     @Test
-    public void autocomplete_TestInitialization() {
+    public void autocomplete_TestEquals_ReturnTrue() {
         AutocompleteManager ac1 = new AutocompleteManager("phrase1");
         ac1.addData("phrase2");
         AutocompleteManager ac2 = new AutocompleteManager("phrase1", "phrase2");
         assertTrue(ac1.equals(ac2));
+    }
+
+    @Test
+    public void autocomplete_TestEqualsNull_ReturnFalse() {
+        AutocompleteManager ac1 = new AutocompleteManager("phrase1", "phrase2");
         assertFalse(ac1.equals(null));
     }
 
     @Test
-    public void autocomplete_TestAutocompleteSuggestion() {
+    public void autocomplete_TestAutocompleteSuggestion_ReturnTrue() {
         AutocompleteManager ac = new AutocompleteManager();
         AutocompleteRequest request = new AutocompleteRequest("edi", 0);
         LinkedList<String> suggestions = new LinkedList<String>();

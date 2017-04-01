@@ -11,7 +11,7 @@ import org.junit.Test;
 public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
 
     @Test
-    public void autocomplete_SingleSuggestion() {
+    public void autocomplete_SingleSuggestion_ReturnTrue() {
         //Single suggestion
         commandBox.enterCommand("he");
         moveCursorRight("he".length());
@@ -20,7 +20,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_MultipleSuggestions() {
+    public void autocomplete_MultipleSuggestions_ReturnTrue() {
         //Multiple suggestions
         commandBox.enterCommand("co");
         moveCursorRight("co".length());
@@ -29,7 +29,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_SingleSuggestionAfterWordsPartial() {
+    public void autocomplete_SingleSuggestionAfterWordsPartial_ReturnTruet() {
         //Single suggestions with words (partial)
         commandBox.enterCommand("randomString ed");
         moveCursorRight("randomString ed".length());
@@ -38,7 +38,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_SingleSuggestionAfterWords() {
+    public void autocomplete_SingleSuggestionAfterWords_ReturnTrue() {
         //Single suggestions with words
         commandBox.enterCommand("randomString editb");
         moveCursorRight("randomString edi".length());
@@ -47,7 +47,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_MultipleSuggestionBeforeWords() {
+    public void autocomplete_MultipleSuggestionBeforeWords_ReturnTrue() {
         //Auto complete keyword before multiple suggestions
         commandBox.enterCommand("ed randomString");
         moveCursorRight(1);
@@ -56,7 +56,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_SingleSuggestionBeforeWords() {
+    public void autocomplete_SingleSuggestionBeforeWords_ReturnTrue() {
         //Auto complete keyword before single suggestion
         commandBox.enterCommand("editb randomString");
         moveCursorRight(1);
@@ -65,7 +65,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_NonExistentString() {
+    public void autocomplete_NonExistentString_ReturnTrue() {
         //Nonexistent string
         commandBox.enterCommand("randomString nonExistentStri");
         moveCursorRight("randomString nonExis".length());
@@ -74,7 +74,7 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_EmptyText() {
+    public void autocomplete_EmptyText_ReturnTrue() {
         //Empty text
         commandBox.enterCommand("");
         commandBox.pressTab();
@@ -82,30 +82,24 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void autocomplete_MultipleTabsAutocomplete() {
+    public void autocomplete_MultipleTabsAutocomplete_ReturnTrue() {
         //pressing tab multiple times should not affect the auto completion
         commandBox.enterCommand("he");
         commandBox.pressTab();
         commandBox.pressTab();
-        commandBox.pressTab();
         moveCursorRight("he".length());
-        commandBox.pressTab();
-        commandBox.pressTab();
         commandBox.pressTab();
         commandBox.pressTab();
         assertEquals("help ", commandBox.getCommandInput());
     }
 
     @Test
-    public void autocomplete_MultipleTabsAutocompleteEnd() {
+    public void autocomplete_MultipleTabsAutocompleteEnd_ReturnTrue() {
         //pressing tab multiple times should not affect the auto completion
         commandBox.enterCommand("randomString ed");
         commandBox.pressTab();
         commandBox.pressTab();
-        commandBox.pressTab();
         moveCursorRight("randomString ed".length());
-        commandBox.pressTab();
-        commandBox.pressTab();
         commandBox.pressTab();
         commandBox.pressTab();
         assertEquals("randomString edit", commandBox.getCommandInput());

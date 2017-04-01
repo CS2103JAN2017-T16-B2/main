@@ -19,15 +19,14 @@ import seedu.address.testutil.TestTask;
 public class DeleteLabelCommandTest extends TaskManagerGuiTest {
 
     @Test
-    public void editLabel_LabelDoesNotExist_ReturnTrue() {
+    public void deleteLabel_LabelDoesNotExist_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         //No change should occur
         runAndAssertTrue(DeleteCommand.COMMAND_WORD + " nonexistentlabel", currentList);
-        runAndAssertTrue("delete nonexistentlabel", currentList);
     }
 
     @Test
-    public void editLabel_invalidCommands() {
+    public void deleteLabel_invalidCommands_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         //No change should occur
         runAndAssertTrue(DeleteCommand.COMMAND_WORD, currentList);
@@ -35,7 +34,7 @@ public class DeleteLabelCommandTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void editLabel_EditLabelValid_ReturnTrue() throws IllegalValueException {
+    public void deleteLabel_DeleteLabelValid_ReturnTrue() throws IllegalValueException {
         //Deletes all labels with the label name 'friends' from all tasks
         Label labelToDelete = new Label("friends");
 
@@ -49,7 +48,7 @@ public class DeleteLabelCommandTest extends TaskManagerGuiTest {
             }
         }
 
-        runAndAssertTrue("delete friends", currentList);
+        runAndAssertTrue(DeleteCommand.COMMAND_WORD + " #friends", currentList);
     }
 
     /**

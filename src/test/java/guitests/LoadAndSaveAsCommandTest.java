@@ -28,7 +28,7 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
     public String file2 = timeOfTest + "taskmanager2.xml";
 
     @Test
-    public void testLoadAndSaveAs_ValidFiles() {
+    public void testLoadAndSaveAs_ValidFiles_Success() {
         //Initialize
         TestTask[] tasks = td.getTypicalTasks();
 
@@ -74,25 +74,25 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
     }
 
     @Test
-    public void testSaveAs_Folder() {
+    public void testSaveAs_Folder_ReturnTrue() {
         commandBox.runCommand(SaveAsCommand.COMMAND_WORD + " " + rootFolder + "noXmlExtension");
         assertResultMessage(SaveAsCommand.MESSAGE_DOES_NOT_END_WITH_XML);
     }
 
     @Test
-    public void testLoad_Folder() {
+    public void testLoad_Folder_ReturnTrue() {
         commandBox.runCommand(LoadCommand.COMMAND_WORD + " " + rootFolder);
         assertResultMessage(LoadCommand.MESSAGE_FILE_DOES_NOT_EXIST);
     }
 
     @Test
-    public void testLoad_FileDoesNotEndWithXml() {
+    public void testLoad_FileDoesNotEndWithXml_ReturnTrue() {
         commandBox.runCommand(LoadCommand.COMMAND_WORD + " " + rootFolder + "ConfigUtilTest/EmptyConfig.json");
         assertResultMessage(LoadCommand.MESSAGE_DOES_NOT_END_WITH_XML);
     }
 
     @Test
-    public void testLoad_FileDoesNotExist() {
+    public void testLoad_FileDoesNotExist_ReturnTrue() {
         commandBox.runCommand(LoadCommand.COMMAND_WORD + " " + rootFolder + "nonExistentFile.xml");
         assertResultMessage(LoadCommand.MESSAGE_FILE_DOES_NOT_EXIST);
     }
