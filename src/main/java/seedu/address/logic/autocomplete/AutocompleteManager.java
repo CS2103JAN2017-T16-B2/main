@@ -12,15 +12,14 @@ import seedu.address.model.datastructure.Trie;
  */
 public class AutocompleteManager {
     private final Logger logger = LogsCenter.getLogger(AutocompleteManager.class);
-    public static final String[] AUTOCOMPLETE_DATA = { "help", "add", "by", "repeat", "list"
-            , "edit", "find", "delete", "select", "book"
-            , "confirm", "editlabel", "undo", "clear", "exit"
-            , "to", "from", "on", "mark", "unmark"
-            , "hourly", "daily", "weekly", "monthly", "yearly"
-            , "overdue", "outstanding", "completed", "today", "yesterday"
-            , "tomorrow", "bookings", "incomplete", "load", "saveas"
-            , "remove", "change", "editbooking", "days", "months"
-            , "years", "every" };
+    public static final String[] AUTOCOMPLETE_DATA = { "add", "book", "bookings", "by", "change"
+            , "clear", "completed", "confirm", "daily", "days"
+            , "delete", "edit", "editbooking", "every", "exit"
+            , "find", "from", "hourly", "incomplete", "list"
+            , "load", "mark", "monthly", "months", "on"
+            , "outstanding", "overdue", "remove", "repeat", "saveas"
+            , "select", "to", "today", "tomorrow", "undo", "unmark"
+            , "weekly", "yearly", "years", "yesterday", "help" };
 
     private AutocompleteDataStructure data;
 
@@ -35,14 +34,16 @@ public class AutocompleteManager {
      * Initializes auto-complete object with specified auto-complete data
      */
     public AutocompleteManager(String... data) {
+        assert data != null;
         this.data = new Trie();
-        this.data.load(data);
+        addData(data);
     }
 
     /**
      * Adds more strings for auto completion
      */
     public void addData(String... phrases) {
+        assert phrases != null;
         data.load(phrases);
     }
 

@@ -60,7 +60,6 @@ public class TaskCardHandle extends GuiHandle {
     }
 
     private List<String> getLabels(UniqueLabelList labels) {
-        System.out.println(labels);
         return labels.asObservableList().stream().map(label -> label.labelName).collect(Collectors.toList());
     }
 

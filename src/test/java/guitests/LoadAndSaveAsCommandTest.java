@@ -29,7 +29,6 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void testLoadAndSaveAs_ValidFiles() {
-        System.out.println(file1);
         //Initialize
         TestTask[] tasks = td.getTypicalTasks();
 

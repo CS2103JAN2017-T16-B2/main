@@ -40,10 +40,10 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     @Test
     public void autocomplete_SingleSuggestionAfterWords() {
         //Single suggestions with words
-        commandBox.enterCommand("randomString editl");
+        commandBox.enterCommand("randomString editb");
         moveCursorRight("randomString edi".length());
         commandBox.pressTab();
-        assertEquals("randomString editlabel ", commandBox.getCommandInput());
+        assertEquals("randomString editbooking ", commandBox.getCommandInput());
     }
 
     @Test
@@ -58,10 +58,10 @@ public class CommandBoxAutocompleteTest extends TaskManagerGuiTest {
     @Test
     public void autocomplete_SingleSuggestionBeforeWords() {
         //Auto complete keyword before single suggestion
-        commandBox.enterCommand("editl randomString");
+        commandBox.enterCommand("editb randomString");
         moveCursorRight(1);
         commandBox.pressTab();
-        assertEquals("editlabel randomString", commandBox.getCommandInput());
+        assertEquals("editbooking randomString", commandBox.getCommandInput());
     }
 
     @Test
