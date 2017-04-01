@@ -85,27 +85,27 @@ public class TaskCardHandle extends GuiHandle {
     public boolean isSameTask(ReadOnlyTask task) {
         assert (task != null);
         boolean result;
-        if (task.getDeadline().isPresent() && task.getStartTime().isPresent() && this.getDeadline() != ""
-                && this.getStartTime() != "") {
+        if (task.getDeadline().isPresent() && task.getStartTime().isPresent() && !this.getDeadline().equals("")
+                && !this.getStartTime().equals("")) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
                     && getLabels().equals(getLabels(task.getLabels()))
                     && getStartTime().equals(task.getStartTime().get().toString())
                     && isCompleted().equals(task.isCompleted());
-        } else if (task.getDeadline().isPresent() && this.getDeadline() != "") {
+        } else if (task.getDeadline().isPresent() && !this.getDeadline().equals("")) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
                     && getLabels().equals(getLabels(task.getLabels()))
                     && isCompleted().equals(task.isCompleted())
-                    && (getStartTime() == null || getStartTime() == "")
+                    && (getStartTime() == null || getStartTime().equals(""))
                     && !task.getStartTime().isPresent();
         } else {
             result = getTitle().equals(task.getTitle().title)
                     && getLabels().equals(getLabels(task.getLabels()))
                     && isCompleted().equals(task.isCompleted()
-                    && (getDeadline() == null || getDeadline() == "")
+                    && (getDeadline() == null || getDeadline().equals(""))
                     && !task.getDeadline().isPresent()
-                    && (getStartTime() == null || getStartTime() == "")
+                    && (getStartTime() == null || getStartTime().equals(""))
                     && !task.getStartTime().isPresent()
                     && isGuiBookingMatch(getBookings(task.getBookings())));
         }
