@@ -1,5 +1,6 @@
 package guitests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -11,9 +12,9 @@ import org.junit.Test;
 public class ToggleLabelListTest extends TaskManagerGuiTest {
 
     @Test
-    public void gui_TestToggleLabelListView_ReturnTrue() {
+    public void gui_TestToggleLabelListView_ReturnFalseThenTrue() {
         leftPanel.clickOnLabelHeader();
-        assertTrue(!leftPanel.isVisible());
+        assertFalse(leftPanel.isVisible());
         leftPanel.clickOnLabelHeader();
         assertTrue(leftPanel.isVisible());
     }
