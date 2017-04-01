@@ -56,8 +56,11 @@ public class EditCommandParser {
                 return new EditLabelCommand(labelInputs.get(EDIT_LABEL_ARGUMENT_LABEL_TO_CHANGE_INDEX),
                                                 labelInputs.get(EDIT_LABEL_ARGUMENT_NEW_LABEL_INDEX));
             } catch (IllegalValueException e) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+                return new IncorrectCommand(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditLabelCommand.MESSAGE_USAGE));
             }
+        } else if (!index.isPresent()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
         //@@author
 
