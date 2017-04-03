@@ -16,6 +16,9 @@ import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList;
 
 //@@author A0162877N
+/**
+ * Adds a booking to the Task Manager
+ */
 public class BookCommand extends Command {
 
     public static final String COMMAND_WORD = "book";
