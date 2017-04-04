@@ -74,7 +74,7 @@ public class TestTask implements ReadOnlyTask {
         return getAsText();
     }
 
-    //@@Author A0105287E
+    //@@author A0105287E
     /**
      * Returns an AddCommand that can be used to create this task.
      */
@@ -90,7 +90,7 @@ public class TestTask implements ReadOnlyTask {
         return addCommand;
     }
 
-    //@@Author A0105287E
+    //@@author A0105287E
     private String getAddCommandWithoutDate() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
@@ -98,7 +98,7 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-    //@@Author A0105287E
+    //@@author A0105287E
     private String getAddCommandWithDeadline() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
@@ -107,7 +107,7 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-  //@@Author A0105287E
+  //@@author A0105287E
     private String getAddCommandWithInterval() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
