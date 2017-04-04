@@ -4,10 +4,11 @@ import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.MarkCommand.MESSAGE_TYPE_BOOKING;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
-import guitests.guihandles.TaskCardHandle;
 import seedu.address.logic.commands.MarkCommand;
 import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
@@ -62,18 +63,25 @@ public class MarkCommandTest extends TaskManagerGuiTest {
     private void assertMarkSuccess(int filteredTaskListIndex, int taskManagerIndex,
                                     String status, TestTask editedTask) {
         TestTask[] expectedTasksList = td.getTypicalTasks();
+        if ("completed".equalsIgnoreCase(status)) {
+            ArrayList<Integer> intArrayList = new ArrayList<Integer>();
+            for (int i = 0; i < td.getTypicalTasks().length; i++) {
+                if (!(i == taskManagerIndex - 1)) {
+                    intArrayList.add(i);
+                }
+            }
+
+            int[] arr = new int[intArrayList.size()];
+
+            for (int i = 0; i < intArrayList.size(); i++) {
+                arr[i] = intArrayList.get(i);
+            }
+            expectedTasksList = td.getTasksByIndex(arr);
+        }
 
         commandBox.runCommand("mark " + filteredTaskListIndex + " " + status);
         System.out.println("details to edit: " + status);
         System.out.println("edited task: " + editedTask);
-
-        // confirm the new card contains the right data
-        TaskCardHandle editedCard = taskListPanel.navigateToTask(editedTask.getTitle().title);
-        System.out.println("Edited card: " + editedCard);
-        assertMatching(editedTask, editedCard);
-
-        // confirm the list now contains all previous tasks plus the task with updated details
-        expectedTasksList[taskManagerIndex - 1] = editedTask;
         Arrays.sort(expectedTasksList);
         assertTrue(taskListPanel.isListMatching(expectedTasksList));
         assertResultMessage(String.format(MarkCommand.MESSAGE_MARK_TASK_SUCCESS, editedTask));
