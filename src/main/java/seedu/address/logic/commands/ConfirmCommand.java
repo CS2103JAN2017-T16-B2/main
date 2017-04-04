@@ -2,8 +2,11 @@ package seedu.address.logic.commands;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -17,6 +20,9 @@ import seedu.address.model.task.Task;
 import seedu.address.model.task.UniqueTaskList;
 
 //@@author A0162877N
+/**
+ * This class handles the confirmation of a booking time slot of a booking
+ */
 public class ConfirmCommand extends Command {
 
     public static final String COMMAND_WORD = "confirm";
@@ -30,6 +36,7 @@ public class ConfirmCommand extends Command {
     public static final String MESSAGE_TASK_NO_BOOKING = "This task does not have bookings to confirm.";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists in the task manager.";
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Confirmed Task: %1$s";
+    private static final Logger logger = LogsCenter.getLogger(EventsCenter.class);
 
     private final int filteredTaskListIndex;
     private final int bookingSlotIndex;
@@ -77,7 +84,7 @@ public class ConfirmCommand extends Command {
         assert taskToEdit != null;
         if (!taskToEdit.getBookings().isEmpty()) {
             ObservableList<Booking> bookingList = taskToEdit.getBookings().asObservableList();
-            System.out.println(bookingList.size());
+            logger.info("Booking List size: " + bookingList.size());
             if (bookingSlotIndex >= bookingList.size()) {
                 throw new CommandException(MESSAGE_NO_SUCH_BOOKING);
             }
