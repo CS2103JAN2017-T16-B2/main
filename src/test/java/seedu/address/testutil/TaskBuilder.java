@@ -14,7 +14,7 @@ import seedu.address.model.task.Recurrence;
 import seedu.address.model.task.Title;
 
 /**
- *
+ * Task Builder class which builds the details of the task for testing
  */
 public class TaskBuilder {
 
