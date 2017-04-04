@@ -36,7 +36,7 @@ import seedu.address.logic.parser.Parser;
 
 //@@author A0162877N
 /**
-* Parses input arguments to Natty
+* Parses date input arguments to Natty
 */
 public class DateTimeManager implements DateTimeParser {
     private TimeZone defaultTimeZone;
@@ -245,9 +245,7 @@ public class DateTimeManager implements DateTimeParser {
                         || (!suffix.isEmpty() && Character.isLetter(suffix.charAt(0)))) {
                     group = null;
                 }
-
             }
-
         } catch (RecognitionException e) {
             logger.debug("Could not parse input", e);
         }
