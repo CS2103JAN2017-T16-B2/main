@@ -131,18 +131,16 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
+    //@@author A0162877N
     /**
      * Fill up components in the main window,
      * but only update appropriate components if already initialized
      */
     public void fillInnerParts() {
-        //browserPanel = new BrowserPanel(browserPlaceholder);
-
         if (taskListPanel == null) {
-            taskListPanel = new TaskListPanel(getTaskListPlaceholder(), logic.getFilteredTaskList());
+            taskListPanel = new TaskListPanel(getTaskListPlaceholder(), logic.getFilteredIncompleteTaskList());
         } else {
-            //Update the logic only
-            taskListPanel.setConnections(logic.getFilteredTaskList());
+            taskListPanel.setConnections(logic.getFilteredIncompleteTaskList());
         }
 
         if (leftPanel == null) {
@@ -169,7 +167,6 @@ public class MainWindow extends UiPart<Region> {
             commandBox.setLogic(logic);
         }
     }
-    //@@author
 
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
