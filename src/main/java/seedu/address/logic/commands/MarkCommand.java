@@ -34,6 +34,8 @@ public class MarkCommand extends Command {
     public static final String MESSAGE_NOT_MARKED = "Status must be provided.";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists in the task manager.";
     public static final String MESSAGE_TYPE_BOOKING = "Booking type of tasks cannot be marked as completed.";
+    public static final String MESSAGE_RECURRING_INCOMPLETE_DISABLE = "Status of completed recurring task "
+            + "cannot be changed.";
     private static final RecurrenceParser recurrenceParser = new RecurrenceManager();
 
     private final int filteredTaskListIndex;
@@ -65,6 +67,10 @@ public class MarkCommand extends Command {
 
         if (!taskToEdit.getBookings().isEmpty()) {
             throw new CommandException(MESSAGE_TYPE_BOOKING);
+        }
+
+        if (taskToEdit.isCompleted() && taskToEdit.isRecurring()) {
+            throw new CommandException(MESSAGE_RECURRING_INCOMPLETE_DISABLE);
         }
 
         try {
