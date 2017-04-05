@@ -2,6 +2,7 @@ package guitests;
 
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.commands.MarkCommand.MESSAGE_RECURRING_INCOMPLETE_DISABLE;
 import static seedu.address.logic.commands.MarkCommand.MESSAGE_TYPE_BOOKING;
 
 import org.junit.Test;
@@ -47,6 +48,50 @@ public class MarkCommandTest extends TaskManagerGuiTest {
                 + " 11-10-2017 2pm to 5pm, 12-10-2017 2pm to 5pm");
         commandBox.runCommand("mark 8 completed");
         assertResultMessage(MESSAGE_TYPE_BOOKING);
+    }
+
+    @Test
+    public void mark_completedRecurringTaskToIncomplete_failure() throws Exception {
+        //add a recurring task
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 12").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        commandBox.runCommand(taskToAdd.getAddCommand());
+
+        //mark task complete because default status is incomplete
+        commandBox.runCommand("mark 1 completed");
+
+        //mark the completed recurring task incomplete
+        commandBox.runCommand("mark 9 incomplete");
+        assertResultMessage(MESSAGE_RECURRING_INCOMPLETE_DISABLE);
+    }
+
+    @Test
+    public void mark_incompleteRecurringTask_success() throws Exception {
+        //add a completed recurring task
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 12").withStartTime("21st May")
+                .withDeadline("22nd May")
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        commandBox.runCommand(taskToAdd.getAddCommand());
+
+        //mark task complete because default status is incomplete
+        commandBox.runCommand("mark 1 completed");
+
+        //check for existence of new incomplete instance
+        TestTask newTask = new TaskBuilder().withTitle("Complete task 12").withStartTime("23rd May")
+                .withDeadline("24th May")
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        TaskCardHandle editedCard = taskListPanel.navigateToTask(newTask.getTitle().title);
+        assertMatching(newTask, editedCard);
+
+        //check for existence of old completed instance
+        TestTask oldTask = new TaskBuilder().withTitle("Complete task 12").withStartTime("21st May")
+                .withDeadline("22nd May")
+                .withStatus(true)
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        commandBox.runCommand("list completed");
+        editedCard = taskListPanel.navigateToTask(newTask.getTitle().title);
+        assertMatching(oldTask, editedCard);
     }
 
 

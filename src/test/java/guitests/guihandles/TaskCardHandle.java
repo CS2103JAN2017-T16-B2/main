@@ -96,7 +96,6 @@ public class TaskCardHandle extends GuiHandle {
                     && getStartTime().equals(task.getStartTime().get().toString())
                     && isCompleted().equals(task.isCompleted())
                     && matchRecurrence(task);
-            System.out.println(matchRecurrence(task));
         } else if (task.getDeadline().isPresent() && !this.getDeadline().equals("")) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
@@ -144,7 +143,6 @@ public class TaskCardHandle extends GuiHandle {
         } else {
             result = false;
         }
-
         return result;
     }
 
