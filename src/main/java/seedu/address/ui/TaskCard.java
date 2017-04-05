@@ -53,7 +53,7 @@ public class TaskCard extends UiPart<Region> {
         }
         if (task.isRecurring()) {
             recurrenceStatus.setText("Recurring");
-            recurrence.setText(task.getRecurrence().toString());
+            recurrence.setText(task.getRecurrence().get().toString());
         } else {
             recurrenceStatus.setText("Non-recurring");
             recurrence.setVisible(false);
