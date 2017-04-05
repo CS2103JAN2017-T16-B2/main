@@ -128,8 +128,6 @@ public class MarkCommandTest extends TaskManagerGuiTest {
         }
 
         commandBox.runCommand("mark " + filteredTaskListIndex + " " + status);
-        System.out.println("details to edit: " + status);
-        System.out.println("edited task: " + editedTask);
         Arrays.sort(expectedTasksList);
         assertTrue(taskListPanel.isListMatching(expectedTasksList));
         assertResultMessage(String.format(MarkCommand.MESSAGE_MARK_TASK_SUCCESS, editedTask));
