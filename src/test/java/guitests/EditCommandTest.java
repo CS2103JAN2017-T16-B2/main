@@ -156,6 +156,29 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
+    //@@author A0105287E
+    @Test
+    public void edit_changeDeadline_success() throws Exception {
+        //change to deadline task
+        String detailsToEdit = "by next week 12pm";
+        int taskManagerIndex = 3;
+
+        TestTask editedTask = new TaskBuilder().withTitle("Complete task 3")
+                .withDeadline("next week 12pm").withStatus(false).build();
+
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
+
+        //change deadline
+        detailsToEdit = "by next friday 5pm";
+        taskManagerIndex = 1;
+
+        editedTask = new TaskBuilder().withTitle("Complete task 3")
+                .withDeadline("next friday 5pm").withStatus(false).build();
+
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
+
+    }
+
 
     /**
      * Checks whether the edited task has the correct updated details.
