@@ -22,6 +22,8 @@ public class TaskCardHandle extends GuiHandle {
     private static final String LABELS_FIELD_ID = "#labels";
     private static final String STATUS_FIELD_ID = "#status";
     private static final String BOOKING_FIELD_ID = "#bookings";
+    private static final String RECURRENCE_STATUS_FIELD_ID = "#recurrenceStatus";
+    private static final String RECURRENCE_FIELD_ID = "#recurrence";
 
     private Node node;
 
@@ -92,6 +94,8 @@ public class TaskCardHandle extends GuiHandle {
                     && getLabels().equals(getLabels(task.getLabels()))
                     && getStartTime().equals(task.getStartTime().get().toString())
                     && isCompleted().equals(task.isCompleted());
+
+
         } else if (task.getDeadline().isPresent() && !this.getDeadline().equals("")) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
@@ -126,6 +130,17 @@ public class TaskCardHandle extends GuiHandle {
         return isEqual;
     }
 
+    //@@author A0105287E
+    private boolean matchRecurrence(ReadOnlyTask task) {
+        boolean result;
+        result = this.isRecurring().equals(task.isRecurring());
+        if (this.isRecurring() && result) {
+            result = this.getRecurrence().equals(task.getRecurrence());
+        }
+        return result;
+    }
+
+    //@@author A0105287E
     private Boolean isCompleted() {
         String text = getTextFromLabel(STATUS_FIELD_ID);
         if ("Completed".equals(text)) {
@@ -133,6 +148,22 @@ public class TaskCardHandle extends GuiHandle {
         } else {
             return false;
         }
+    }
+
+    //@@author A0105287E
+    private Boolean isRecurring() {
+        String text = getTextFromLabel(RECURRENCE_STATUS_FIELD_ID);
+        if ("Recurring".equals(text)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //@@author A0105287E
+    private String getRecurrence() {
+        return getTextFromLabel(RECURRENCE_FIELD_ID);
+
     }
 
     @Override
