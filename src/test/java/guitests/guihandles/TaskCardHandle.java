@@ -169,7 +169,7 @@ public class TaskCardHandle extends GuiHandle {
 
     //@@author A0105287E
     private Boolean isRecurring() {
-        return isVisible(RECURRENCE_FIELD_ID, node);
+        return isFieldPresent(RECURRENCE_FIELD_ID, node);
     }
 
     //@@author A0105287E

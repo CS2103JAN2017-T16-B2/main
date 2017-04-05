@@ -73,7 +73,7 @@ public class TaskCard extends UiPart<Region> {
         if (task.isRecurring()) {
             recurrence.setText("Repeats every " + task.getRecurrence().get().toString());
         } else {
-            recurrence.setVisible(false);
+            dateVBox.getChildren().remove(recurrence);
         }
     }
 

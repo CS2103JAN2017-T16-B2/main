@@ -48,7 +48,8 @@ public class LeftPanelTest extends TaskManagerGuiTest {
 
     @Test
     public void label_TestFirstLabel_ReturnTrue() {
-        TestTask[] testTask = td.getTasksByIndex(0, 1);
+        TestTask[] testTask = td.getTasksByIndex(0);
+        commandBox.runCommand("delete 2");
         leftPanel.clickOnFirstLabel();
         assertTrue(taskListPanel.isListMatching(testTask));
     }
