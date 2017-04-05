@@ -17,6 +17,7 @@ import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.LeftPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelTodaySelectionChangedEvent;
+import seedu.address.commons.events.ui.ShowAllSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
@@ -133,6 +134,12 @@ public class UiManager extends ComponentManager implements Ui {
     private void handleLeftPanelTodaySelectionChangedEvent(LeftPanelTodaySelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         mainWindow.loadTodaySelection();
+    }
+
+    @Subscribe
+    private void handleShowAllSelectionChangedEvent(ShowAllSelectionChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        mainWindow.showAllTask();
     }
 
     @Override
