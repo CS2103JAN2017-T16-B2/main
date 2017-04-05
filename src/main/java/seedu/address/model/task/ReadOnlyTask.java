@@ -78,10 +78,7 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         int value = 0;
         try {
             value = compareCompletionStatus(other);
-        } catch (IllegalValueException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalDateTimeValueException e) {
+        } catch (IllegalValueException | IllegalDateTimeValueException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
