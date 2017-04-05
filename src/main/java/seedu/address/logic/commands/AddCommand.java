@@ -32,6 +32,7 @@ public class AddCommand extends Command {
     public static final Boolean DEFAULT_TASK_STATE = false;
     public static final Boolean DEFAULT_TASK_RECURRENCE = false;
 
+
     private final Task toAdd;
 
     /**

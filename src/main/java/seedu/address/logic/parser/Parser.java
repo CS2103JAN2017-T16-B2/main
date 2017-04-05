@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,8 @@ public class Parser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     protected DateTimeParser dtParser;
+    public static final String DEFAULT_STARTTIME = "00:00:00";
+    public static final String DEFAULT_ENDTIME = "23:59:59";
 
     public Parser() {
         initialiseDateParser();
@@ -48,6 +51,34 @@ public class Parser {
     //@@author A0162877N
     public boolean isDateParseable(String input) {
         return !dtParser.parse(input).isEmpty();
+    }
+
+    //@@author A0105287E
+    /**
+     * Returns whether the date contained in the first String (@code startDate) occurs before
+     * the date contained in the second String {@code endDate}
+     *
+     */
+    public boolean isBefore(String startDate, String endDate) {
+        Date start = null;
+        Date end = null;
+        if (dtParser.parse(endDate).get(0).isTimeInferred()) {
+            end = dtParser.parse(endDate + " " + DEFAULT_ENDTIME).get(0).getDates().get(0);
+        } else {
+            end = dtParser.parse(endDate).get(0).getDates().get(0);
+        }
+
+        if (dtParser.parse(startDate).get(0).isTimeInferred()) {
+            start = dtParser.parse(startDate + " " + DEFAULT_STARTTIME).get(0).getDates().get(0);
+        } else {
+            start = dtParser.parse(startDate).get(0).getDates().get(0);
+        }
+
+        if (end.before(start)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
