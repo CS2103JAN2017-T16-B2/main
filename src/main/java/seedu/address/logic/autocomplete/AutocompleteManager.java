@@ -13,13 +13,13 @@ import seedu.address.model.datastructure.Trie;
 public class AutocompleteManager {
     private final Logger logger = LogsCenter.getLogger(AutocompleteManager.class);
     public static final String[] AUTOCOMPLETE_DATA = { "add", "book", "bookings", "by", "change"
-            , "clear", "completed", "confirm", "daily", "days"
+            , "clear", "completed", "confirm", "days"
             , "delete", "edit", "editbooking", "every", "exit"
-            , "find", "from", "hourly", "incomplete", "list"
-            , "load", "mark", "monthly", "months", "on"
+            , "find", "from", "incomplete", "list"
+            , "load", "mark", "months", "on"
             , "outstanding", "overdue", "remove", "repeat", "saveas"
             , "select", "to", "today", "tomorrow", "undo", "unmark"
-            , "weekly", "yearly", "years", "yesterday", "help" };
+            , "years", "yesterday", "help" };
 
     private AutocompleteDataStructure data;
 
