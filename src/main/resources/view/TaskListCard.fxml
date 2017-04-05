@@ -40,6 +40,8 @@
                         <Label fx:id="startTime" styleClass="cell_small_label" />
                         <Label fx:id="deadline" styleClass="cell_small_label" />
                         <Label fx:id="status" styleClass="cell_big_label" />
+                        <Label fx:id="recurrenceStatus" styleClass="cell_big_label" />
+                        <Label fx:id="recurrence" styleClass="cell_small_label" />
                     </children>
                 </VBox>
             </children>
