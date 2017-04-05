@@ -264,6 +264,10 @@ public class MainWindow extends UiPart<Region> {
         model.updateFilteredTaskList(startDate, endDate);
     }
 
+    public void showAllTask() {
+        model.updateFilteredTaskList(false);
+    }
+
     public TaskListPanel getTaskListPanel() {
         return this.taskListPanel;
     }
