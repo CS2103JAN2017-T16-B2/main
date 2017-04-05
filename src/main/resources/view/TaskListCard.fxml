@@ -2,22 +2,19 @@
 
 <!-- @@author A0162877N -->
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <GridPane HBox.hgrow="ALWAYS">
             <columnConstraints>
@@ -66,6 +63,7 @@
                                     <Label fx:id="dashLabel" text="-" />
                                           <Label fx:id="deadline" alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="cell_small_label" textAlignment="RIGHT" />
                                           <FlowPane fx:id="bookings" alignment="CENTER_RIGHT" columnHalignment="RIGHT" prefWrapLength="10.0" />
+                                          <Label fx:id="recurrence" styleClass="cell_small_label" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="10.0" />
@@ -76,8 +74,6 @@
                             </children>
                         </HBox>
                         <Label fx:id="status" styleClass="cell_big_label" />
-                        <Label fx:id="recurrenceStatus" styleClass="cell_big_label" />
-                        <Label fx:id="recurrence" styleClass="cell_small_label" />
                     </children>
                 </VBox>
             </children>

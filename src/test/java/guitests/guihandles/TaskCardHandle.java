@@ -23,7 +23,6 @@ public class TaskCardHandle extends GuiHandle {
     private static final String LABELS_FIELD_ID = "#labels";
     private static final String STATUS_FIELD_ID = "#status";
     private static final String BOOKING_FIELD_ID = "#bookings";
-    private static final String RECURRENCE_STATUS_FIELD_ID = "#recurrenceStatus";
     private static final String RECURRENCE_FIELD_ID = "#recurrence";
     private static final String CHECKBOX_ID = "#completedCB";
 
@@ -170,17 +169,12 @@ public class TaskCardHandle extends GuiHandle {
 
     //@@author A0105287E
     private Boolean isRecurring() {
-        String text = getTextFromLabel(RECURRENCE_STATUS_FIELD_ID);
-        if ("Recurring".equals(text)) {
-            return true;
-        } else {
-            return false;
-        }
+        return isVisible(RECURRENCE_FIELD_ID, node);
     }
 
     //@@author A0105287E
     private String getRecurrence() {
-        return getTextFromLabel(RECURRENCE_FIELD_ID);
+        return getTextFromLabel(RECURRENCE_FIELD_ID).replaceFirst("Repeats every ", "");
 
     }
 

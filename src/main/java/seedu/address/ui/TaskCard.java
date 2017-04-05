@@ -51,8 +51,6 @@ public class TaskCard extends UiPart<Region> {
     @FXML
     private FlowPane bookings;
     @FXML
-    private Label recurrenceStatus;
-    @FXML
     private Label recurrence;
 
     public TaskCard(ReadOnlyTask task, int displayedIndex) {
@@ -73,10 +71,8 @@ public class TaskCard extends UiPart<Region> {
         }
 
         if (task.isRecurring()) {
-            recurrenceStatus.setText("Recurring");
-            recurrence.setText(task.getRecurrence().get().toString());
+            recurrence.setText("Repeats every " + task.getRecurrence().get().toString());
         } else {
-            recurrenceStatus.setText("Non-recurring");
             recurrence.setVisible(false);
         }
     }

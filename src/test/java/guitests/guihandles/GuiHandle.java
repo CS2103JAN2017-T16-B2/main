@@ -94,6 +94,13 @@ public class GuiHandle {
         return null;
     }
 
+    protected boolean isVisible(String fieldId, Node parentNode) {
+        if (guiRobot.from(parentNode).lookup(fieldId).tryQuery().isPresent()) {
+            return ((Label) guiRobot.from(parentNode).lookup(fieldId).tryQuery().get()).isVisible();
+        }
+        return false;
+    }
+
     protected String getStringFromCheckbox(String fieldId, Node parentNode) {
         if (guiRobot.from(parentNode).lookup(fieldId).tryQuery().isPresent()) {
             return ((CheckBox) guiRobot.from(parentNode).
