@@ -109,12 +109,9 @@ public class MarkCommandTest extends TaskManagerGuiTest {
         TestTask[] expectedTasksList = td.getTypicalTasks();
 
         commandBox.runCommand("mark " + filteredTaskListIndex + " " + status);
-        System.out.println("details to edit: " + status);
-        System.out.println("edited task: " + editedTask);
 
         // confirm the new card contains the right data
         TaskCardHandle editedCard = taskListPanel.navigateToTask(editedTask.getTitle().title);
-        System.out.println("Edited card: " + editedCard);
         assertMatching(editedTask, editedCard);
 
         // confirm the list now contains all previous tasks plus the task with updated details
