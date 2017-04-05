@@ -78,10 +78,7 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         int value = 0;
         try {
             value = compareCompletionStatus(other);
-        } catch (IllegalValueException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalDateTimeValueException e) {
+        } catch (IllegalValueException | IllegalDateTimeValueException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -102,26 +99,8 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
 
     //@@author A0105287E
     default int compareDates(ReadOnlyTask other) throws IllegalValueException, IllegalDateTimeValueException {
-        Deadline dateToCompareForOther;
-        Deadline dateToCompareForThis;
-        if (other.getStartTime().isPresent()) {
-            dateToCompareForOther = other.getStartTime().get();
-        } else if (other.getDeadline().isPresent()) {
-            dateToCompareForOther = other.getDeadline().get();
-        } else if (!other.getBookings().isEmpty()) {
-            dateToCompareForOther = new Deadline(other.getBookings().getEarliestStartTime().toString());
-        } else {
-            dateToCompareForOther = null;
-        }
-        if (this.getStartTime().isPresent()) {
-            dateToCompareForThis = this.getStartTime().get();
-        } else if (this.getDeadline().isPresent()) {
-            dateToCompareForThis = this.getDeadline().get();
-        } else if (!this.getBookings().isEmpty()) {
-            dateToCompareForThis = new Deadline(this.getBookings().getEarliestStartTime().toString());
-        } else {
-            dateToCompareForThis = null;
-        }
+        Deadline dateToCompareForOther = getEarliestDateForTask(other);
+        Deadline dateToCompareForThis = getEarliestDateForTask(this);
         if (dateToCompareForThis != null && dateToCompareForOther != null) {
             return dateToCompareForThis.getDateTime().compareTo(dateToCompareForOther.getDateTime());
         } else if (dateToCompareForThis == null && dateToCompareForOther == null) {
@@ -131,6 +110,22 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         } else {
             return -1;
         }
+    }
+
+    //@@author A0105287E
+    default Deadline getEarliestDateForTask(ReadOnlyTask task)
+            throws IllegalValueException, IllegalDateTimeValueException {
+        Deadline date;
+        if (task.getStartTime().isPresent()) {
+            date = task.getStartTime().get();
+        } else if (task.getDeadline().isPresent()) {
+            date = task.getDeadline().get();
+        } else if (!task.getBookings().isEmpty()) {
+            date = new Deadline(task.getBookings().getEarliestStartTime().toString());
+        } else {
+            date = null;
+        }
+        return date;
     }
 
     default String getAsSearchText() {

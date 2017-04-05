@@ -12,6 +12,7 @@ import seedu.address.logic.commands.EditCommand;
 import seedu.address.model.task.Title;
 import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
+import seedu.address.testutil.TestUtil;
 
 // TODO: reduce GUI tests by transferring some tests to be covered by lower level tests.
 public class EditCommandTest extends TaskManagerGuiTest {
@@ -156,6 +157,72 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
+    //@@author A0105287E
+    @Test
+    public void edit_changeDeadline_success() throws Exception {
+        //change to deadline task
+        String detailsToEdit = "by next week 12pm";
+        int taskManagerIndex = 3;
+
+        TestTask editedTask = new TaskBuilder().withTitle("Complete task 3")
+                .withDeadline("next week 12pm").withStatus(false).build();
+
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
+
+        //change deadline
+        detailsToEdit = "by next friday 5pm";
+        taskManagerIndex = 1;
+
+        editedTask = new TaskBuilder().withTitle("Complete task 3")
+                .withDeadline("next friday 5pm").withStatus(false).build();
+
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
+
+    }
+
+    //@@author A0105287E
+    @Test
+    public void edit_removeRecurrence_success() throws Exception {
+        //add recurring task
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 11").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(true).withRecurrence("2 days")
+                .withStatus(false).build();
+        commandBox.runCommand(taskToAdd.getAddCommand());
+        expectedTasksList = TestUtil.addTasksToList(expectedTasksList, taskToAdd);
+
+        //create task to match
+        String detailsToEdit = "stop repeat";
+        int taskManagerIndex = 1;
+        TestTask editedTask = new TaskBuilder().withTitle("Complete task 11").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(false)
+                .withStatus(false).build();
+
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
+    }
+
+    //@@author A0105287E
+    @Test
+    public void edit_changeRecurrence_success() throws Exception {
+        //add a recurring task
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 12").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(true).withRecurrence("2 days")
+                .withStatus(false).build();
+        commandBox.runCommand(taskToAdd.getAddCommand());
+        expectedTasksList = TestUtil.addTasksToList(expectedTasksList, taskToAdd);
+
+        //create task to match
+        String detailsToEdit = " repeat every 5 days";
+        int taskManagerIndex = 1;
+        TestTask editedTask = new TaskBuilder().withTitle("Complete task 12").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(true).withRecurrence("5 days")
+                .withStatus(false).build();
+
+        assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
+    }
 
     /**
      * Checks whether the edited task has the correct updated details.

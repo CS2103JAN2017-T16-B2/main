@@ -80,10 +80,16 @@ public class TestTask implements ReadOnlyTask {
      */
     public String getAddCommand() {
         String addCommand;
-        if (this.getStartTime().isPresent() && this.getDeadline().isPresent()) {
+        if (this.getStartTime().isPresent() && this.getDeadline().isPresent()
+                && !this.isRecurring()) {
             addCommand = getAddCommandWithInterval();
-        } else if (this.getDeadline().isPresent()) {
+        } else if (this.getStartTime().isPresent() && this.getDeadline().isPresent()
+                && this.isRecurring()) {
+            addCommand = getAddCommandWithIntervalRecurring();
+        } else if (this.getDeadline().isPresent() && !this.isRecurring()) {
             addCommand = getAddCommandWithDeadline();
+        } else if (this.getDeadline().isPresent() && this.isRecurring()) {
+            addCommand = getAddCommandWithDeadlineRecurring();
         } else {
             addCommand = getAddCommandWithoutDate();
         }
@@ -107,12 +113,33 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-  //@@author A0105287E
+    //@@author A0105287E
     private String getAddCommandWithInterval() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
         sb.append(" from " + this.getStartTime().get().toString() + " ");
         sb.append(" to " + this.getDeadline().get().toString() + " ");
+        this.getLabels().asObservableList().stream().forEach(s -> sb.append("#" + s.labelName + " "));
+        return sb.toString();
+    }
+
+    //@@author A0105287E
+    private String getAddCommandWithIntervalRecurring() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("add " + this.getTitle().title + " ");
+        sb.append(" from " + this.getStartTime().get().toString() + " ");
+        sb.append(" to " + this.getDeadline().get().toString() + " ");
+        sb.append(" repeat every " + this.getRecurrence().get().toString());
+        this.getLabels().asObservableList().stream().forEach(s -> sb.append("#" + s.labelName + " "));
+        return sb.toString();
+    }
+
+    //@@author A0105287E
+    private String getAddCommandWithDeadlineRecurring() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("add " + this.getTitle().title + " ");
+        sb.append(" by " + this.getDeadline().get().toString() + " ");
+        sb.append(" repeat every " + this.getRecurrence().get().toString());
         this.getLabels().asObservableList().stream().forEach(s -> sb.append("#" + s.labelName + " "));
         return sb.toString();
     }

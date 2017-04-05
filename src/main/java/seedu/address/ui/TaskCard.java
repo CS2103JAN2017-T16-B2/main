@@ -27,6 +27,10 @@ public class TaskCard extends UiPart<Region> {
     private FlowPane labels;
     @FXML
     private FlowPane bookings;
+    @FXML
+    private Label recurrenceStatus;
+    @FXML
+    private Label recurrence;
 
     public TaskCard(ReadOnlyTask task, int displayedIndex) {
         super(FXML);
@@ -46,6 +50,13 @@ public class TaskCard extends UiPart<Region> {
             status.setText("Completed");
         } else {
             status.setText("Incomplete");
+        }
+        if (task.isRecurring()) {
+            recurrenceStatus.setText("Recurring");
+            recurrence.setText(task.getRecurrence().get().toString());
+        } else {
+            recurrenceStatus.setText("Non-recurring");
+            recurrence.setVisible(false);
         }
         initLabels(task);
         initBookings(task);

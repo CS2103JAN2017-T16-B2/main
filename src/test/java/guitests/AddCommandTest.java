@@ -71,4 +71,42 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(expectedList));
     }
 
+    //@@author A0105287E
+    @Test
+    public void add_swapDatesWhenStartIsAfterEnd_success() throws Exception {
+        TestTask[] currentList = td.getTypicalTasks();
+
+        //create expected Task
+        TestTask expectedTask = new TaskBuilder().withTitle("Complete task 10").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withStatus(false).build();
+
+        //command with wrong dates
+        String command = "add Complete task 10 from tomorrow to today";
+
+        commandBox.runCommand(command);
+
+        //confirm the new card contains the right data
+        TaskCardHandle addedCard = taskListPanel.navigateToTask(expectedTask.getTitle().title);
+        assertMatching(expectedTask, addedCard);
+
+        //confirm the list now contains all previous tasks plus the new tasks
+        TestTask[] expectedList = TestUtil.addTasksToList(currentList, expectedTask);
+        assertTrue(taskListPanel.isListMatching(expectedList));
+    }
+
+    //@@author A0105287E
+    @Test
+    public void add_recurringTask_success() throws Exception {
+        TestTask[] currentList = td.getTypicalTasks();
+
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 11").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(true).withRecurrence("2 days")
+                .withStatus(false).build();
+
+        assertAddSuccess(taskToAdd, currentList);
+        System.out.println();
+    }
+
 }
