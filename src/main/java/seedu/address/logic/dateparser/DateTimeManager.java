@@ -36,7 +36,7 @@ import seedu.address.logic.parser.Parser;
 
 //@@author A0162877N
 /**
-* Parses input arguments to Natty
+* Parses date input arguments to Natty
 */
 public class DateTimeManager implements DateTimeParser {
     private TimeZone defaultTimeZone;
@@ -61,8 +61,8 @@ public class DateTimeManager implements DateTimeParser {
     /**
      * Parses the given input value for one or more groups of date alternatives
      *
-     * @param value
-     * @return List of Date group
+     * @param value the value to parse
+     * @return List of Date group containing the dates after parsing to natty
      */
     public List<DateGroup> parse(String value) {
         return parse(value, new Date());
@@ -71,10 +71,6 @@ public class DateTimeManager implements DateTimeParser {
     /**
      * Parses the given input value for one or more groups of date alternatives
      * with relative dates resolved according to referenceDate
-     *
-     * @param value
-     * @param referenceDate
-     * @return
      */
     public List<DateGroup> parse(String value, Date referenceDate) {
         // lex the input value to obtain our global token stream
@@ -96,72 +92,84 @@ public class DateTimeManager implements DateTimeParser {
         TokenStream lastStream = null;
         for (TokenStream stream : streams) {
             lastStream = stream;
-            List<Token> tokens = ((NattyTokenSource) stream.getTokenSource()).getTokens();
-            DateGroup group = singleParse(stream, value, referenceDate);
-            while ((group == null || group.getDates().size() == 0) && tokens.size() > 0) {
-                if (group == null || group.getDates().size() == 0) {
-                    List<Token> endRemovedTokens = new ArrayList<Token>(tokens);
-                    while ((group == null || group.getDates().isEmpty()) && !endRemovedTokens.isEmpty()) {
-                        endRemovedTokens = endRemovedTokens.subList(0, endRemovedTokens.size() - 1);
-                        TokenStream newStream = new CommonTokenStream(new NattyTokenSource(endRemovedTokens));
-                        group = singleParse(newStream, value, referenceDate);
-                        lastStream = newStream;
-                    }
-
-                    while ((group == null || group.getDates().isEmpty()) && tokens.size() >= 1) {
-                        tokens = tokens.subList(1, tokens.size());
-                        Iterator<Token> iter = tokens.iterator();
-                        while (iter.hasNext()) {
-                            Token token = iter.next();
-                            if (!DateParser.FOLLOW_empty_in_parse186.member(token.getType())) {
-                                iter.remove();
-                            } else {
-                                break;
-                            }
-                        }
-                        TokenStream newStream = new CommonTokenStream(new NattyTokenSource(tokens));
-                        group = singleParse(newStream, value, referenceDate);
-                        lastStream = newStream;
-                    }
-                }
-            }
-
-            // If a group with at least one date was found, we'll most likely
-            // want to add it to our list,
-            // but not if multiple streams were found and the group contains
-            // only numeric time information.
-            // For example: A full text string of '1' should parse to 1 o'clock,
-            // but 'I need 1 hard drive'
-            // should result in no groups found.
-            if (group != null && !group.getDates().isEmpty()
-                    && (streams.size() == 1 || !group.isDateInferred() || !isAllNumeric(lastStream))) {
-
-                // Additionally, we'll only accept this group if the associated
-                // text does not have an
-                // alphabetic character to the immediate left or right, which
-                // would indicate a portion
-                // of a word was tokenized. For example, 'nightingale' will
-                // result in a 'NIGHT' token,
-                // but there's clearly no datetime information there.
-                group.setFullText(value);
-                String prefix = group.getPrefix(1);
-                String suffix = group.getSuffix(1);
-                if ((prefix.isEmpty() || !Character.isLetter(prefix.charAt(0)))
-                        && (suffix.isEmpty() || !Character.isLetter(suffix.charAt(0)))) {
-
-                    groups.add(group);
-                }
-            }
+            getDateGroup(value, referenceDate, streams, groups, lastStream, stream);
         }
         return groups;
     }
 
     /**
+     * Parses the string value input from user to natty and add to the date group list
+     */
+    private void getDateGroup(String value, Date referenceDate, List<TokenStream> streams, List<DateGroup> groups,
+            TokenStream lastStream, TokenStream stream) {
+        List<Token> tokens = ((NattyTokenSource) stream.getTokenSource()).getTokens();
+        DateGroup group = singleParse(stream, value, referenceDate);
+
+        while ((group == null || group.getDates().size() == 0) && tokens.size() > 0) {
+            if (group == null || group.getDates().size() == 0) {
+                List<Token> endRemovedTokens = new ArrayList<Token>(tokens);
+                while ((group == null || group.getDates().isEmpty()) && !endRemovedTokens.isEmpty()) {
+                    endRemovedTokens = endRemovedTokens.subList(0, endRemovedTokens.size() - 1);
+                    TokenStream newStream = new CommonTokenStream(new NattyTokenSource(endRemovedTokens));
+                    group = singleParse(newStream, value, referenceDate);
+                    lastStream = newStream;
+                }
+
+                while ((group == null || group.getDates().isEmpty()) && tokens.size() >= 1) {
+                    tokens = tokens.subList(1, tokens.size());
+                    Iterator<Token> iter = tokens.iterator();
+                    removeInvalidToken(iter);
+                    TokenStream newStream = new CommonTokenStream(new NattyTokenSource(tokens));
+                    group = singleParse(newStream, value, referenceDate);
+                    lastStream = newStream;
+                }
+            }
+        }
+
+        // If a group with at least one date was found, add it to the list,
+        // but not if multiple streams were found and the group contains
+        // only numeric time information.
+        // For example: A full text string of '1' should parse to 1 o'clock,
+        // but 'I need 1 hard drive'
+        // should result in no groups found.
+        if (group != null && !group.getDates().isEmpty()
+                && (streams.size() == 1 || !group.isDateInferred() || !isAllNumeric(lastStream))) {
+
+            // Additionally, we'll only accept this group if the associated
+            // text does not have an
+            // alphabetic character to the immediate left or right, which
+            // would indicate a portion
+            // of a word was tokenized. For example, 'nightingale' will
+            // result in a 'NIGHT' token,
+            // but there's clearly no datetime information there.
+            group.setFullText(value);
+            String prefix = group.getPrefix(1);
+            String suffix = group.getSuffix(1);
+            if ((prefix.isEmpty() || !Character.isLetter(prefix.charAt(0)))
+                    && (suffix.isEmpty() || !Character.isLetter(suffix.charAt(0)))) {
+                groups.add(group);
+            }
+        }
+    }
+
+    /**
+     * Check if the token if valid, if not remove the toekn
+     */
+    private void removeInvalidToken(Iterator<Token> iterator) {
+        while (iterator.hasNext()) {
+            Token token = iterator.next();
+            if (!DateParser.FOLLOW_empty_in_parse186.member(token.getType())) {
+                iterator.remove();
+            } else {
+                break;
+            }
+        }
+    }
+
+    /**
      * Determines if a token stream contains only numeric tokens
-     *
-     * @param stream
-     * @return true if all tokens in the given stream can be parsed as an
-     *         integer
+     * @param TokenStream object
+     * @return true if all tokens in the given stream can be parsed as an integer
      */
     private boolean isAllNumeric(TokenStream stream) {
         List<Token> tokens = ((NattyTokenSource) stream.getTokenSource()).getTokens();
@@ -180,8 +188,7 @@ public class DateTimeManager implements DateTimeParser {
      * assumes that the entire token stream represents date and or time
      * information (no extraneous tokens)
      *
-     * @param stream
-     * @return
+     * @param TokenStream object, the full text and date reference
      */
     private DateGroup singleParse(TokenStream stream, String fullText, Date referenceDate) {
         DateGroup group = null;
@@ -236,12 +243,9 @@ public class DateTimeManager implements DateTimeParser {
                 // prefix or suffix
                 if ((!prefix.isEmpty() && Character.isLetter(prefix.charAt(0)))
                         || (!suffix.isEmpty() && Character.isLetter(suffix.charAt(0)))) {
-
                     group = null;
                 }
-
             }
-
         } catch (RecognitionException e) {
             logger.debug("Could not parse input", e);
         }
@@ -254,7 +258,7 @@ public class DateTimeManager implements DateTimeParser {
      * representing those portions of the global stream that may contain date
      * time information
      *
-     * @param stream
+     * @param TokenStream stream
      * @return list of token stream
      */
     private List<TokenStream> collectTokenStreams(TokenStream stream) {
@@ -320,9 +324,6 @@ public class DateTimeManager implements DateTimeParser {
     /**
      * Cleans up the given group and adds it to the list of groups if still
      * valid
-     *
-     * @param group
-     * @param groups
      */
     private void addGroup(List<Token> group, List<List<Token>> groups) {
 

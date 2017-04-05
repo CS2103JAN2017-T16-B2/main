@@ -1,5 +1,6 @@
 package guitests.guihandles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,8 @@ public class TaskCardHandle extends GuiHandle {
     private static final String LABELS_FIELD_ID = "#labels";
     private static final String STATUS_FIELD_ID = "#status";
     private static final String BOOKING_FIELD_ID = "#bookings";
+    private static final String RECURRENCE_FIELD_ID = "#recurrence";
+    private static final String CHECKBOX_ID = "#completedCB";
 
     private Node node;
 
@@ -32,6 +35,10 @@ public class TaskCardHandle extends GuiHandle {
 
     protected String getTextFromLabel(String fieldId) {
         return getTextFromLabel(fieldId, node);
+    }
+
+    protected String getTextFromCheckbox(String fieldId) {
+        return getStringFromCheckbox(fieldId, node);
     }
 
     public String getTitle() {
@@ -55,17 +62,22 @@ public class TaskCardHandle extends GuiHandle {
     }
 
     private List<String> getLabels(Region labelsContainer) {
+        if (labelsContainer == null) {
+            return new ArrayList<String>();
+        }
         return labelsContainer.getChildrenUnmodifiable().stream().map(node -> ((Labeled) node).getText())
                 .collect(Collectors.toList());
     }
 
     private List<String> getLabels(UniqueLabelList labels) {
-        System.out.println(labels);
         return labels.asObservableList().stream().map(label -> label.labelName).collect(Collectors.toList());
     }
 
     //@@author A0162877N
     private List<String> getBookings(Region bookingsContainer) {
+        if (bookingsContainer == null) {
+            return new ArrayList<String>();
+        }
         return bookingsContainer.getChildrenUnmodifiable().stream().map(node -> ((Labeled) node).getText())
                 .collect(Collectors.toList());
     }
@@ -82,33 +94,37 @@ public class TaskCardHandle extends GuiHandle {
         return guiRobot.from(node).lookup(BOOKING_FIELD_ID).query();
     }
 
-    //@@Author A0105287E
+    //@@author A0105287E
     public boolean isSameTask(ReadOnlyTask task) {
         assert (task != null);
         boolean result;
-        if (task.getDeadline().isPresent() && task.getStartTime().isPresent() && this.getDeadline() != ""
-                && this.getStartTime() != "") {
+
+        if (task.getDeadline().isPresent() && task.getStartTime().isPresent() && !(this.getDeadline() == null)
+                && !(this.getStartTime() == null)) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
                     && getLabels().equals(getLabels(task.getLabels()))
                     && getStartTime().equals(task.getStartTime().get().toString())
-                    && isCompleted().equals(task.isCompleted());
-        } else if (task.getDeadline().isPresent() && this.getDeadline() != "") {
+                    && isCompleted().equals(task.isCompleted())
+                    && matchRecurrence(task);
+        } else if (task.getDeadline().isPresent() && !(this.getDeadline() == null)) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
                     && getLabels().equals(getLabels(task.getLabels()))
                     && isCompleted().equals(task.isCompleted())
-                    && (getStartTime() == null || getStartTime() == "")
-                    && !task.getStartTime().isPresent();
+                    && (getStartTime() == null || getStartTime().equals(""))
+                    && !task.getStartTime().isPresent()
+                    && matchRecurrence(task);
         } else {
             result = getTitle().equals(task.getTitle().title)
                     && getLabels().equals(getLabels(task.getLabels()))
                     && isCompleted().equals(task.isCompleted()
-                    && (getDeadline() == null || getDeadline() == "")
+                    && (getDeadline() == null || getDeadline().equals(""))
                     && !task.getDeadline().isPresent()
-                    && (getStartTime() == null || getStartTime() == "")
+                    && (getStartTime() == null || getStartTime().equals(""))
                     && !task.getStartTime().isPresent()
-                    && isGuiBookingMatch(getBookings(task.getBookings())));
+                    && isGuiBookingMatch(getBookings(task.getBookings())))
+                    && matchRecurrence(task);
         }
         return result;
     }
@@ -127,13 +143,39 @@ public class TaskCardHandle extends GuiHandle {
         return isEqual;
     }
 
+    //@@author A0105287E
+    private boolean matchRecurrence(ReadOnlyTask task) {
+        boolean result;
+        if (task.isRecurring() &&  this.isRecurring() &&
+                this.getRecurrence().equals(task.getRecurrence().get().toString())) {
+            result = true;
+        } else if (!this.isRecurring() && !task.isRecurring()) {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    //@@author A0105287E
     private Boolean isCompleted() {
-        String text = getTextFromLabel(STATUS_FIELD_ID);
-        if (text.equals("Completed")) {
+        String text = getTextFromCheckbox(CHECKBOX_ID);
+        if ("Completed".equals(text)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    //@@author A0105287E
+    private Boolean isRecurring() {
+        return isFieldPresent(RECURRENCE_FIELD_ID, node);
+    }
+
+    //@@author A0105287E
+    private String getRecurrence() {
+        return getTextFromLabel(RECURRENCE_FIELD_ID).replaceFirst("Repeats every ", "");
+
     }
 
     @Override

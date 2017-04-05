@@ -2,7 +2,7 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
-import seedu.address.logic.LogicManager;
+import seedu.address.logic.undo.UndoManager;
 
 /**
  * Terminates the program.
@@ -15,7 +15,7 @@ public class ExitCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        LogicManager.undoCommandHistory.clear();
+        UndoManager.getInstance().clear();
         EventsCenter.getInstance().post(new ExitAppRequestEvent());
         return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT);
     }

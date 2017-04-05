@@ -20,4 +20,6 @@ public interface Logic {
     /** Returns the filtered list of tasks */
     ObservableList<ReadOnlyTask> getFilteredTaskList();
 
+    /** Returns the filtered list of incomplete tasks */
+    ObservableList<ReadOnlyTask> getFilteredIncompleteTaskList();
 }

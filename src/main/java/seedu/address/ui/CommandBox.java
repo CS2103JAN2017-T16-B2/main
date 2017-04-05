@@ -26,7 +26,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 public class CommandBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private static final String FXML = "CommandBox.fxml";
-    public static final String ERROR_STYLE_CLASS = "error";
     private AutocompleteManager autocompleteManager;
     private CommandHistory commandHistory;
 
@@ -63,14 +62,12 @@ public class CommandBox extends UiPart<Region> {
             CommandResult commandResult = logic.execute(command);
 
             // process result of the command
-            setStyleToIndicateCommandSuccess();
             commandTextField.setText("");
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
             commandHistory.addCommand(command);
         } catch (CommandException e) {
             // handle command failure
-            setStyleToIndicateCommandFailure();
             logger.info("Invalid command: " + commandTextField.getText());
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
@@ -128,8 +125,8 @@ public class CommandBox extends UiPart<Region> {
      * Sets the command to the string input given along with the cursor at the end
      */
     private void setCommandAndCursorToEnd(String command) {
-        command = command == null ? commandTextField.getText() : command;
-        commandTextField.setText(command);
+        String commandToSet = command == null ? commandTextField.getText() : command;
+        commandTextField.setText(commandToSet);
         moveCursorToEndOfField();
     }
 
@@ -151,21 +148,11 @@ public class CommandBox extends UiPart<Region> {
         }
     }
 
-    /**
-     * Sets the command box style to indicate a successful command.
-     */
-    private void setStyleToIndicateCommandSuccess() {
-        commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);
-    }
-
-    /**
-     * Sets the command box style to indicate a failed command.
-     */
-    private void setStyleToIndicateCommandFailure() {
-        commandTextField.getStyleClass().add(ERROR_STYLE_CLASS);
-    }
-
     public void setLogic(Logic logic) {
         this.logic = logic;
+    }
+
+    public TextField getCommandTextField() {
+        return commandTextField;
     }
 }

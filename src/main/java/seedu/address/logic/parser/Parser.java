@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,6 @@ import seedu.address.logic.commands.ConfirmCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditBookingCommand;
 import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.EditLabelCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
@@ -23,7 +23,6 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LoadCommand;
 import seedu.address.logic.commands.MarkCommand;
 import seedu.address.logic.commands.SaveAsCommand;
-import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.dateparser.DateTimeManager;
 import seedu.address.logic.dateparser.DateTimeParser;
@@ -38,6 +37,8 @@ public class Parser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     protected DateTimeParser dtParser;
+    public static final String DEFAULT_STARTTIME = "00:00:00";
+    public static final String DEFAULT_ENDTIME = "23:59:59";
 
     public Parser() {
         initialiseDateParser();
@@ -50,6 +51,34 @@ public class Parser {
     //@@author A0162877N
     public boolean isDateParseable(String input) {
         return !dtParser.parse(input).isEmpty();
+    }
+
+    //@@author A0105287E
+    /**
+     * Returns whether the date contained in the first String (@code startDate) occurs before
+     * the date contained in the second String {@code endDate}
+     *
+     */
+    public boolean isBefore(String startDate, String endDate) {
+        Date start = null;
+        Date end = null;
+        if (dtParser.parse(endDate).get(0).isTimeInferred()) {
+            end = dtParser.parse(endDate + " " + DEFAULT_ENDTIME).get(0).getDates().get(0);
+        } else {
+            end = dtParser.parse(endDate).get(0).getDates().get(0);
+        }
+
+        if (dtParser.parse(startDate).get(0).isTimeInferred()) {
+            start = dtParser.parse(startDate + " " + DEFAULT_STARTTIME).get(0).getDates().get(0);
+        } else {
+            start = dtParser.parse(startDate).get(0).getDates().get(0);
+        }
+
+        if (end.before(start)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -70,14 +99,8 @@ public class Parser {
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
-        case EditLabelCommand.COMMAND_WORD:
-            return new EditLabelCommandParser().parse(arguments);
-
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
-
-        case SelectCommand.COMMAND_WORD:
-            return new SelectCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);

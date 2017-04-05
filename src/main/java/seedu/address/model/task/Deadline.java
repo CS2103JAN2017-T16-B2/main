@@ -1,5 +1,6 @@
 package seedu.address.model.task;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class Deadline {
      * Returns true if a given string has no date.
      */
     public static boolean isEmptyDeadline(String test) {
-        return test.equals("");
+        return "".equals(test);
     }
 
     /**
@@ -89,7 +90,11 @@ public class Deadline {
 
     @Override
     public String toString() {
-        return value;
+        if ("".equals(value)) {
+            return "";
+        }
+        SimpleDateFormat df = new SimpleDateFormat("EEE dd MMM yyyy h:mm a");
+        return df.format(deadline);
     }
 
     @Override

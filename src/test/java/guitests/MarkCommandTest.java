@@ -2,7 +2,10 @@ package guitests;
 
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.commands.MarkCommand.MESSAGE_RECURRING_INCOMPLETE_DISABLE;
 import static seedu.address.logic.commands.MarkCommand.MESSAGE_TYPE_BOOKING;
+
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -14,10 +17,6 @@ import seedu.address.testutil.TestTask;
 
 //@@author A0105287E
 public class MarkCommandTest extends TaskManagerGuiTest {
-
-    // The list of tasks in the task list panel is expected to match this list.
-    // This list is updated with every successful call to assertEditSuccess().
-    TestTask[] expectedTasksList = td.getTypicalTasks();
 
     @Test
     public void mark_statusSpecified_success() throws Exception {
@@ -53,6 +52,52 @@ public class MarkCommandTest extends TaskManagerGuiTest {
         assertResultMessage(MESSAGE_TYPE_BOOKING);
     }
 
+    @Test
+    public void mark_completedRecurringTaskToIncomplete_failure() throws Exception {
+        //add a recurring task
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 12").withStartTime("today")
+                .withDeadline("tomorrow")
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        commandBox.runCommand(taskToAdd.getAddCommand());
+
+        //mark task complete because default status is incomplete
+        commandBox.runCommand("mark 1 completed");
+
+        //mark the completed recurring task incomplete
+        commandBox.runCommand("list completed");
+        commandBox.runCommand("mark 1 incomplete");
+
+        assertResultMessage(MESSAGE_RECURRING_INCOMPLETE_DISABLE);
+    }
+
+    @Test
+    public void mark_incompleteRecurringTask_success() throws Exception {
+        //add a completed recurring task
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 12").withStartTime("21st May")
+                .withDeadline("22nd May")
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        commandBox.runCommand(taskToAdd.getAddCommand());
+
+        //mark task complete because default status is incomplete
+        commandBox.runCommand("mark 1 completed");
+
+        //check for existence of new incomplete instance
+        TestTask newTask = new TaskBuilder().withTitle("Complete task 12").withStartTime("23rd May")
+                .withDeadline("24th May")
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        TaskCardHandle editedCard = taskListPanel.navigateToTask(newTask.getTitle().title);
+        assertMatching(newTask, editedCard);
+
+        //check for existence of old completed instance
+        TestTask oldTask = new TaskBuilder().withTitle("Complete task 12").withStartTime("21st May")
+                .withDeadline("22nd May")
+                .withStatus(true)
+                .withRecurrenceStatus(true).withRecurrence("2 days").build();
+        commandBox.runCommand("list completed");
+        editedCard = taskListPanel.navigateToTask(newTask.getTitle().title);
+        assertMatching(oldTask, editedCard);
+    }
+
 
     /**
      * Checks whether the edited task has the correct updated details.
@@ -65,17 +110,24 @@ public class MarkCommandTest extends TaskManagerGuiTest {
      */
     private void assertMarkSuccess(int filteredTaskListIndex, int taskManagerIndex,
                                     String status, TestTask editedTask) {
+        TestTask[] expectedTasksList = td.getTypicalTasks();
+        if ("completed".equalsIgnoreCase(status)) {
+            ArrayList<Integer> intArrayList = new ArrayList<Integer>();
+            for (int i = 0; i < td.getTypicalTasks().length; i++) {
+                if (!(i == taskManagerIndex - 1)) {
+                    intArrayList.add(i);
+                }
+            }
+
+            int[] arr = new int[intArrayList.size()];
+
+            for (int i = 0; i < intArrayList.size(); i++) {
+                arr[i] = intArrayList.get(i);
+            }
+            expectedTasksList = td.getTasksByIndex(arr);
+        }
+
         commandBox.runCommand("mark " + filteredTaskListIndex + " " + status);
-        System.out.println("details to edit: " + status);
-        System.out.println("edited task: " + editedTask);
-
-        // confirm the new card contains the right data
-        TaskCardHandle editedCard = taskListPanel.navigateToTask(editedTask.getTitle().title);
-        System.out.println("Edited card: " + editedCard);
-        assertMatching(editedTask, editedCard);
-
-        // confirm the list now contains all previous tasks plus the task with updated details
-        expectedTasksList[taskManagerIndex - 1] = editedTask;
         Arrays.sort(expectedTasksList);
         assertTrue(taskListPanel.isListMatching(expectedTasksList));
         assertResultMessage(String.format(MarkCommand.MESSAGE_MARK_TASK_SUCCESS, editedTask));

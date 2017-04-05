@@ -25,9 +25,9 @@ public class SortTest extends TaskManagerGuiTest {
 
         commandBox.runCommand(task1.getAddCommand()); //default status will be false
         commandBox.runCommand(task2.getAddCommand());
-        commandBox.runCommand("mark 1 completed"); //list should be reordered when marked complete
+        commandBox.runCommand("mark 1 completed"); //list should be not show task 1 when marked complete
 
-        assertTrue(taskListPanel.isListMatching(new TestTask[]{task2, task1}));
+        assertTrue(taskListPanel.isListMatching(new TestTask[]{task2}));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class SortTest extends TaskManagerGuiTest {
         commandBox.runCommand(task2.getAddCommand());
         commandBox.runCommand("mark 1 completed"); //list should be reordered when marked complete
         commandBox.runCommand("mark 1 completed");
-
+        commandBox.runCommand("list completed");
         assertTrue(taskListPanel.isListMatching(new TestTask[]{task2, task1}));
     }
 

@@ -2,10 +2,13 @@ package seedu.address.logic;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.LinkedList;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.autocomplete.AutocompleteRequest;
 import seedu.address.logic.autocomplete.AutocompleteResponse;
@@ -16,13 +19,14 @@ import seedu.address.logic.autocomplete.AutocompleteResponse;
  */
 public class AutocompleteRequestResponseTest {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Test
-    public void request_TestNegativeCaretPosition() {
-        try {
-            new AutocompleteRequest("", -1);
-        } catch (AssertionError e) {
-            assertTrue(null == e.getMessage());
-        }
+    public void request_TestNegativeCaretPosition_ThrowError() {
+        exception.expect(AssertionError.class);
+        new AutocompleteRequest("", -1);
+        fail("Should not reach here");
     }
 
     @Test
@@ -36,7 +40,8 @@ public class AutocompleteRequestResponseTest {
         assertFalse(request1.equals(request3));
         assertFalse(request1.equals(request4));
         assertFalse(request1.equals(request5));
-        assertFalse(request1.equals(null));
+        assertFalse(request1 == null);
+        assertFalse(request1.equals(new Object()));
     }
 
     @Test
@@ -62,6 +67,7 @@ public class AutocompleteRequestResponseTest {
         assertFalse(response1.equals(response3));
         assertFalse(response1.equals(response4));
         assertFalse(response1.equals(response5));
-        assertFalse(response1.equals(null));
+        assertFalse(response1 == null);
+        assertFalse(response1.equals(new Object()));
     }
 }

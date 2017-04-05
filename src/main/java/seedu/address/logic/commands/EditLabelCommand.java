@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.label.Label;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.ReadOnlyTask;
@@ -18,13 +18,7 @@ import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
  */
 public class EditLabelCommand extends Command {
 
-    public static final String COMMAND_WORD = "editlabel";
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits a label to another label \n"
-            + "Existing label will be overwritten by the new label.\n"
-            + "Parameters: LABEL_TO_EDIT NEW_LABEL \n"
-            + "Example: " + COMMAND_WORD + " school schoolwork";
-
+    public static final String COMMAND_WORD = "edit";
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Labels changed from %1$s to %2$s";
     public static final String MESSAGE_LABEL_NOT_EXIST = "Specified label does not exist in any task saved";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists in the task manager.";
@@ -58,6 +52,7 @@ public class EditLabelCommand extends Command {
      */
     private boolean replaceLabelInTasks(List<ReadOnlyTask> allTaskList) throws CommandException {
         boolean labelExist = false;
+        saveCurrentState();
         for (int i = 0; i < allTaskList.size(); i++) {
             Task task = new Task(allTaskList.get(i));
             UniqueLabelList labels = task.getLabels();
@@ -70,13 +65,17 @@ public class EditLabelCommand extends Command {
                 labelExist = true;
 
                 try {
-                    saveCurrentState();
                     model.updateTask(i, task);
                 } catch (DuplicateTaskException dpe) {
                     throw new CommandException(MESSAGE_DUPLICATE_TASK);
                 }
             }
         }
+
+        if (!labelExist) {
+            deleteCurrentState();
+        }
+
         return labelExist;
     }
 
@@ -86,12 +85,19 @@ public class EditLabelCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Deletes the data in task manager if command is mutating the data
+     */
+    public void deleteCurrentState() {
+        UndoManager.getInstance().getUndoData();
     }
 
     @Override

@@ -147,7 +147,7 @@ Vbox, SplitPane {
 }
 
 .result-display .label {
-    -fx-text-fill: black !important;
+    -fx-text-fill: black;
 }
 
 .status-bar .label {
@@ -419,7 +419,6 @@ Vbox, SplitPane {
 
 #labelListCard {
     -fx-opacity: 0.75;
-    -fx-padding: 0 0 0 45;
 }
 
 #labelText {
@@ -442,4 +441,41 @@ Vbox, SplitPane {
 
 #syncStatus, #saveLocationLabel {
     -fx-font-family: "Roboto";
+}
+
+#id, #title {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 18;
+}
+
+/* For the time */
+#deadline, #startTime {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12;
+}
+
+/* For multiple day event */
+.multidayDate {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12;
+    -fx-opacity: 0.84;
+}
+
+#bookings .label {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12;
+    -fx-font-style: italic;
+    -fx-opacity: 0.64;
+}
+
+.reservedSlotsTitle {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.check-box>.box {
+  -fx-background-color: transparent;
+  -fx-border-width: 2;
+  -fx-border-color: black;
 }

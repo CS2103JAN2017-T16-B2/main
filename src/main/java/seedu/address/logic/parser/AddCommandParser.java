@@ -43,6 +43,12 @@ public class AddCommandParser extends Parser {
                 Boolean isRecurring = false;
 
                 if (isDateParseable(startDT) && isDateParseable(endDT)) {
+                    //swap dates if start is after the end
+                    if (!isBefore(startDT, endDT)) {
+                        String temp = startDT;
+                        startDT = endDT;
+                        endDT = temp;
+                    }
                     title = args.substring(0, args.lastIndexOf("from"));
                     if (!args.contains(PREFIX_RECURRENCE.getPrefix())) {
                         return new AddCommand(title, startDT, endDT,
@@ -80,6 +86,7 @@ public class AddCommandParser extends Parser {
         } catch (NoSuchElementException nsee) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         } catch (Exception e) {
+            e.printStackTrace();
             return new IncorrectCommand(e.getMessage());
         }
     }

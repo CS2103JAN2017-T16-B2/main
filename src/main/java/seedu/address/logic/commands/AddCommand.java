@@ -6,8 +6,8 @@ import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.label.Label;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.Deadline;
@@ -31,6 +31,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists in the task manager";
     public static final Boolean DEFAULT_TASK_STATE = false;
     public static final Boolean DEFAULT_TASK_RECURRENCE = false;
+
 
     private final Task toAdd;
 
@@ -134,7 +135,7 @@ public class AddCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();

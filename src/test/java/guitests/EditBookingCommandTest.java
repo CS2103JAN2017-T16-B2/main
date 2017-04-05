@@ -17,10 +17,6 @@ import seedu.address.testutil.TestTask;
 //@@author A0162877N
 public class EditBookingCommandTest extends TaskManagerGuiTest {
 
-    // The list of tasks in the task list panel is expected to match this list.
-    // This list is updated with every successful call to assertEditSuccess().
-    TestTask[] expectedTasksList = td.getTypicalTasks();
-
     @Test
     public void editbooking_isMutating_ReturnTrue()
             throws IllegalDateTimeValueException, IllegalValueException, CommandException {

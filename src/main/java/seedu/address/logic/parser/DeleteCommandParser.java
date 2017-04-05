@@ -16,35 +16,32 @@ import seedu.address.logic.commands.exceptions.CommandException;
  */
 public class DeleteCommandParser {
 
-    private static final String DELIMITER = " ";
-    private static final int ARGUMENT_LABEL_TO_DELETE_INDEX = 0;
-    private static final int ARGUMENT_LENGTH = 1;
-    private static final String REGEX_INDEX = "^[0-9\\+\\-][0-9]*$";
-
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
      * and returns an DeleteCommand object for execution.
      */
     public Command parse(String args) {
-
-        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer();
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(CliSyntax.PREFIX_LABEL);
         argsTokenizer.tokenize(args);
 
         try {
-            String[] arguments = argsTokenizer.getPreamble().get().split(DELIMITER);
-            if (arguments.length != ARGUMENT_LENGTH) {
+            System.out.println(argsTokenizer.getPreamble().isPresent());
+            System.out.println(argsTokenizer.getAllValues(CliSyntax.PREFIX_LABEL).isPresent());
+            if (!argsTokenizer.getPreamble().isPresent() &&
+                    !argsTokenizer.getAllValues(CliSyntax.PREFIX_LABEL).isPresent()) {
                 throw new CommandException(DeleteCommand.MESSAGE_USAGE);
             }
 
-            String parameter = arguments[ARGUMENT_LABEL_TO_DELETE_INDEX];
-            if (parameter.matches(REGEX_INDEX)) { //matches 0-9 or + or - for the first character
-                return tryParseAsIndex(args);
+            Optional<String> parameter = argsTokenizer.getValue(CliSyntax.PREFIX_LABEL);
+            if (parameter.isPresent()) {
+                return new DeleteLabelCommand(parameter.get());
             } else {
-                return new DeleteLabelCommand(arguments[ARGUMENT_LABEL_TO_DELETE_INDEX]);
+                return tryParseAsIndex(args);
             }
-        } catch (Exception e) { }
-        return new IncorrectCommand(
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        } catch (Exception e) {
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        }
     }
 
     /**

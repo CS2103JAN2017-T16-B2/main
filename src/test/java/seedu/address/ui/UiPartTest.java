@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.net.URL;
 
@@ -30,6 +31,7 @@ public class UiPartTest {
     public void constructor_nullFileUrl_throwsAssertionError() {
         thrown.expect(AssertionError.class);
         new TestUiPart<Object>((URL) null);
+        fail("Should not reach here");
     }
 
     @Test
@@ -37,6 +39,7 @@ public class UiPartTest {
         URL missingFileUrl = new URL(testFolder.getRoot().toURI().toURL(), MISSING_FILE_PATH);
         thrown.expect(AssertionError.class);
         new TestUiPart<Object>(missingFileUrl);
+        fail("Should not reach here");
     }
 
     @Test
@@ -44,6 +47,7 @@ public class UiPartTest {
         URL invalidFileUrl = getTestFileUrl(INVALID_FILE_PATH);
         thrown.expect(AssertionError.class);
         new TestUiPart<Object>(invalidFileUrl);
+        fail("Should not reach here");
     }
 
     @Test
@@ -56,18 +60,21 @@ public class UiPartTest {
     public void constructor_nullFileName_throwsAssertionError() {
         thrown.expect(AssertionError.class);
         new TestUiPart<Object>((String) null);
+        fail("Should not reach here");
     }
 
     @Test
     public void constructor_missingFileName_throwsAssertionError() {
         thrown.expect(AssertionError.class);
         new TestUiPart<Object>(MISSING_FILE_PATH);
+        fail("Should not reach here");
     }
 
     @Test
     public void constructor_invalidFileName_throwsAssertionError() {
         thrown.expect(AssertionError.class);
         new TestUiPart<Object>(INVALID_FILE_PATH);
+        fail("Should not reach here");
     }
 
     private URL getTestFileUrl(String testFilePath) {

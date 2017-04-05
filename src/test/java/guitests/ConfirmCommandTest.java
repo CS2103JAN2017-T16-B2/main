@@ -1,5 +1,6 @@
 package guitests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
@@ -69,14 +70,14 @@ public class ConfirmCommandTest extends TaskManagerGuiTest {
         TaskCardHandle confirmedCard = taskListPanel.navigateToTask("Complete booking");
         System.out.println(confirmedCard.getStartTime());
         System.out.println(confirmedCard.getDeadline());
-        assertTrue(!confirmedCard.getStartTime().equals(""));
-        assertTrue(!confirmedCard.getDeadline().equals(""));
+        assertFalse(confirmedCard.getStartTime() == null);
+        assertFalse(confirmedCard.getDeadline() == null);
 
         commandBox.runCommand("undo");
         confirmedCard = taskListPanel.navigateToTask("Complete booking");
         System.out.println(confirmedCard.getStartTime());
         System.out.println(confirmedCard.getDeadline());
-        assertTrue(confirmedCard.getStartTime().equals(""));
-        assertTrue(confirmedCard.getDeadline().equals(""));
+        assertTrue(confirmedCard.getStartTime() == null);
+        assertTrue(confirmedCard.getDeadline() == null);
     }
 }

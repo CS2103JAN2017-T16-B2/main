@@ -2,6 +2,7 @@ package seedu.address.commons.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class ConfigUtilTest {
     public void read_null_assertionFailure() throws DataConversionException {
         thrown.expect(AssertionError.class);
         read(null);
+        fail("Should not reach here");
     }
 
     @Test
@@ -42,6 +44,7 @@ public class ConfigUtilTest {
 
         thrown.expect(DataConversionException.class);
         read("NotJsonFormatConfig.json");
+        fail("Should not reach here");
 
         /* IMPORTANT: Any code below an exception-throwing line (like the one above) will be ignored.
          * That means you should not have more than one exception test in one method

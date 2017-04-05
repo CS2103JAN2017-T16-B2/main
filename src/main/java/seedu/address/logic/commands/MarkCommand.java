@@ -7,10 +7,10 @@ import java.util.Optional;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.recurrenceparser.RecurrenceManager;
 import seedu.address.logic.recurrenceparser.RecurrenceParser;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.Deadline;
@@ -34,6 +34,8 @@ public class MarkCommand extends Command {
     public static final String MESSAGE_NOT_MARKED = "Status must be provided.";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists in the task manager.";
     public static final String MESSAGE_TYPE_BOOKING = "Booking type of tasks cannot be marked as completed.";
+    public static final String MESSAGE_RECURRING_INCOMPLETE_DISABLE = "Status of completed recurring task "
+            + "cannot be changed.";
     private static final RecurrenceParser recurrenceParser = new RecurrenceManager();
 
     private final int filteredTaskListIndex;
@@ -67,6 +69,10 @@ public class MarkCommand extends Command {
             throw new CommandException(MESSAGE_TYPE_BOOKING);
         }
 
+        if (taskToEdit.isCompleted() && taskToEdit.isRecurring()) {
+            throw new CommandException(MESSAGE_RECURRING_INCOMPLETE_DISABLE);
+        }
+
         try {
             Task editedTask = createEditedTask(taskToEdit, isCompleted);
             saveCurrentState();
@@ -87,7 +93,6 @@ public class MarkCommand extends Command {
     /**
      * Creates and returns a {@code Task} with the details of {@code taskToEdit}
      * edited with {@code editTaskDescriptor}.
-     * @throws CommandException
      */
     private static Task createEditedTask(ReadOnlyTask taskToEdit, Boolean isCompleted)
                              throws IllegalValueException, IllegalDateTimeValueException, CommandException {
@@ -108,7 +113,9 @@ public class MarkCommand extends Command {
                 updatedLabels, bookingList, isRecurring, updatedRecurrence);
     }
 
-
+    /**
+     * Creates and returns a {@code Task} a new instance of the recurring task
+     */
     private static Task createRecurringTask(ReadOnlyTask task) throws IllegalValueException,
                             IllegalDateTimeValueException {
         Optional<Deadline> updatedStartTime;
@@ -134,6 +141,11 @@ public class MarkCommand extends Command {
                 updatedLabels, updatedBookings, isRecurring, updatedRecurrence);
     }
 
+
+
+    /**
+     * Creates and returns a {@code Deadline} a new instance of the updated deadline passed in
+     */
     private static Deadline getRecurringDate(Deadline date, Recurrence recurrence)
             throws IllegalValueException, IllegalDateTimeValueException {
         try {
@@ -153,7 +165,7 @@ public class MarkCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();

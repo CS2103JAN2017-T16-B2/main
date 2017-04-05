@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.booking.Booking;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.Label;
@@ -16,6 +16,9 @@ import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList;
 
 //@@author A0162877N
+/**
+ * Adds a booking to the Task Manager
+ */
 public class BookCommand extends Command {
 
     public static final String COMMAND_WORD = "book";
@@ -71,7 +74,7 @@ public class BookCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
