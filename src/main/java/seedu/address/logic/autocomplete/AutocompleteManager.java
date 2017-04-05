@@ -12,15 +12,14 @@ import seedu.address.model.datastructure.Trie;
  */
 public class AutocompleteManager {
     private final Logger logger = LogsCenter.getLogger(AutocompleteManager.class);
-    public static final String[] AUTOCOMPLETE_DATA = { "help", "add", "by", "repeat", "list"
-            , "edit", "find", "delete", "select", "book"
-            , "confirm", "editlabel", "undo", "clear", "push"
-            , "pull", "export", "exit", "to", "from", "on"
-            , "hourly", "daily", "weekly", "monthly", "yearly"
-            , "overdue", "outstanding", "completed", "today", "yesterday"
-            , "tomorrow", "bookings", "incomplete", "confirm", "load", "saveas"
-            , "remove", "change", "editbooking", "days", "months"
-            , "years", "every", "mark", "unmark"};
+    public static final String[] AUTOCOMPLETE_DATA = { "add", "book", "bookings", "by", "change"
+            , "clear", "completed", "confirm", "days"
+            , "delete", "edit", "editbooking", "every", "exit"
+            , "find", "from", "incomplete", "list"
+            , "load", "mark", "months", "on"
+            , "outstanding", "overdue", "remove", "repeat", "saveas"
+            , "select", "to", "today", "tomorrow", "undo", "unmark"
+            , "years", "yesterday", "help" };
 
     private AutocompleteDataStructure data;
 
@@ -35,14 +34,16 @@ public class AutocompleteManager {
      * Initializes auto-complete object with specified auto-complete data
      */
     public AutocompleteManager(String... data) {
+        assert data != null;
         this.data = new Trie();
-        this.data.load(data);
+        addData(data);
     }
 
     /**
      * Adds more strings for auto completion
      */
     public void addData(String... phrases) {
+        assert phrases != null;
         data.load(phrases);
     }
 
@@ -52,6 +53,7 @@ public class AutocompleteManager {
      * @return a list of suggestions for the given term
      */
     public AutocompleteResponse getSuggestions(AutocompleteRequest request) {
+        logger.info("Received request (" + request + ")");
         String wordAtCursor = getWordAtCursor(request);
         List<String> suggestions = data.findCompletions(wordAtCursor);
         AutocompleteResponse response = new AutocompleteResponse(request, suggestions);
@@ -70,32 +72,59 @@ public class AutocompleteManager {
 
         logger.info("Suggestions: " + response.getSuggestions());
 
-        String longestString = getLongestString(response.getSuggestions());
-        int commonSubstringIndex = getCommonSubstringEndIndexFromStart(response.getSuggestions());
-        String commonSubstring = longestString.substring(0, commonSubstringIndex);
+        String commonSubstring = getLongestCommonSubString(response);
 
-        //Append a space IF AND ONLY IF the auto-completed word is the last word of the command
-        String appendCharacter = "";
         int cursorWordEndIndex = getEndIndexOfWordAtCursor(response);
+        String appendCharacter = "";
         boolean endHasSpace = false;
+        //Append a space IF AND ONLY IF the auto-completed word is the last word of the command
+        //and there is only 1 suggestion
         if (cursorWordEndIndex == response.getPhrase().trim().length() && response.getSuggestions().size() == 1) {
             //Append a space if there is a space at the end already
-            if (response.getPhrase().charAt(response.getPhrase().length() - 1) != ' ') {
-                appendCharacter = " ";
-            }
+            appendCharacter = padWithSpace(response);
             endHasSpace = true;
         }
 
         //Move position caret to after auto completed word
+        int newPositionCaret = getNewPositionCaret(response, commonSubstring, cursorWordEndIndex, endHasSpace);
+
+        response.setPhrase(replacePhraseWithSuggestion(response, commonSubstring, appendCharacter));
+        response.setCaretPosition(newPositionCaret);
+        return response;
+    }
+
+    /**
+     * Returns the longest command substring from the suggestions given in the response
+     */
+    private String getLongestCommonSubString(AutocompleteResponse response) {
+        String longestString = getLongestString(response.getSuggestions());
+        int commonSubstringIndex = getCommonSubstringEndIndexFromStart(response.getSuggestions());
+        String commonSubstring = longestString.substring(0, commonSubstringIndex);
+        return commonSubstring;
+    }
+
+    /**
+     * Returns the new position caret after suggestion replacement
+     */
+    private int getNewPositionCaret(AutocompleteResponse response, String commonSubstring, int cursorWordEndIndex,
+            boolean endHasSpace) {
         String currentWord = getWordAtCursor(response);
         int newPositionCaret = cursorWordEndIndex
                                - currentWord.length()
                                + commonSubstring.length()
                                + (endHasSpace ? 1 : 0);
+        return newPositionCaret;
+    }
 
-        response.setPhrase(replacePhraseWithSuggestion(response, commonSubstring, appendCharacter));
-        response.setCaretPosition(newPositionCaret);
-        return response;
+    /**
+     * Returns a string that contains a space if the phrase at the end does not contain a space character
+     */
+    private String padWithSpace(AutocompleteResponse response) {
+        String appendCharacter = "";
+        if (response.getPhrase().charAt(response.getPhrase().length() - 1) != ' ') {
+            appendCharacter = " ";
+        }
+        return appendCharacter;
     }
 
     /**

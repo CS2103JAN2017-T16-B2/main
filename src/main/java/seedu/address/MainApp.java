@@ -82,8 +82,8 @@ public class MainApp extends Application {
      */
     private void loadFonts() {
         Font.loadFont(getClass().getResourceAsStream("/fonts/YouMurdererBB-Regular.otf"), 10);
-        Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Condensed.ttf"), 10);
         Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Regular.ttf"), 10);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Italic.ttf"), 10);
         Font.loadFont(getClass().getResourceAsStream("/fonts/FontAwesome-Regular.otf"), 10);
     }
     //@@author

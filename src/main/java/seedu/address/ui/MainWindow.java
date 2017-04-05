@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,19 +18,20 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.label.Label;
-import seedu.address.model.task.ReadOnlyTask;
 
 /**
  * The Main Window. Provides the basic application layout containing
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Region> {
+    private final Logger logger = LogsCenter.getLogger(MainWindow.class);
 
     private static final String ICON = "/images/app_icon.png";
     private static final String FXML = "MainWindow.fxml";
@@ -44,13 +46,9 @@ public class MainWindow extends UiPart<Region> {
     private StatusBarFooter statusBarFooter;
 
     // Independent Ui parts residing in this Ui container
-    //private BrowserPanel browserPanel;
     private TaskListPanel taskListPanel;
     private LeftPanel leftPanel;
     private Config config;
-
-    //@FXML
-    //private AnchorPane browserPlaceholder;
 
     @FXML
     private AnchorPane commandBoxPlaceholder;
@@ -124,23 +122,25 @@ public class MainWindow extends UiPart<Region> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
                 menuItem.getOnAction().handle(new ActionEvent());
                 event.consume();
+                //@@author A0140042A
+            } else if (!commandBox.getCommandTextField().isFocused()) {
+                commandBox.getCommandTextField().requestFocus();
+                commandBox.getCommandTextField().positionCaret(
+                        commandBox.getCommandTextField().lengthProperty().intValue());
             }
         });
     }
 
-    //@@author A0140042A
+    //@@author A0162877N
     /**
      * Fill up components in the main window,
      * but only update appropriate components if already initialized
      */
     public void fillInnerParts() {
-        //browserPanel = new BrowserPanel(browserPlaceholder);
-
         if (taskListPanel == null) {
-            taskListPanel = new TaskListPanel(getTaskListPlaceholder(), logic.getFilteredTaskList());
+            taskListPanel = new TaskListPanel(getTaskListPlaceholder(), logic.getFilteredIncompleteTaskList());
         } else {
-            //Update the logic only
-            taskListPanel.setConnections(logic.getFilteredTaskList());
+            taskListPanel.setConnections(logic.getFilteredIncompleteTaskList());
         }
 
         if (leftPanel == null) {
@@ -167,7 +167,6 @@ public class MainWindow extends UiPart<Region> {
             commandBox.setLogic(logic);
         }
     }
-    //@@author
 
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
@@ -265,16 +264,12 @@ public class MainWindow extends UiPart<Region> {
         model.updateFilteredTaskList(startDate, endDate);
     }
 
+    public void showAllTask() {
+        model.updateFilteredTaskList(false);
+    }
+
     public TaskListPanel getTaskListPanel() {
         return this.taskListPanel;
-    }
-
-    public void loadTaskPage(ReadOnlyTask task) {
-        //browserPanel.loadTaskPage(task);
-    }
-
-    public void releaseResources() {
-        //browserPanel.freeResources();
     }
 
     public void setLogic(Logic logic) {

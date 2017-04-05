@@ -11,6 +11,8 @@ import org.junit.Test;
 import seedu.address.logic.autocomplete.AutocompleteManager;
 import seedu.address.logic.autocomplete.AutocompleteRequest;
 import seedu.address.logic.autocomplete.AutocompleteResponse;
+import seedu.address.logic.commands.EditBookingCommand;
+import seedu.address.logic.commands.EditCommand;
 
 //@@author A0140042A
 /**
@@ -19,7 +21,7 @@ import seedu.address.logic.autocomplete.AutocompleteResponse;
 public class AutocompleteManagerTest {
 
     @Test
-    public void setup() {
+    public void setUp() {
         AutocompleteManager ac = new AutocompleteManager();
         AutocompleteRequest request = new AutocompleteRequest("", 0);
         assertTrue(ac.getSuggestions(request).getSuggestions().
@@ -27,21 +29,27 @@ public class AutocompleteManagerTest {
     }
 
     @Test
-    public void autocomplete_TestInitialization() {
+    public void autocomplete_TestEquals_ReturnTrue() {
         AutocompleteManager ac1 = new AutocompleteManager("phrase1");
         ac1.addData("phrase2");
         AutocompleteManager ac2 = new AutocompleteManager("phrase1", "phrase2");
         assertTrue(ac1.equals(ac2));
-        assertFalse(ac1.equals(null));
     }
 
     @Test
-    public void autocomplete_TestAutocompleteSuggestion() {
+    public void autocomplete_TestEqualsNull_ReturnFalse() {
+        AutocompleteManager ac1 = new AutocompleteManager("phrase1", "phrase2");
+        assertFalse(ac1 == null);
+        assertFalse(ac1.equals(new Object()));
+    }
+
+    @Test
+    public void autocomplete_TestAutocompleteSuggestion_ReturnTrue() {
         AutocompleteManager ac = new AutocompleteManager();
         AutocompleteRequest request = new AutocompleteRequest("edi", 0);
         LinkedList<String> suggestions = new LinkedList<String>();
-        suggestions.add("edit");
-        suggestions.add("editlabel");
+        suggestions.add(EditCommand.COMMAND_WORD);
+        suggestions.add(EditBookingCommand.COMMAND_WORD);
         AutocompleteResponse response = new AutocompleteResponse("edit", 4, suggestions);
         assertTrue(ac.getSuggestions(request).equals(response));
     }

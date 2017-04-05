@@ -8,7 +8,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <AnchorPane fx:id="labelListCard" xmlns:fx="http://javafx.com/fxml/1">
-    <HBox maxHeight="100.0" prefWidth="245">
+    <HBox maxHeight="100.0" prefWidth="230">
         <children>
             <FontAwesomeIconView fx:id="icon" size="18" >
                 <HBox.margin>

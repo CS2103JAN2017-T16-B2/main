@@ -20,7 +20,7 @@ public class TrieTest {
     private Trie trie;
 
     @Before
-    public void setup() {
+    public void setUp() {
         trie = new Trie();
         for (String line : AutocompleteManager.AUTOCOMPLETE_DATA) {
             trie.load(line);
@@ -29,23 +29,22 @@ public class TrieTest {
 
     @Test
     public void trie_TestValid_ReturnTrue() {
-        testAutocomplete("exp", "export");
+        assertTrue(testAutocomplete("ad", "add"));
     }
 
     @Test
     public void trie_TestOrderMatchNotMatter_ReturnTrue() {
         //Check if test order matters
-        testAutocomplete("ex", "export", "exit");
-        testAutocomplete("ex", "exit", "export");
-        testAutocomplete("pu", "pull", "push");
+        assertTrue(testAutocomplete("ed", "editbooking", "edit"));
+        assertTrue(testAutocomplete("ex", "exit"));
     }
 
     @Test
     public void trie_TestInvalidCommands_ReturnTrue() {
         //Check if test order matters
-        testAutocomplete("aNonExistentCommand", "");
-        testAutocomplete("", AutocompleteManager.AUTOCOMPLETE_DATA);
-        testAutocomplete("!@#!@!@@@!", "");
+        assertTrue(testAutocomplete("aNonExistentCommand"));
+        assertTrue(testAutocomplete("", AutocompleteManager.AUTOCOMPLETE_DATA));
+        assertTrue(testAutocomplete("!@#!@!@@@!"));
     }
 
     @Test
@@ -66,7 +65,8 @@ public class TrieTest {
 
         assertTrue(node1.equals(node2));
         assertFalse(node1.equals(node3));
-        assertFalse(node1.equals(null));
+        assertFalse(node1 == null);
+        assertFalse(node1.equals(new Object()));
     }
 
     @Test
@@ -87,13 +87,13 @@ public class TrieTest {
         assertTrue(node1.getChildrenNodeValues().containsAll(node2.getChildrenNodeValues()));
     }
 
-    public void testAutocomplete(String testString, String... expected) {
+    public boolean testAutocomplete(String testString, String... expected) {
         Set<String> actual = new HashSet<String>(trie.findCompletions(testString));
         Set<String> expectedList = new HashSet<String>();
         for (String expectedString : expected) {
             expectedList.add(expectedString);
         }
-        assertTrue(expectedList.containsAll(actual));
+        return expectedList.equals(actual);
     }
 
 }

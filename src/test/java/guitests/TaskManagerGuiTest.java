@@ -12,7 +12,6 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.testfx.api.FxToolkit;
 
-import guitests.guihandles.BrowserPanelHandle;
 import guitests.guihandles.CommandBoxHandle;
 import guitests.guihandles.LeftPanelHandle;
 import guitests.guihandles.MainGuiHandle;
@@ -39,7 +38,7 @@ public abstract class TaskManagerGuiTest {
     @Rule
     public TestName name = new TestName();
 
-    TestApp testApp;
+    private TestApp testApp;
 
     protected TypicalTestTasks td = new TypicalTestTasks();
 
@@ -52,7 +51,6 @@ public abstract class TaskManagerGuiTest {
     protected TaskListPanelHandle taskListPanel;
     protected ResultDisplayHandle resultDisplay;
     protected CommandBoxHandle commandBox;
-    protected BrowserPanelHandle browserPanel;
     protected LeftPanelHandle leftPanel;
     private Stage stage;
 
@@ -74,7 +72,6 @@ public abstract class TaskManagerGuiTest {
             taskListPanel = mainGui.getTaskListPanel();
             resultDisplay = mainGui.getResultDisplay();
             commandBox = mainGui.getCommandBox();
-            browserPanel = mainGui.getBrowserPanel();
             leftPanel = mainGui.getLeftPanel();
             this.stage = stage;
         });

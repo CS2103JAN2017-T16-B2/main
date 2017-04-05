@@ -4,9 +4,9 @@ import seedu.address.commons.events.BaseEvent;
 
 //@@author A0162877N
 /**
-* This class handles the left panel today selection event
+* This class handles the show all selection change event
 */
-public class LeftPanelTodaySelectionChangedEvent extends BaseEvent {
+public class ShowAllSelectionChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {

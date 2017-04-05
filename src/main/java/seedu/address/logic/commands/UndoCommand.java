@@ -2,8 +2,8 @@ package seedu.address.logic.commands;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.exceptions.InvalidUndoCommandException;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.datastructure.UndoPair;
 import seedu.address.model.label.Label;
 import seedu.address.model.task.ReadOnlyTask;
@@ -21,9 +21,9 @@ public class UndoCommand extends Command {
     public CommandResult execute() throws CommandException {
         assert model != null;
         try {
-            if (!LogicManager.undoCommandHistory.isEmpty()) {
+            if (!UndoManager.getInstance().isEmpty()) {
                 UndoPair<ObservableList<ReadOnlyTask>, ObservableList<Label>> pair =
-                        LogicManager.undoCommandHistory.getUndoData();
+                        UndoManager.getInstance().getUndoData();
                 model.undoPrevious(pair.getLeft(), pair.getRight());
                 return new CommandResult(String.format(MESSAGE_SUCCESS));
             } else {

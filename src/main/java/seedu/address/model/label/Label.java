@@ -10,8 +10,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Label implements Comparable<Label> {
 
     public static final String MESSAGE_LABEL_CONSTRAINTS =
-            "Label names should be alphanumeric, first character of label should be alphabetical";
-    public static final String LABEL_VALIDATION_REGEX = "^[a-zA-Z][a-zA-Z0-9]+$";
+            "Label name should not be empty";
 
     public final String labelName;
 
@@ -33,7 +32,7 @@ public class Label implements Comparable<Label> {
      * Returns true if a given string is a valid label name.
      */
     public static boolean isValidLabelName(String test) {
-        return test.matches(LABEL_VALIDATION_REGEX);
+        return test != null && !test.trim().isEmpty();
     }
 
     @Override

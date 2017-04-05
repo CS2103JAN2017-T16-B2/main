@@ -29,10 +29,6 @@ public class MainGuiHandle extends GuiHandle {
         return new MainMenuHandle(guiRobot, primaryStage);
     }
 
-    public BrowserPanelHandle getBrowserPanel() {
-        return new BrowserPanelHandle(guiRobot, primaryStage);
-    }
-
     public AlertDialogHandle getAlertDialog(String title) {
         guiRobot.sleep(300);
         return new AlertDialogHandle(guiRobot, primaryStage, title);

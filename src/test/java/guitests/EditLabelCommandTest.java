@@ -21,20 +21,20 @@ public class EditLabelCommandTest extends TaskManagerGuiTest {
     @Test
     public void editLabel_LabelDoesNotExist_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
-        commandBox.runCommand(EditLabelCommand.COMMAND_WORD + " nonexistentlabel newlabel");
+        commandBox.runCommand(EditLabelCommand.COMMAND_WORD + " #nonexistentlabel #newlabel");
 
         //No change should occur
         assertTrue(taskListPanel.isListMatching(currentList));
     }
 
     @Test
-    public void editLabel_invalidCommands() {
+    public void editLabel_invalidCommands_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         //No change should occur for any of these commands
-        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " notEnoughArguments", currentList);
+        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " #notEnoughArguments", currentList);
         runAndAssertTrue(EditLabelCommand.COMMAND_WORD + "", currentList);
-        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " !@#asdajn newLabel", currentList);
-        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " friends !@#!@sdfs", currentList);
+        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " #!@#asdajn #newLabel", currentList);
+        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " #friends #!@#!@sdfs", currentList);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class EditLabelCommandTest extends TaskManagerGuiTest {
                 task.setLabels(new UniqueLabelList(labelSet));
             }
         }
-        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " friends allies", currentList);
+        runAndAssertTrue(EditLabelCommand.COMMAND_WORD + " #friends #allies", currentList);
     }
 
     /**

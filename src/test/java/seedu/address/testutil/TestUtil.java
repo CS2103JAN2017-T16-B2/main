@@ -341,7 +341,7 @@ public class TestUtil {
     public static TestTask[] addTasksToList(final TestTask[] tasks, TestTask... tasksToAdd) {
         List<TestTask> listOfTasks = asList(tasks);
         listOfTasks.addAll(asList(tasksToAdd));
-        Comparator comparator = new Comparator<ReadOnlyTask> () {
+        Comparator<ReadOnlyTask> comparator = new Comparator<ReadOnlyTask> () {
             public int compare(ReadOnlyTask task1, ReadOnlyTask task2) {
                 return task1.compareTo(task2);
             }

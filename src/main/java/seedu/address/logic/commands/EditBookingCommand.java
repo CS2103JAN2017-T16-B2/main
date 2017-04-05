@@ -7,8 +7,8 @@ import java.util.Set;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import seedu.address.commons.core.Messages;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.booking.Booking;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.booking.UniqueBookingList.DuplicateBookingException;
@@ -17,6 +17,9 @@ import seedu.address.model.task.Task;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 
 //@@author A0162877N
+/**
+ * Add, change or remove booking time slot in the Task Manager
+ */
 public class EditBookingCommand extends Command {
 
     public static final String COMMAND_WORD = "editbooking";
@@ -35,7 +38,7 @@ public class EditBookingCommand extends Command {
     private final int bookingSlotIndex;
     private final Set<Booking> bookingSet;
 
-    public EditBookingCommand(int filteredTaskListIndex, int bookingSlotIndex) { // remove
+    public EditBookingCommand(int filteredTaskListIndex, int bookingSlotIndex) {
         assert filteredTaskListIndex > 0;
         assert bookingSlotIndex > 0;
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
@@ -43,7 +46,7 @@ public class EditBookingCommand extends Command {
         this.bookingSet = new HashSet<>();
     }
 
-    public EditBookingCommand(int filteredTaskListIndex, String... dates) throws CommandException { // add
+    public EditBookingCommand(int filteredTaskListIndex, String... dates) throws CommandException {
         assert filteredTaskListIndex > 0;
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
         bookingSlotIndex = -1;
@@ -54,7 +57,7 @@ public class EditBookingCommand extends Command {
     }
 
     public EditBookingCommand(int filteredTaskListIndex, int bookingSlotIndex, String date)
-            throws CommandException { // change
+            throws CommandException {
         assert filteredTaskListIndex > 0;
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
         this.bookingSlotIndex = bookingSlotIndex - 1;
@@ -67,11 +70,11 @@ public class EditBookingCommand extends Command {
         List<ReadOnlyTask> lastShownList = model.getFilteredTaskList();
         try {
             boolean bookingSuccess = false;
-            if (bookingSet.isEmpty() && bookingSlotIndex >= 0) { //remove
+            if (bookingSet.isEmpty() && bookingSlotIndex >= 0) {
                 bookingSuccess = removeBookingsInTasks(lastShownList);
-            } else if (!bookingSet.isEmpty() && bookingSlotIndex >= 0) { //change
+            } else if (!bookingSet.isEmpty() && bookingSlotIndex >= 0) {
                 bookingSuccess = changeBookingsInTasks(lastShownList);
-            } else if (!bookingSet.isEmpty()) { //add got problem when user put 0
+            } else if (!bookingSet.isEmpty()) {
                 bookingSuccess = addBookingsInTasks(lastShownList);
             } else {
                 throw new CommandException(MESSAGE_TASK_NO_BOOKING);
@@ -88,10 +91,10 @@ public class EditBookingCommand extends Command {
     }
 
     /**
-     * Replaces a specific label in all tasks
+     * Removes a specific booking time slot in the booking
      *
      * @param lastShownList
-     * @return true if the specified label exists
+     * @return true if the specified booking exists
      * @throws DuplicateBookingException
      */
     private boolean removeBookingsInTasks(List<ReadOnlyTask> lastShownList)
@@ -125,10 +128,10 @@ public class EditBookingCommand extends Command {
     }
 
     /**
-     * Replaces a specific label in all tasks
+     * Adds time slots in booking
      *
      * @param lastShownList
-     * @return true if the specified label exists
+     * @return true if the specified booking exists
      * @throws DuplicateBookingException
      */
     private boolean addBookingsInTasks(List<ReadOnlyTask> lastShownList)
@@ -161,10 +164,10 @@ public class EditBookingCommand extends Command {
     }
 
     /**
-     * Replaces a specific label in all tasks
+     * Replaces a specific booking time slot in bookings
      *
      * @param allTaskList
-     * @return true if the specified label exists
+     * @return true if the specified booking exists
      * @throws DuplicateBookingException
      */
     private boolean changeBookingsInTasks(List<ReadOnlyTask> lastShownList)
@@ -206,7 +209,7 @@ public class EditBookingCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();

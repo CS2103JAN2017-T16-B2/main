@@ -25,14 +25,14 @@ public class UniqueLabelListTest {
 
     public static final String ERROR_DUPLICATE_LABEL = "Operation would result in duplicate labels";
 
-    UniqueLabelList normalList;
-    UniqueLabelList unorderedList;
-    UniqueLabelList disruptiveList;
-    UniqueLabelList emptyList1;
-    UniqueLabelList emptyList2;
+    private UniqueLabelList normalList;
+    private UniqueLabelList unorderedList;
+    private UniqueLabelList disruptiveList;
+    private UniqueLabelList emptyList1;
+    private UniqueLabelList emptyList2;
 
     @Before
-    public void setup() throws DuplicateLabelException, IllegalValueException {
+    public void setUp() throws DuplicateLabelException, IllegalValueException {
         disruptiveList = new UniqueLabelList("lAbEl2");
         normalList = new UniqueLabelList(new Label("label1"), new Label("label2"));
         unorderedList = new UniqueLabelList(new Label("label2"), new Label("label1"));
@@ -133,7 +133,7 @@ public class UniqueLabelListTest {
         assertTrue(emptyList1.equals(emptyList2));
 
         //Test null
-        assertFalse(emptyList1.equals(null));
+        assertFalse(emptyList1 == null);
     }
 
     @Test

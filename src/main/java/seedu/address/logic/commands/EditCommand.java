@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.util.CollectionUtil;
-import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.UniqueLabelList;
 import seedu.address.model.task.Deadline;
@@ -28,7 +28,9 @@ public class EditCommand extends Command {
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) [TITLE] [by DEADLINE] [#LABEL]...\n"
             + "Parameters: INDEX (must be a positive integer) [TITLE] [by DEADLINE] [from START to END][#LABEL]...\n"
-            + "Example: " + COMMAND_WORD + " 1 by Sunday #new";
+            + "Parameters: #OLD_LABEL #NEW_LABEL\n"
+            + "Example: " + COMMAND_WORD + " 1 by Sunday #new"
+            + "Example: " + COMMAND_WORD + " #friends #allies";
 
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Edited Task: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -82,7 +84,7 @@ public class EditCommand extends Command {
         Optional<Deadline> updatedDeadline;
         Optional<Recurrence> updatedRecurrence;
         Title updatedTitle = editTaskDescriptor.getTitle().orElseGet(taskToEdit::getTitle);
-        if ((editTaskDescriptor.getClearDates().isPresent() && editTaskDescriptor.getClearDates().get() == true)
+        if ((editTaskDescriptor.getClearDates().isPresent() && editTaskDescriptor.getClearDates().get())
                 || editTaskDescriptor.isDateEdited()) {
             updatedStartTime = editTaskDescriptor.getStartTime();
             updatedDeadline = editTaskDescriptor.getDeadline();
@@ -247,7 +249,7 @@ public class EditCommand extends Command {
     public void saveCurrentState() {
         if (isMutating()) {
             try {
-                LogicManager.undoCommandHistory.addStorageHistory(model.getTaskManager().getImmutableTaskList(),
+                UndoManager.getInstance().addStorageHistory(model.getTaskManager().getImmutableTaskList(),
                         model.getTaskManager().getImmutableLabelList());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
