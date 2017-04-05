@@ -87,7 +87,6 @@ public class MarkCommand extends Command {
     /**
      * Creates and returns a {@code Task} with the details of {@code taskToEdit}
      * edited with {@code editTaskDescriptor}.
-     * @throws CommandException
      */
     private static Task createEditedTask(ReadOnlyTask taskToEdit, Boolean isCompleted)
                              throws IllegalValueException, IllegalDateTimeValueException, CommandException {
@@ -108,7 +107,9 @@ public class MarkCommand extends Command {
                 updatedLabels, bookingList, isRecurring, updatedRecurrence);
     }
 
-
+    /**
+     * Creates and returns a {@code Task} a new instance of the recurring task
+     */
     private static Task createRecurringTask(ReadOnlyTask task) throws IllegalValueException,
                             IllegalDateTimeValueException {
         Optional<Deadline> updatedStartTime;
@@ -134,6 +135,11 @@ public class MarkCommand extends Command {
                 updatedLabels, updatedBookings, isRecurring, updatedRecurrence);
     }
 
+
+
+    /**
+     * Creates and returns a {@code Deadline} a new instance of the updated deadline passed in
+     */
     private static Deadline getRecurringDate(Deadline date, Recurrence recurrence)
             throws IllegalValueException, IllegalDateTimeValueException {
         try {
