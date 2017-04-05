@@ -71,4 +71,17 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(expectedList));
     }
 
+    //@@author A0105287E
+    @Test
+    public void add_recurringTask_success() throws Exception {
+        TestTask[] currentList = td.getTypicalTasks();
+
+        TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 10").withStartTime("today")
+                .withDeadline("tomorrow").withLabels("owesMoney", "friends")
+                .withRecurrenceStatus(true).withRecurrence("2 days")
+                .withStatus(true).build();
+
+        assertAddSuccess(taskToAdd, currentList);
+    }
+
 }
