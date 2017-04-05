@@ -193,6 +193,9 @@ public class LeftPanel extends UiPart<Region> {
     }
 
     //@@author A0162877N
+    /**
+     * Event handler for label list selection
+     */
     private void setEventHandlerForSelectionChangeEvent() {
         labelListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {

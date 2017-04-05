@@ -1,12 +1,23 @@
 package seedu.address.ui;
 
+import java.util.Optional;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import seedu.address.commons.events.ui.CheckBoxSelectionChangedEvent;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.task.ReadOnlyTask;
 
+//@@author A0162877N
+/**
+ * This class handles the initialization of the task card in task list panel
+ */
 public class TaskCard extends UiPart<Region> {
 
     private static final String FXML = "TaskListCard.fxml";
@@ -14,15 +25,27 @@ public class TaskCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
+    private VBox vBoxMain;
+    @FXML
+    private VBox leftVBox;
+    @FXML
+    private CheckBox completedCB;
+    @FXML
     private Label title;
     @FXML
     private Label id;
     @FXML
+    private VBox dateVBox;
+    @FXML
     private Label startTime;
+    @FXML
+    private Label dashLabel;
     @FXML
     private Label deadline;
     @FXML
     private Label status;
+    @FXML
+    private javafx.scene.control.Label reserveSlot;
     @FXML
     private FlowPane labels;
     @FXML
@@ -36,21 +59,19 @@ public class TaskCard extends UiPart<Region> {
         super(FXML);
         title.setText(task.getTitle().title);
         id.setText(displayedIndex + ". ");
-        if (task.getStartTime().isPresent()) {
-            startTime.setText(task.getStartTime().get().toString());
-        } else {
-            startTime.setVisible(false);
+        setStartTime(task);
+        setDeadline(task);
+        setLabel(task);
+        setBookings(task);
+        removeStatus();
+        setCheckBox(task, displayedIndex);
+        if (!(task.getStartTime().isPresent() && task.getDeadline().isPresent())) {
+            dateVBox.getChildren().remove(dashLabel);
         }
-        if (task.getDeadline().isPresent()) {
-            deadline.setText(task.getDeadline().get().toString());
-        } else {
-            deadline.setVisible(false);
+        if (task.isRecurring() && task.isCompleted()) {
+            completedCB.setDisable(true);
         }
-        if (task.isCompleted()) {
-            status.setText("Completed");
-        } else {
-            status.setText("Incomplete");
-        }
+
         if (task.isRecurring()) {
             recurrenceStatus.setText("Recurring");
             recurrence.setText(task.getRecurrence().get().toString());
@@ -58,8 +79,73 @@ public class TaskCard extends UiPart<Region> {
             recurrenceStatus.setText("Non-recurring");
             recurrence.setVisible(false);
         }
-        initLabels(task);
-        initBookings(task);
+    }
+
+    private void setCheckBox(ReadOnlyTask task, int displayedIndex) {
+        completedCB.setStyle(displayedIndex + "");
+        completedCB.setSelected(task.isCompleted());
+    }
+
+    private void setStartTime(ReadOnlyTask task) {
+        if (task.getStartTime().isPresent()) {
+            startTime.setText(task.getStartTime().get().toString());
+        } else {
+            dateVBox.getChildren().remove(startTime);
+        }
+    }
+
+    private void setDeadline(ReadOnlyTask task) {
+        if (task.getDeadline().isPresent()) {
+            deadline.setText(task.getDeadline().get().toString());
+        } else {
+            dateVBox.getChildren().remove(deadline);
+        }
+    }
+
+    private void setLabel(ReadOnlyTask task) {
+        if (task.getLabels().isEmpty()) {
+            leftVBox.getChildren().remove(labels);
+        } else {
+            initLabels(task);
+        }
+    }
+
+    private void setBookings(ReadOnlyTask task) {
+        if (task.getBookings().isEmpty()) {
+            dateVBox.getChildren().remove(reserveSlot);
+            dateVBox.getChildren().remove(bookings);
+        } else {
+            reserveSlot.setText("Reserved Slots");
+            completedCB.setDisable(true);
+            initBookings(task);
+        }
+    }
+
+    private void removeStatus() {
+        vBoxMain.getChildren().remove(status);
+    }
+
+    /**
+     * Event handler for check box selection
+     */
+    @FXML
+    private void handleCheckBoxChanged(ActionEvent event) {
+        int id = tryParseAsIndex(completedCB.getStyle());
+        if (id > 0) {
+            raise(new CheckBoxSelectionChangedEvent(id, completedCB.isSelected()));
+        }
+    }
+
+    /**
+     * Try parsing arguments as index
+     */
+    private int tryParseAsIndex(String args) {
+        Optional<Integer> index = ParserUtil.parseIndex(args);
+        if (index.isPresent()) {
+            return index.get();
+        } else {
+            return -1;
+        }
     }
 
     private void initLabels(ReadOnlyTask task) {

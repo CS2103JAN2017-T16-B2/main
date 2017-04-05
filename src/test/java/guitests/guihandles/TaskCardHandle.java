@@ -1,5 +1,6 @@
 package guitests.guihandles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class TaskCardHandle extends GuiHandle {
     private static final String BOOKING_FIELD_ID = "#bookings";
     private static final String RECURRENCE_STATUS_FIELD_ID = "#recurrenceStatus";
     private static final String RECURRENCE_FIELD_ID = "#recurrence";
+    private static final String CHECKBOX_ID = "#completedCB";
 
     private Node node;
 
@@ -34,6 +36,10 @@ public class TaskCardHandle extends GuiHandle {
 
     protected String getTextFromLabel(String fieldId) {
         return getTextFromLabel(fieldId, node);
+    }
+
+    protected String getTextFromCheckbox(String fieldId) {
+        return getStringFromCheckbox(fieldId, node);
     }
 
     public String getTitle() {
@@ -57,6 +63,9 @@ public class TaskCardHandle extends GuiHandle {
     }
 
     private List<String> getLabels(Region labelsContainer) {
+        if (labelsContainer == null) {
+            return new ArrayList<String>();
+        }
         return labelsContainer.getChildrenUnmodifiable().stream().map(node -> ((Labeled) node).getText())
                 .collect(Collectors.toList());
     }
@@ -67,6 +76,9 @@ public class TaskCardHandle extends GuiHandle {
 
     //@@author A0162877N
     private List<String> getBookings(Region bookingsContainer) {
+        if (bookingsContainer == null) {
+            return new ArrayList<String>();
+        }
         return bookingsContainer.getChildrenUnmodifiable().stream().map(node -> ((Labeled) node).getText())
                 .collect(Collectors.toList());
     }
@@ -83,20 +95,20 @@ public class TaskCardHandle extends GuiHandle {
         return guiRobot.from(node).lookup(BOOKING_FIELD_ID).query();
     }
 
-    //@@Author A0105287E
+    //@@author A0105287E
     public boolean isSameTask(ReadOnlyTask task) {
         assert (task != null);
         boolean result;
-        if (task.getDeadline().isPresent() && task.getStartTime().isPresent() && !this.getDeadline().equals("")
-                && !this.getStartTime().equals("")) {
 
+        if (task.getDeadline().isPresent() && task.getStartTime().isPresent() && !(this.getDeadline() == null)
+                && !(this.getStartTime() == null)) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
                     && getLabels().equals(getLabels(task.getLabels()))
                     && getStartTime().equals(task.getStartTime().get().toString())
                     && isCompleted().equals(task.isCompleted())
                     && matchRecurrence(task);
-        } else if (task.getDeadline().isPresent() && !this.getDeadline().equals("")) {
+        } else if (task.getDeadline().isPresent() && !(this.getDeadline() == null)) {
             result = getTitle().equals(task.getTitle().title)
                     && getDeadline().equals(task.getDeadline().get().toString())
                     && getLabels().equals(getLabels(task.getLabels()))
@@ -148,7 +160,7 @@ public class TaskCardHandle extends GuiHandle {
 
     //@@author A0105287E
     private Boolean isCompleted() {
-        String text = getTextFromLabel(STATUS_FIELD_ID);
+        String text = getTextFromCheckbox(CHECKBOX_ID);
         if ("Completed".equals(text)) {
             return true;
         } else {

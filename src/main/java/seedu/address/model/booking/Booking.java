@@ -61,7 +61,7 @@ public class Booking implements Comparable<Booking> {
      */
     public String toString() {
         SimpleDateFormat df = new SimpleDateFormat("EEE dd MMM yyyy h:mm a");
-        return df.format(startTime).toString() + " to " + df.format(endTime).toString() + " ";
+        return df.format(startTime).toString() + " - " + df.format(endTime).toString() + " ";
     }
 
     @Override
