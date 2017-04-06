@@ -124,6 +124,7 @@ public class MainWindow extends UiPart<Region> {
                 event.consume();
                 //@@author A0140042A
             } else if (!commandBox.getCommandTextField().isFocused()) {
+                event.consume();
                 commandBox.getCommandTextField().requestFocus();
                 commandBox.getCommandTextField().positionCaret(
                         commandBox.getCommandTextField().lengthProperty().intValue());
