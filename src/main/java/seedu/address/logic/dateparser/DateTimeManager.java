@@ -52,11 +52,10 @@ public class DateTimeManager implements DateTimeParser {
                 DateLexer.SLASH, DateLexer.DOT, DateLexer.PLUS, DateLexer.SINGLE_QUOTE }));
 
     /**
-     * Creates a new parser with default time zone set as GMT+8
+     * Creates a new parser with default time zone
      */
     public DateTimeManager() {
         defaultTimeZone = TimeZone.getDefault();
-        //defaultTimeZone = TimeZone.getTimeZone("GMT+8");
     }
 
     /**
