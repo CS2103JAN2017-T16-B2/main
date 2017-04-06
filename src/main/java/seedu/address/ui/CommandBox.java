@@ -108,7 +108,7 @@ public class CommandBox extends UiPart<Region> {
     /**
      * Gets the next executed command from the current command (if iterated through before)
      */
-    private void getNextCommand() {
+    public void getNextCommand() {
         String command = commandHistory.next();
         setCommandAndCursorToEnd(command);
     }
@@ -116,7 +116,7 @@ public class CommandBox extends UiPart<Region> {
     /**
      * Gets the previously executed command from the current command
      */
-    private void getPreviousCommand() {
+    public void getPreviousCommand() {
         String command = commandHistory.previous();
         setCommandAndCursorToEnd(command);
     }
