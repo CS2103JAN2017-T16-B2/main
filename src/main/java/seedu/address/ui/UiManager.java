@@ -14,6 +14,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
+import seedu.address.commons.events.ui.CheckBoxSelectionChangedEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.LeftPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelTodaySelectionChangedEvent;
@@ -21,6 +22,8 @@ import seedu.address.commons.events.ui.ShowAllSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
+import seedu.address.logic.commands.MarkCommand;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
 
@@ -140,6 +143,21 @@ public class UiManager extends ComponentManager implements Ui {
     private void handleShowAllSelectionChangedEvent(ShowAllSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         mainWindow.showAllTask();
+    }
+
+    @Subscribe
+    private void handleCheckBoxSelectionChangedEvent(CheckBoxSelectionChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        String status = "completed";
+        if (!event.getTaskStatus()) {
+            status = "incomplete";
+        }
+        String commandText = MarkCommand.COMMAND_WORD + " " + event.getTaskIndex() + " " + status;
+        try {
+            logic.execute(commandText);
+        } catch (CommandException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

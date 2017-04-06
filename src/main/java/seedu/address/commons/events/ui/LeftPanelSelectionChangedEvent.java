@@ -1,7 +1,6 @@
 package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
-import seedu.address.model.label.Label;
 
 //@@author A0162877N
 /**
@@ -9,9 +8,9 @@ import seedu.address.model.label.Label;
 */
 public class LeftPanelSelectionChangedEvent extends BaseEvent {
 
-    private final Label newSelection;
+    private final String newSelection;
 
-    public LeftPanelSelectionChangedEvent(Label newSelection) {
+    public LeftPanelSelectionChangedEvent(String newSelection) {
         this.newSelection = newSelection;
     }
 
@@ -20,7 +19,7 @@ public class LeftPanelSelectionChangedEvent extends BaseEvent {
         return this.getClass().getSimpleName();
     }
 
-    public Label getNewSelection() {
+    public String getNewSelection() {
         return newSelection;
     }
 

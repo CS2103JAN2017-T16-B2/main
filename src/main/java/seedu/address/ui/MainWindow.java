@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,7 +25,6 @@ import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.label.Label;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -127,6 +127,15 @@ public class MainWindow extends UiPart<Region> {
                 commandBox.getCommandTextField().requestFocus();
                 commandBox.getCommandTextField().positionCaret(
                         commandBox.getCommandTextField().lengthProperty().intValue());
+
+                //Manually override commandHistory here since the arrow keys will be consumed by the task/label card
+                if (event.getCode() == KeyCode.UP) {
+                    event.consume();
+                    commandBox.getPreviousCommand();
+                } else if (event.getCode() == KeyCode.DOWN) {
+                    event.consume();
+                    commandBox.getNextCommand();
+                }
             }
         });
     }
@@ -247,8 +256,8 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
-    public void loadLabelSelection(Label label) {
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(label.toString()));
+    public void loadLabelSelection(String label) {
+        final Set<String> keywordSet = new HashSet<>(Arrays.asList(label));
         model.updateFilteredTaskList(keywordSet);
     }
 

@@ -29,12 +29,12 @@ public class TaskListPanel extends UiPart<Region> {
         super(FXML);
         setConnections(taskList);
         addToPlaceholder(taskListPlaceholder);
+        setEventHandlerForSelectionChangeEvent();
     }
 
     public void setConnections(ObservableList<ReadOnlyTask> taskList) {
         taskListView.setItems(taskList);
         taskListView.setCellFactory(listView -> new TaskListViewCell());
-        setEventHandlerForSelectionChangeEvent();
     }
 
     private void addToPlaceholder(AnchorPane placeHolderPane) {
