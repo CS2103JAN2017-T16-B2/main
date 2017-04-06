@@ -24,7 +24,6 @@ import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.label.Label;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -247,8 +246,8 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
-    public void loadLabelSelection(Label label) {
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(label.toString()));
+    public void loadLabelSelection(String label) {
+        final Set<String> keywordSet = new HashSet<>(Arrays.asList(label));
         model.updateFilteredTaskList(keywordSet);
     }
 

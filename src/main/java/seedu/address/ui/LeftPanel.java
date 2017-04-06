@@ -23,7 +23,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
-import seedu.address.commons.events.ui.LeftPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelTodaySelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowAllSelectionChangedEvent;
 import seedu.address.commons.util.FxViewUtil;
@@ -88,7 +87,6 @@ public class LeftPanel extends UiPart<Region> {
         setCalendarListView(taskList);
         addToPlaceholder(leftListPlaceholder);
         registerAsAnEventHandler(this);
-        setEventHandlerForSelectionChangeEvent();
     }
 
     //@@author A0140042A
@@ -192,19 +190,6 @@ public class LeftPanel extends UiPart<Region> {
         SplitPane.setResizableWithParent(placeHolderPane, false);
         FxViewUtil.applyAnchorBoundaryParameters(getRoot(), 0.0, 0.0, 0.0, 0.0);
         placeHolderPane.getChildren().add(getRoot());
-    }
-
-    //@@author A0162877N
-    /**
-     * Event handler for label list selection
-     */
-    private void setEventHandlerForSelectionChangeEvent() {
-        labelListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                logger.fine("Selection in label left list panel changed to : '" + newValue + "'");
-                raise(new LeftPanelSelectionChangedEvent(newValue));
-            }
-        });
     }
 
     //@@author A0162877N

@@ -106,7 +106,5 @@ public class AddCommandTest extends TaskManagerGuiTest {
                 .withStatus(false).build();
 
         assertAddSuccess(taskToAdd, currentList);
-        System.out.println();
     }
-
 }
