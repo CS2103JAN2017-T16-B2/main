@@ -28,7 +28,7 @@ public class UndoCommandTest extends TaskManagerGuiTest {
     public void undo_EditLabelValid_ReturnTrue() throws IllegalValueException {
         UndoManager.getInstance().clear();
         TestTask[] currentList = td.getTypicalTasks();
-        commandBox.runCommand("editlabel friends allies");
+        commandBox.runCommand("edit #friends #allies");
         commandBox.runCommand("undo");
         commandBox.runCommand("undo");
 

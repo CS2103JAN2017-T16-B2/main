@@ -11,6 +11,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
+import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.exceptions.InvalidUndoCommandException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.datastructure.PartialSearch;
@@ -63,17 +64,24 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new TaskManagerChangedEvent(taskManager));
     }
 
+    //@@author A0162877N
+    /** Raises an event to indicate the model has changed */
+    private void focusOnListIndex(int index) {
+        raise(new JumpToListRequestEvent(index));
+    }
+
     @Override
     public synchronized void deleteTask(ReadOnlyTask target) throws TaskNotFoundException {
         taskManager.removeTask(target);
         indicateTaskManagerChanged();
     }
 
+    //@@author A0162877N
     @Override
     public synchronized void addTask(Task task) throws UniqueTaskList.DuplicateTaskException {
         taskManager.addTask(task);
-        updateFilteredListToShowAll();
         indicateTaskManagerChanged();
+        setScrollToTask(task);
     }
 
     //@@author A0162877N
@@ -84,6 +92,20 @@ public class ModelManager extends ComponentManager implements Model {
         int taskManagerIndex = filteredTasks.getSourceIndex(filteredTaskListIndex);
         taskManager.updateTask(taskManagerIndex, editedTask);
         indicateTaskManagerChanged();
+        setScrollToTask(editedTask);
+    }
+
+    //@@author A0162877N
+    /**
+     * This method will find the index of the task in the filtered list
+     */
+    private void setScrollToTask(ReadOnlyTask task) {
+        int indexInFilteredTask = filteredTasks.indexOf(task);
+        if (indexInFilteredTask < 0) {
+            updateFilteredListToShowAll();
+            indexInFilteredTask = filteredTasks.indexOf(task);
+        }
+        focusOnListIndex(indexInFilteredTask);
     }
 
     //@@author A0162877N
@@ -104,9 +126,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public UnmodifiableObservableList<ReadOnlyTask> getFilteredIncompleteTaskList() {
+        updateFilteredTaskList(false);
+        return new UnmodifiableObservableList<>(filteredTasks);
+    }
+
+    @Override
     public void updateFilteredListToShowAll() {
-        filteredTasks.setPredicate(null);
-        sortFilteredTasks();
+        updateFilteredTaskList(false);
     }
 
     @Override
@@ -231,7 +258,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author A0105287E
     private void sortFilteredTasks() {
-        Comparator comparator = new Comparator<ReadOnlyTask> () {
+        Comparator<ReadOnlyTask> comparator = new Comparator<ReadOnlyTask> () {
             public int compare(ReadOnlyTask task1, ReadOnlyTask task2) {
                 return task1.compareTo(task2);
             }

@@ -15,7 +15,7 @@ import seedu.address.model.task.Title;
 
 
 /**
- * Used to create a test task.
+ * Task Builder class which builds the details of the task for testing
  */
 public class TaskBuilder {
 

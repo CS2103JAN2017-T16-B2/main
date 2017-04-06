@@ -25,6 +25,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelTodaySelectionChangedEvent;
+import seedu.address.commons.events.ui.ShowAllSelectionChangedEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.model.label.Label;
 import seedu.address.model.task.ReadOnlyTask;
@@ -106,7 +107,7 @@ public class LeftPanel extends UiPart<Region> {
 
     private void initIcons() {
         todayIconLabel.setIcon(FontAwesomeIcon.CALENDAR_ALT);
-        calendarIconLabel.setIcon(FontAwesomeIcon.CALENDAR);
+        calendarIconLabel.setIcon(FontAwesomeIcon.LIST);
         labelIconLabel.setIcon(FontAwesomeIcon.HASHTAG);
         labelArrow.setIcon(FontAwesomeIcon.ANGLE_UP);
     }
@@ -145,7 +146,8 @@ public class LeftPanel extends UiPart<Region> {
 
     //@@author A0140042A
     public void setCalendarListView(ObservableList<ReadOnlyTask> taskList) {
-        calendarLabel.setText("Calendar");
+        calendarLabel.setText("Show All");
+        setEventHandlerForCalendarSelectionChangeEvent();
     }
 
     public void setConnections(HashMap<Label, Integer> labelList) {
@@ -193,6 +195,9 @@ public class LeftPanel extends UiPart<Region> {
     }
 
     //@@author A0162877N
+    /**
+     * Event handler for label list selection
+     */
     private void setEventHandlerForSelectionChangeEvent() {
         labelListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -202,6 +207,10 @@ public class LeftPanel extends UiPart<Region> {
         });
     }
 
+    //@@author A0162877N
+    /**
+     * Event handler today selection
+     */
     private void setEventHandlerForTodaySelectionChangeEvent() {
         todayHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -212,6 +221,21 @@ public class LeftPanel extends UiPart<Region> {
         });
     }
 
+    //@@author A0162877N
+    /**
+     * Event handler show all selection
+     */
+    private void setEventHandlerForCalendarSelectionChangeEvent() {
+        calendarHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                logger.fine("Clicked on show all menu");
+                raise(new ShowAllSelectionChangedEvent());
+            }
+        });
+    }
+
+    //@@author A0162877N
     public void scrollTo(int index) {
         Platform.runLater(() -> {
             labelListView.scrollTo(index);

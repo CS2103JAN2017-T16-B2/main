@@ -60,6 +60,15 @@ public class TypicalTestTasks {
         return tasks;
     }
 
+    public TestTask[] getTasksByIndex(int... indexes) {
+        TestTask[] tasks = new TestTask[indexes.length];
+        TestTask[] tasksList = new TestTask[]{task1, task2, task3, task4, task5, task6, task7};
+        for (int i = 0; i < indexes.length; i++) {
+            tasks[i] = tasksList[indexes[i]];
+        }
+        return tasks;
+    }
+
     public TaskManager getTypicalTaskManager() {
         TaskManager ab = new TaskManager();
         loadTaskManagerWithSampleData(ab);

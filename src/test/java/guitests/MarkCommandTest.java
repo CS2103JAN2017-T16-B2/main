@@ -5,6 +5,8 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.commands.MarkCommand.MESSAGE_RECURRING_INCOMPLETE_DISABLE;
 import static seedu.address.logic.commands.MarkCommand.MESSAGE_TYPE_BOOKING;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -62,7 +64,9 @@ public class MarkCommandTest extends TaskManagerGuiTest {
         commandBox.runCommand("mark 1 completed");
 
         //mark the completed recurring task incomplete
-        commandBox.runCommand("mark 9 incomplete");
+        commandBox.runCommand("list completed");
+        commandBox.runCommand("mark 1 incomplete");
+
         assertResultMessage(MESSAGE_RECURRING_INCOMPLETE_DISABLE);
     }
 
@@ -107,15 +111,23 @@ public class MarkCommandTest extends TaskManagerGuiTest {
     private void assertMarkSuccess(int filteredTaskListIndex, int taskManagerIndex,
                                     String status, TestTask editedTask) {
         TestTask[] expectedTasksList = td.getTypicalTasks();
+        if ("completed".equalsIgnoreCase(status)) {
+            ArrayList<Integer> intArrayList = new ArrayList<Integer>();
+            for (int i = 0; i < td.getTypicalTasks().length; i++) {
+                if (!(i == taskManagerIndex - 1)) {
+                    intArrayList.add(i);
+                }
+            }
+
+            int[] arr = new int[intArrayList.size()];
+
+            for (int i = 0; i < intArrayList.size(); i++) {
+                arr[i] = intArrayList.get(i);
+            }
+            expectedTasksList = td.getTasksByIndex(arr);
+        }
 
         commandBox.runCommand("mark " + filteredTaskListIndex + " " + status);
-
-        // confirm the new card contains the right data
-        TaskCardHandle editedCard = taskListPanel.navigateToTask(editedTask.getTitle().title);
-        assertMatching(editedTask, editedCard);
-
-        // confirm the list now contains all previous tasks plus the task with updated details
-        expectedTasksList[taskManagerIndex - 1] = editedTask;
         Arrays.sort(expectedTasksList);
         assertTrue(taskListPanel.isListMatching(expectedTasksList));
         assertResultMessage(String.format(MarkCommand.MESSAGE_MARK_TASK_SUCCESS, editedTask));
