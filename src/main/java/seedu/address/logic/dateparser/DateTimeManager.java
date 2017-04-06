@@ -55,7 +55,8 @@ public class DateTimeManager implements DateTimeParser {
      * Creates a new parser with default time zone set as GMT+8
      */
     public DateTimeManager() {
-        defaultTimeZone = TimeZone.getTimeZone("GMT+8");
+        defaultTimeZone = TimeZone.getDefault();
+        //defaultTimeZone = TimeZone.getTimeZone("GMT+8");
     }
 
     /**

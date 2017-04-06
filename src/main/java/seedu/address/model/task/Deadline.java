@@ -3,6 +3,7 @@ package seedu.address.model.task;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -93,7 +94,7 @@ public class Deadline {
         if ("".equals(value)) {
             return "";
         }
-        SimpleDateFormat df = new SimpleDateFormat("EEE dd MMM yyyy h:mm a");
+        SimpleDateFormat df = new SimpleDateFormat("EEE dd MMM yyyy h:mm a", Locale.ENGLISH);
         return df.format(deadline);
     }
 
