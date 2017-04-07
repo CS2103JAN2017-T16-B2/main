@@ -309,6 +309,9 @@ Certain properties of the application can be controlled (e.g App name, logging l
 #### 3.3.3 SaveAs & Load Feature
 * SaveAs and Load feature utilizes the EventsCenter to update the managers of each component (UI, Storage, Model, Logic)
 
+#### 3.3.4 UndoManager
+* UndoManager implements a Singleton pattern design as all mutating command that has been typed previous affects data that persists throughout the application.
+
 ## 4. Testing
 
 Tests can be found in the `./src/test/java` folder.
@@ -442,8 +445,6 @@ Priority | As a ... | I want to ... | So that I can...
 `* *` | user | remove a booking | remove a booking time slot that I am no longer free
 `* *` | user | change a booking | change a booking time slot that fits better in my schedule
 `* *` | user | add booking time slots | have more time slots available for me to choose from
-`*` | user | launch application using shortcut | not need to find the execution file to run the application
-`*` | user | generate a printable format schedule | refer to the tasks when I have no access to a laptop
 
 ## Appendix B : Use Cases
 
@@ -552,20 +553,15 @@ Actor: User<br />
 
 **MSS**
 
-1. User requests to undo the previous operation
-2. System reverts the results of the last command executed by the user<br />
+1. User requests to undo the previous mutating operation
+2. System reverts the results of the last mutating command executed by the user<br />
 Use case ends
 
 **Extensions**
 
-2a. Previously executed command does not manipulate data
+2a. No previously executed command exist
 
-> 2a1. System executes the undo command and notifies user that nothing was changed<br />
-  Use case ends
-
-2b. No previously executed command exist
-
-> 2b1. System notifies the user that there is no previous operation executed in the current session<br />
+> 2a1. System notifies the user that there is no previous operation executed in the current session<br />
   Use case ends
 
 #### Use case: Find a task
@@ -665,14 +661,19 @@ Precondition: User has opened the application<br />
 **MSS**
 
 1. User creates a scheduled task with multiple date slots
-2. System checks for overlap of events and allocate the selected slots for a task<br />
+2. System creates and allocate the selected slots for a task<br />
 Use case ends.
 
 **Extensions**
 
-2a. There is an overlap of events
+1a. The date input format is incorrect
 
-> 1a1. System shows a warning message to the user<br />
+> 1a1. System shows a error message to the user<br />
+  Use case ends
+
+1b. The date input does not contain a time range
+
+> 1b1. System shows a error message to the user<br />
   Use case ends
 
 #### Use case: Free-ing slot when user confirms a slot for a task
@@ -690,12 +691,8 @@ Use case ends
 
 1a. The given input is invalid
 
-> Use case ends
-
-2a. The confirmed task has a clash with another task
-
-> 3a1. System shows a warning message to the user<br />
-  Use case resumes at step 2
+> 1a1. System shows a error message to the user<br />
+  Use case ends
 
 #### Use case: Add a recurring task
 Use case ID: UC15 Add a recurring task<br />
@@ -841,46 +838,8 @@ Use case ends
 > 2a1. System notifies the user that such a label is invalid/does not exist<br />
   Use case ends
 
-#### Use case: Launch application using shortcut
-Use case ID: UC23 Launch application using shortcut<br />
-Actor: User<br />
-Precondition: User has booted up his computer<br />
-
-**MSS**
-
-1. User inputs the shortcut to launch the application
-2. Operating System launch System<br />
-Use case ends
-
-**Extensions**
-
-1a. The input is invalid
-
-> Use case ends
-
-2a. System is already running
-
-> Use case ends
-
-#### Use case: PDF to printable format
-Use case ID: UC24 PDF to printable format<br />
-Actor: User<br />
-Precondition: User has opened the application<br />
-
-**MSS**
-
-1. User request to print schedule for datetime range
-2. System generates printable format<br />
-Use case ends
-
-**Extensions**
-
-1a. The given date time range is invalid.
-
-> Use case ends
-
 #### Use case: View overdue tasks
-Use case ID: UC25 View Overdue tasks<br />
+Use case ID: UC23 View Overdue tasks<br />
 Actor: User<br />
 Precondition: User has opened the applications<br />
 
@@ -898,7 +857,7 @@ Use case ends
   Use case ends
 
 #### Use case: Save current data to a new file location
-Use case ID: UC26 Save data to new file location<br />
+Use case ID: UC24 Save data to new file location<br />
 Actor: User<br />
 Precondition: User has opened the applications<br />
 
@@ -916,7 +875,7 @@ Use case ends
   Use case ends
 
 #### Use case: Replace data in task manager with new file specified
-Use case ID: UC27 Load data from new location<br />
+Use case ID: UC25 Load data from new location<br />
 Actor: User<br />
 Precondition: User has opened the applications<br />
 
@@ -934,7 +893,7 @@ Use case ends
   Use case ends
 
 #### Use case: Remove a booking
-Use case ID: UC28 Remove a booking<br />
+Use case ID: UC26 Remove a booking<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -952,7 +911,7 @@ Use case ends
   Use case ends
 
 #### Use case: Change a booking
-Use case ID: UC29 Change a booking<br />
+Use case ID: UC27 Change a booking<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -975,7 +934,7 @@ Use case ends
   Use case ends
 
 #### Use case: Add booking time slots
-Use case ID: UC30 Add booking time slots<br />
+Use case ID: UC28 Add booking time slots<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -987,14 +946,14 @@ Use case ends
 
 **Extensions**
 
-2a. Booking is invalid or does not exist
+1a. Booking is invalid or does not exist
 
-> 2a1. System notifies the user that such a booking is invalid/does not exist<br />
+> 1a1. System notifies the user that such a booking is invalid/does not exist<br />
   Use case ends
 
-2b. Date specified by user is invalid
+1b. Date specified by user is invalid
 
-> 2b1. System notifies the user that the date specified is invalid<br />
+> 1b1. System notifies the user that the date specified is invalid<br />
   Use case ends
 
 ## Appendix C : Non Functional Requirements
