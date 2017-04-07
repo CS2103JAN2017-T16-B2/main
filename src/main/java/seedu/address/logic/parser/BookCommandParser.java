@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_LABEL;
 
 import java.util.NoSuchElementException;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.logic.commands.BookCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.IncorrectCommand;
@@ -23,7 +24,7 @@ public class BookCommandParser extends Parser {
             String title = argsTokenizer.getPreamble().get();
             return new BookCommand(title,
                     ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
-                    argsTokenizer.getValue(PREFIX_BOOK_DATE).get().split(","));
+                    argsTokenizer.getValue(PREFIX_BOOK_DATE).get().split(DateTimeUtil.DATE_DELIMITER));
         } catch (NoSuchElementException nsee) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookCommand.MESSAGE_USAGE));
         } catch (Exception e) {
