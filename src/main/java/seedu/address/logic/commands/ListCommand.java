@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import java.util.Date;
 
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
+import seedu.address.commons.util.DateTimeUtil;
 
 //@@author A0162877N
 /**
@@ -11,10 +12,9 @@ import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
-    public static final String DEFAULT_STARTTIME = "00:00:00";
-    public static final String DEFAULT_ENDTIME = "23:59:59";
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " [by DEADLINE] | [from STARTDATE to ENDDATE]";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " [by DEADLINE] | [from STARTDATE to ENDDATE]"
+            + " | [completed | incomplete]";
     private final String endDate;
     private final String startDate;
     private final Boolean isCompleted;
@@ -55,6 +55,7 @@ public class ListCommand extends Command {
     }
 
     public void executeListCommandLogic() throws IllegalDateTimeValueException {
+        assert model != null;
         if ("".equals(startDate) && isParsableDate(endDate)) { // by prefix is used by user
             executeListEndDate();
         } else if (isParsableDate(startDate) && isParsableDate(endDate)) { // from and to prefix is used by user
@@ -72,36 +73,61 @@ public class ListCommand extends Command {
         Date start = null;
         Date end = null;
 
-        if (dtParser.parse(endDate).get(0).isTimeInferred()) {
-            end = dtParser.parse(endDate + " " + DEFAULT_ENDTIME).get(0).getDates().get(0);
+        if (dtParser.parse(endDate).get(DateTimeUtil.DATE_INDEX).isTimeInferred()) {
+            end = dtParser.parse(endDate + " " + DateTimeUtil.DEFAULT_ENDTIME)
+                    .get(DateTimeUtil.DATE_INDEX)
+                    .getDates()
+                    .get(DateTimeUtil.DATE_INDEX);
         } else {
-            end = dtParser.parse(endDate).get(0).getDates().get(0);
+            end = dtParser.parse(endDate).get(DateTimeUtil.DATE_INDEX)
+                    .getDates()
+                    .get(DateTimeUtil.DATE_INDEX);
         }
 
-        if (dtParser.parse(startDate).get(0).isTimeInferred()) {
-            start = dtParser.parse(startDate + " " + DEFAULT_STARTTIME).get(0).getDates().get(0);
+        if (dtParser.parse(startDate).get(DateTimeUtil.DATE_INDEX).isTimeInferred()) {
+            start = dtParser.parse(startDate + " " + DateTimeUtil.DEFAULT_STARTTIME)
+                    .get(DateTimeUtil.DATE_INDEX)
+                    .getDates()
+                    .get(DateTimeUtil.DATE_INDEX);
         } else {
-            start = dtParser.parse(startDate).get(0).getDates().get(0);
+            start = dtParser.parse(startDate).get(DateTimeUtil.DATE_INDEX)
+                    .getDates()
+                    .get(DateTimeUtil.DATE_INDEX);
         }
 
-        if (end.before(start)) {
-            model.updateFilteredTaskList(end, start);
-        } else {
-            model.updateFilteredTaskList(start, end);
-        }
+        executeListCommand(start, end);
     }
 
     public void executeListEndDate() {
         Date start = null;
         Date end = null;
-        if (dtParser.parse(endDate).get(0).isTimeInferred()) {
-            end = dtParser.parse(endDate + " " + DEFAULT_ENDTIME).get(0).getDates().get(0);
+        if (dtParser.parse(endDate).get(DateTimeUtil.DATE_INDEX).isTimeInferred()) {
+            end = dtParser.parse(endDate + " " + DateTimeUtil.DEFAULT_ENDTIME)
+                    .get(DateTimeUtil.DATE_INDEX)
+                    .getDates()
+                    .get(DateTimeUtil.DATE_INDEX);
         } else {
-            end = dtParser.parse(endDate).get(0).getDates().get(0);
+            end = dtParser.parse(endDate).get(DateTimeUtil.DATE_INDEX).getDates()
+                    .get(DateTimeUtil.DATE_INDEX);
         }
 
-        start = dtParser.parse("today " + DEFAULT_STARTTIME).get(0).getDates().get(0);
-        model.updateFilteredTaskList(start, end);
+        start = dtParser.parse("today " + DateTimeUtil.DEFAULT_STARTTIME)
+                .get(DateTimeUtil.DATE_INDEX)
+                .getDates()
+                .get(DateTimeUtil.DATE_INDEX);
+
+        executeListCommand(start, end);
+    }
+
+    /**
+     * Compare the start and end date and execute the filter method
+     */
+    private void executeListCommand(Date start, Date end) {
+        if (end.before(start)) {
+            model.updateFilteredTaskList(end, start);
+        } else {
+            model.updateFilteredTaskList(start, end);
+        }
     }
 
     /**
