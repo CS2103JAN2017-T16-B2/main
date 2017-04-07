@@ -78,7 +78,7 @@ public class MainApp extends Application {
 
     //@@author A0140042A
     /**
-     * Load all fonts in the resources/fonts folder
+     * Load fonts in the resources/fonts folder
      */
     private void loadFonts() {
         Font.loadFont(getClass().getResourceAsStream("/fonts/YouMurdererBB-Regular.otf"), 10);
@@ -228,7 +228,20 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
 
-        //Reinitialize components
+        //Update managers
+        updateManagers(event);
+
+        //Restart the undo manager
+        UndoManager.getInstance().clear();
+
+        //Save all current data into the new location
+        storage.saveTaskManager(model.getTaskManager(), event.getFilePath());
+    }
+
+    /**
+     * Updates all managers to the new file path for storage
+     */
+    private void updateManagers(FileStorageChangedEvent event) {
         storage.setTaskManagerFilePath(event.getFilePath());
         model = initModelManager(storage, userPrefs);
         logic = new LogicManager(model, storage);
@@ -237,12 +250,6 @@ public class MainApp extends Application {
         ui.setLogic(logic);
         //Update UI to show all tasks since we have loaded the new Task Manager in
         model.updateFilteredListToShowAll();
-
-        //Restart the undo manager
-        UndoManager.getInstance().clear();
-
-        //Save all current data into the new location
-        storage.saveTaskManager(model.getTaskManager(), event.getFilePath());
     }
 
     /**

@@ -31,13 +31,13 @@
                   <Label fx:id="todayCounterLabel" text="0" />
                </children>
             </HBox>
-            <HBox fx:id="calendarHeader" maxHeight="100.0" styleClass="sidePanel">
+            <HBox fx:id="showAllHeader" maxHeight="100.0" styleClass="sidePanel">
                <children>
-                  <FontAwesomeIconView fx:id="calendarIconLabel" size="20">
+                  <FontAwesomeIconView fx:id="showAllIconLabel" size="20">
                      <HBox.margin>
                         <Insets left="20.0" top="20.0" />
                      </HBox.margin></FontAwesomeIconView>
-                  <Label fx:id="calendarLabel" text="Calendar" />
+                  <Label fx:id="showAllLabel" text="Show All" />
                </children>
             </HBox>
             <HBox fx:id="labelListHeader" maxHeight="100.0" onMouseClicked="#toggleLabelList" styleClass="sidePanel">

@@ -51,7 +51,7 @@ public class LeftPanel extends UiPart<Region> {
     private javafx.scene.control.Label todayCounterLabel;
 
     @FXML
-    private javafx.scene.control.Label calendarLabel;
+    private javafx.scene.control.Label showAllLabel;
 
     @FXML
     private javafx.scene.control.Label labelCounterLabel;
@@ -63,7 +63,7 @@ public class LeftPanel extends UiPart<Region> {
     private FontAwesomeIconView todayIconLabel;
 
     @FXML
-    private FontAwesomeIconView calendarIconLabel;
+    private FontAwesomeIconView showAllIconLabel;
 
     @FXML
     private FontAwesomeIconView labelArrow;
@@ -78,7 +78,7 @@ public class LeftPanel extends UiPart<Region> {
     private HBox todayHeader;
 
     @FXML
-    private HBox calendarHeader;
+    private HBox showAllHeader;
 
     public LeftPanel(AnchorPane leftListPlaceholder,
             ObservableList<ReadOnlyTask> taskList) {
@@ -87,7 +87,7 @@ public class LeftPanel extends UiPart<Region> {
         initIcons();
         updateLabelCount();
         setTodayListView(taskList);
-        setCalendarListView(taskList);
+        initializeShowAllLabel(taskList);
         addToPlaceholder(leftListPlaceholder);
         registerAsAnEventHandler(this);
     }
@@ -113,12 +113,14 @@ public class LeftPanel extends UiPart<Region> {
      */
     private void initIcons() {
         todayIconLabel.setIcon(FontAwesomeIcon.CALENDAR_ALT);
-        calendarIconLabel.setIcon(FontAwesomeIcon.LIST);
+        showAllIconLabel.setIcon(FontAwesomeIcon.LIST);
         labelIconLabel.setIcon(FontAwesomeIcon.HASHTAG);
         labelArrow.setIcon(FontAwesomeIcon.ANGLE_UP);
     }
 
-    @SuppressWarnings("deprecation")
+    /**
+     * Sets the counter beside the today button with tasks that start after today midnight
+     */
     public void setTodayListView(ObservableList<ReadOnlyTask> taskList) {
         todayLabel.setText("Today");
         int count = 0;
@@ -143,11 +145,17 @@ public class LeftPanel extends UiPart<Region> {
         setEventHandlerForTodaySelectionChangeEvent();
     }
 
-    public void setCalendarListView(ObservableList<ReadOnlyTask> taskList) {
-        calendarLabel.setText("Show All");
+    /**
+     * Sets the showAll label as well as the event handler for it
+     */
+    public void initializeShowAllLabel(ObservableList<ReadOnlyTask> taskList) {
+        showAllLabel.setText("Show All");
         setEventHandlerForCalendarSelectionChangeEvent();
     }
 
+    /**
+     * Sets the connections for the label list and the counter
+     */
     public void setConnections(HashMap<Label, Integer> labelList) {
         labels = getLabelsWithCount(labelList);
         labelCounterLabel.setText(Integer.toString(labelList.size()));
@@ -176,6 +184,9 @@ public class LeftPanel extends UiPart<Region> {
         this.taskList = taskList;
     }
 
+    /**
+     * Toggles the visibility of the labelList
+     */
     @FXML
     private void toggleLabelList() {
         labelListView.setVisible(!labelListView.isVisible());
@@ -186,6 +197,9 @@ public class LeftPanel extends UiPart<Region> {
         }
     }
 
+    /**
+     * Adds this item to the placeHolderPane
+     */
     private void addToPlaceholder(AnchorPane placeHolderPane) {
         SplitPane.setResizableWithParent(placeHolderPane, false);
         FxViewUtil.applyAnchorBoundaryParameters(getRoot(), 0.0, 0.0, 0.0, 0.0);
@@ -209,7 +223,7 @@ public class LeftPanel extends UiPart<Region> {
      * Creates an event handler to show all the incomplete task on the task panel
      */
     private void setEventHandlerForCalendarSelectionChangeEvent() {
-        calendarHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        showAllHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 logger.fine("Clicked on show all menu");

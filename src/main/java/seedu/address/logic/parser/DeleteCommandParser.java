@@ -25,8 +25,6 @@ public class DeleteCommandParser {
         argsTokenizer.tokenize(args);
 
         try {
-            System.out.println(argsTokenizer.getPreamble().isPresent());
-            System.out.println(argsTokenizer.getAllValues(CliSyntax.PREFIX_LABEL).isPresent());
             if (!argsTokenizer.getPreamble().isPresent() &&
                     !argsTokenizer.getAllValues(CliSyntax.PREFIX_LABEL).isPresent()) {
                 throw new CommandException(DeleteCommand.MESSAGE_USAGE);
