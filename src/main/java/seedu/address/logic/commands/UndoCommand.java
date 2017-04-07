@@ -9,6 +9,10 @@ import seedu.address.model.label.Label;
 import seedu.address.model.task.ReadOnlyTask;
 
 //@@author A0162877N
+/**
+ * Undo the most recent mutating command from the task manager,
+ * returning the data to the previous state
+ */
 public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
@@ -36,7 +40,7 @@ public class UndoCommand extends Command {
 
     @Override
     public boolean isMutating() {
-        return false;
+        return true;
     }
 
 }
