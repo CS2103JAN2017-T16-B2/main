@@ -40,7 +40,6 @@
                   <Label fx:id="calendarLabel" text="Calendar" />
                </children>
             </HBox>
-            <!-- @@author A0162877N -->
             <HBox fx:id="labelListHeader" maxHeight="100.0" onMouseClicked="#toggleLabelList" styleClass="sidePanel">
                <children>
                   <FontAwesomeIconView fx:id="labelIconLabel" size="20">
