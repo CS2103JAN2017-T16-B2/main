@@ -141,6 +141,11 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredTaskListByDate(new DateFilter(startDate, endDate));
     }
 
+    @Override
+    public void updateFilteredTaskList(Date startDate, Date endDate, boolean completeStatus) {
+        updateFilteredTaskListByDate(new DateFilterCompleted(startDate, endDate, completeStatus));
+    }
+
     private void updateFilteredTaskList(Expression expression) {
         filteredTasks.setPredicate(expression::satisfies);
     }
@@ -158,6 +163,10 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private void updateFilteredTaskListByDate(DateFilter dateFilter) {
+        filteredTasks.setPredicate(dateFilter::run);
+    }
+
+    private void updateFilteredTaskListByDate(DateFilterCompleted dateFilter) {
         filteredTasks.setPredicate(dateFilter::run);
     }
 
@@ -217,6 +226,32 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public String toString() {
             return "name=" + String.join(", ", nameKeyWords);
+        }
+    }
+
+    private class DateFilterCompleted {
+        private Date startTime;
+        private Date endTime;
+        private boolean isCompleted;
+
+        DateFilterCompleted(Date startTime, Date endTime, boolean isCompleted) {
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.isCompleted = isCompleted;
+        }
+
+        public boolean run(ReadOnlyTask task) {
+            if (task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
+                return isCompleted == task.isCompleted() &&
+                        (task.getDeadline().get().getDateTime().before(endTime)
+                        && task.getDeadline().get().getDateTime().after(startTime))
+                        || task.getDeadline().get().getDateTime().equals(endTime);
+            } else if (task.getDeadline().isPresent()) {
+                return isCompleted == task.isCompleted()
+                        && (task.getDeadline().get().getDateTime().before(endTime)
+                        || task.getDeadline().get().getDateTime().equals(endTime));
+            }
+            return false;
         }
     }
 
