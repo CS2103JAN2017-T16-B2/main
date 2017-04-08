@@ -21,6 +21,7 @@ import seedu.address.model.task.Recurrence;
  */
 public class AddCommandParser extends Parser {
 
+    public static final int START_STRING_INDEX = 0;
     public static final int VALID_DATEARR_SIZE = 1;
 
     /**
@@ -49,16 +50,16 @@ public class AddCommandParser extends Parser {
                         startDT = endDT;
                         endDT = temp;
                     }
-                    title = args.substring(0, args.lastIndexOf("from"));
+                    title = args.substring(START_STRING_INDEX, args.lastIndexOf("from"));
                     if (!args.contains(PREFIX_RECURRENCE.getPrefix())) {
                         return new AddCommand(title, startDT, endDT,
                             ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring, Optional.empty());
                     } else {
                         isRecurring = true;
                         return new AddCommand(title, startDT, endDT,
-                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring,
-                                    Optional.ofNullable(new Recurrence(argsTokenizer
-                                            .getValue(PREFIX_RECURRENCE).get())));
+                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
+                                isRecurring,
+                                Optional.ofNullable(new Recurrence(argsTokenizer.getValue(PREFIX_RECURRENCE).get())));
                     }
                 }
             }
@@ -77,7 +78,8 @@ public class AddCommandParser extends Parser {
                     } else {
                         isRecurring = true;
                         return new AddCommand(title, deadline.trim(),
-                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring,
+                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
+                                isRecurring,
                                 Optional.ofNullable(new Recurrence(argsTokenizer.getValue(PREFIX_RECURRENCE).get())));
                     }
                 }

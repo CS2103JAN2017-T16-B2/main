@@ -32,7 +32,25 @@ If you get an error on saving the file, try running the jar file as an administr
 > * Items with `...` after them can have multiple instances.
 > * Parameters can be in any order.
 >
-> **Date Input Format**
+> **Acceptable Date and Time Input Format**
+>
+> | Date Format | Example |
+| -------- | :-------- |
+| Day Month | 1st Apr |
+| Day Month Year | 1st Apr 2017, 1st April 17 |
+| Month Day | Apr 1st |
+| Month / Day | 12-1 |
+| Month / Day / Year | 11/1/2017, 11/1/17 |
+| Month - Day | 12-1 |
+| Month - Day - Year | 12-1-2017, 11-1-17 |
+| Relative | today, tmr, tomorrow, two days later |
+
+> | Time Format | Example |
+| -------- | :-------- |
+| Hour:Min | 23:00 |
+| Hour.Min | 23.00, 2.00, 02.00 |
+| Hour am/pm (12 hour format) | 2am, 2AM, 2pm, 2PM |
+
 >
 > * Date specified without timing after the `by` and `to` keyword is default to 23:59 hr
 > * Date specified without timing after the `from` keyword is default to 00:00 hr
@@ -92,7 +110,6 @@ Examples:
 * `list overdue`<br />
  Lists all overdue tasks
 
-* `list outstanding`<br />
 * `list incomplete`<br />
  Lists all outstanding tasks
 
@@ -104,9 +121,6 @@ Examples:
 
 * `list from monday to friday`<br />
  Lists all tasks due within Monday 00:00 hr to Friday 23:59 hr
-
-* `list booking`<br />
- Lists all unconfirmed tasks with their respective bookings
 
 ### 2.4. Editing a task : `edit`
 
@@ -167,7 +181,7 @@ Format: `find [TYPE] KEYWORD [MORE_KEYWORDS]...`
 > * `from STARTDATE to ENDDATE`
 
 > * The search is case insensitive and the order of the keywords does not matter.
-> * Task names, label names will be searched, and tasks with at least one keyword match will be return and display to user.
+> * Task names, label names, dates, bookings will be searched, and tasks with at least one keyword match will be return and display to user.
 
 Examples:
 
@@ -217,7 +231,7 @@ Format: `book TASKNAME [#LABEL...] on DATE, DATE, [MORE_DATES]...`
 >   * If only time is specified, it will default to today's date.
 >   * If time is not specified, it will default to the current time of the particular date.
 >   * Time formats are flexible as well. The application supports 24 hour format and AM/PM format.
->     * e.g. `Monday 3pm`, `today 1930`, `5:30pm`, `10.00 am`
+>     * e.g. `Monday 3pm`, `today 19:30`, `5:30pm`, `10.00am`
 > * Tasks can have any number of label name. (including 0).
 > * DATES and MORE_DATES should be prefixed with a comma if there are multiple dates.
 
@@ -239,7 +253,7 @@ Examples:
 
 * `book CS2103 Meeting on 1/1/2017 4pm to 5pm, 2/1/2017 8pm to 10pm`<br />
   `confirm 1 1`<br />
-  Confirms the task CS2103 Meeting for 1st January 2017 4pm to 5pm and releases 2nd January 2017 8pm to 10pm time slot for other tasks
+  Confirms the task CS2103 Meeting for 1st January 2017 4pm to 5pm and releases 2nd January 2017 8pm to 10pm time slot
 
 ### 2.10. Undo the previously executed command : `undo`
 
@@ -294,7 +308,7 @@ Format: `editbooking INDEX (remove SLOT_NUMBER | change SLOT_NUMBER NEW_DATE | a
 > * SLOT_NUMBER will be respective to the dates added in that order
 > * The index refers to the id of the task in the task list currently displayed.<br />
 > * The index **must be a positive integer** 1, 2, 3, ...
-> * The slot number **must be a positive integer** 1, 2, 3, ...
+> * The time slot number **must be a positive integer** 1, 2, 3, ...
 
 Examples:
 
@@ -317,14 +331,14 @@ Command Description | Command Format | Example
 -------- | :-------- | :---------
 | Help | `help` |
 | Add | `add TASKNAME [#LABEL...] [by DEADLINE] [repeat every [NUMBER](hours|days|months|years)]` | `add CS2106 Mid terms by tmr 13:00 #school`
-| List | `list [TYPE]`| `list outstanding tasks`
+| List | `list [TYPE]`| `list completed`
 | Edit | `edit [TASK_INDEX] [TASKNAME] [#LABEL...] ([by DATE] | [from START_DATE to END_DATE] | clear dates | stop repeat) [completed|incomplete]`<br />or `edit #OLD_LABEL #NEW_LABEL` | `edit 1 #label tedious work by thursday #work`<br />or `edit #friends #allies`
 | Mark | `mark [TASK_INDEX] [completed|incomplete]` | `mark 1 completed`
-| Find | `find [TYPE] KEYWORD [MORE_KEYWORDS]...` | `find CS2103`
+| Find | `find [TYPE] KEYWORD [MORE_KEYWORDS]...` | `find CS2103 ign`
 | Delete | `delete [TASK_INDEX|#LABEL]` | `delete 1`<br />or `delete #friends`
 | Book | `book TASKNAME [#LABEL...] on DATE, [MORE_DATES]...` | `book CS2103 Meeting on 1/1/2017 4pm, 2/1/2017 8pm`
 | Confirm | `confirm TASK_INDEX SLOT_NUMBER` | `confirm 1 1`
-| Edit Booking | `editbooking TASK_INDEX (remove SLOT_NUMBER | change SLOT_NUMBER NEW_DATE | add DATE, MORE DATES)` | `editbooking 1 add 3/1/2017 4pm to 5pm, 4/1/2017 8pm to 9pm`<br />`editbooking 1 change 1 5/1/2017 3pm to 5pm`<br /> `editbooking 1 remove 2`
+| Edit Booking | `editbooking TASK_INDEX (remove SLOT_NUMBER | change SLOT_NUMBER NEW_DATE | add DATE, MORE DATES...)` | `editbooking 1 add 3/1/2017 4pm to 5pm, 4/1/2017 8pm to 9pm`<br />`editbooking 1 change 1 5/1/2017 3pm to 5pm`<br /> `editbooking 1 remove 2`
 | Undo | `undo` | `undo`
 | Clear | `clear` | `clear`
 | Save to a certain location | `saveas FILEPATH_RELATIVE_TO_JAR` | `saveas data/taskmanager2.xml`

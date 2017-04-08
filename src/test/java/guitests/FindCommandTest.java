@@ -12,6 +12,9 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.testutil.TestTask;
 
 //@@author A0162877N
+/**
+ * Find command jUnit GUI test
+ */
 public class FindCommandTest extends TaskManagerGuiTest {
 
     @Test
@@ -43,7 +46,6 @@ public class FindCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void find_nonEmptyListStartEndDate_pass() {
-
         assertFindResult("find from today to christmas",
                 td.task1, td.task2, td.task3, td.task4, td.task5, td.task6, td.task7); // 7 result
 
@@ -56,34 +58,61 @@ public class FindCommandTest extends TaskManagerGuiTest {
         assertFindResult("find by 25-12-2017",
                 td.task1, td.task2, td.task3, td.task4, td.task5, td.task6, td.task7); // 7 result
 
-        assertFindResult("find by 01-01-2016"); // 7 result
-
+        assertFindResult("find by 01-01-2016");
     }
 
     @Test
-    public void find_emptyList() {
+    public void find_PartialSearch_ReturnTrue() {
+        TestTask[] currentList = td.getTypicalTasks();
+        commandBox.runCommand("find com");
+        assertTrue(taskListPanel.getNumberOfTasks() == 7);
+        assertTrue(taskListPanel.isListMatching(currentList));
+
+        commandBox.runCommand("find om");
+        assertTrue(taskListPanel.getNumberOfTasks() == 7);
+        assertTrue(taskListPanel.isListMatching(currentList));
+
+        commandBox.runCommand("find m");
+        assertTrue(taskListPanel.getNumberOfTasks() == 7);
+        assertTrue(taskListPanel.isListMatching(currentList));
+    }
+
+    @Test
+    public void find_EmptyList() {
         commandBox.runCommand("clear");
         assertFindResult("find task 1"); // no results
+        assertTrue(taskListPanel.getNumberOfTasks() == 0);
     }
 
     @Test
-    public void find_invalidCommand_fail() {
+    public void find_InvalidCommand_fail() {
         commandBox.runCommand("findsomething");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+        commandBox.runCommand("finds");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+        commandBox.runCommand("fi");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
     @Test
-    public void find_validCommandNoInput_fail() {
+    public void find_ValidCommandNoInput_fail() {
         commandBox.runCommand("find"); // no input here
         assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void find_invalidDate_fail() {
-
+    public void find_InvalidDate_fail() {
         commandBox.runCommand("find by from to ");
-
         assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void find_ValidFindCommand_ReturnTrue() {
+        commandBox.runCommand("find from to");
+        assertTrue(taskListPanel.getNumberOfTasks() == 0);
+
+        commandBox.runCommand("find by");
+        assertTrue(taskListPanel.getNumberOfTasks() == 0);
     }
 
     private void assertFindResult(String command, TestTask... expectedHits) {

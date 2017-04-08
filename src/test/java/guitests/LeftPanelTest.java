@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.model.task.ReadOnlyTask;
 import seedu.address.testutil.TestTask;
 
@@ -25,6 +26,7 @@ public class LeftPanelTest extends TaskManagerGuiTest {
         assertTrue(leftPanel.isVisible());
     }
 
+    //@@author A0162877N
     @Test
     public void today_TestTodayPanel_ReturnTrue() {
         TestTask[] testTask = td.getTypicalTasks();
@@ -54,14 +56,14 @@ public class LeftPanelTest extends TaskManagerGuiTest {
     }
 
     public boolean isTaskInToday(ReadOnlyTask task) {
-        Date endDate = new Date(2222, 1, 1, 23, 59, 59);
-        Date startDate = new Date(new Date().getYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+        Date endDate = DateTimeUtil.getEndDate();
+        Date startDate = DateTimeUtil.getStartDate();
 
-        if (task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
+        if (!task.isCompleted() && task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
             return (task.getDeadline().get().getDateTime().before(endDate)
                     && task.getDeadline().get().getDateTime().after(startDate))
                     || task.getDeadline().get().getDateTime().equals(endDate);
-        } else if (task.getDeadline().isPresent()) {
+        } else if (!task.isCompleted() && task.getDeadline().isPresent()) {
             return task.getDeadline().get().getDateTime().before(startDate)
                     || task.getDeadline().get().getDateTime().equals(startDate);
         }

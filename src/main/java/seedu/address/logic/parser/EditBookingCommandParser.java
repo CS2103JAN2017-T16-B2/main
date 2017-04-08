@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_BOOK_REMOVE_DATE;
 
 import java.util.Optional;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.ConfirmCommand;
 import seedu.address.logic.commands.EditBookingCommand;
@@ -19,9 +20,13 @@ import seedu.address.logic.commands.exceptions.CommandException;
 */
 public class EditBookingCommandParser {
 
-    private static final String DATE_DELIMITER = ",";
     private static final String DELIMITER = " ";
     private static final int ARGUMENT_LENGTH = 3;
+    private static final int ACTION_INDEX = 1;
+    private static final int BOOKING_SLOT_INDEX = 2;
+    private static final int INVALID_INDEX = -1;
+    private static final int TASK_INDEX = 0;
+    private static final int VALID_INDEX = 0;
     private static final String REGEX_INDEX = "^[0-9]*";
 
     /**
@@ -37,27 +42,28 @@ public class EditBookingCommandParser {
                 throw new CommandException(ConfirmCommand.MESSAGE_USAGE);
             }
 
-            if (arguments[0].matches(REGEX_INDEX)) {
-                if (PREFIX_BOOK_ADD_DATE.getPrefix().equalsIgnoreCase(arguments[1])) {
+            if (arguments[TASK_INDEX].matches(REGEX_INDEX)) {
+                if (PREFIX_BOOK_ADD_DATE.getPrefix().equalsIgnoreCase(arguments[ACTION_INDEX])) {
                     argsTokenizer = new ArgumentTokenizer(PREFIX_BOOK_ADD_DATE);
                     argsTokenizer.tokenize(args);
-                    String[] dates = argsTokenizer.getValue(PREFIX_BOOK_ADD_DATE).get().trim().split(DATE_DELIMITER);
-                    return new EditBookingCommand(tryParseAsIndex(arguments[0]), dates);
-                } else if (PREFIX_BOOK_REMOVE_DATE.getPrefix().equalsIgnoreCase(arguments[1])) {
-                    if (arguments[2].matches(REGEX_INDEX)) {
-                        int bookingSlotIndex = tryParseAsIndex(arguments[2]);
-                        int listIndex = tryParseAsIndex(arguments[0]);
+                    String[] dates = argsTokenizer.getValue(PREFIX_BOOK_ADD_DATE)
+                            .get().trim().split(DateTimeUtil.DATE_DELIMITER);
+                    return new EditBookingCommand(tryParseAsIndex(arguments[TASK_INDEX]), dates);
+                } else if (PREFIX_BOOK_REMOVE_DATE.getPrefix().equalsIgnoreCase(arguments[ACTION_INDEX])) {
+                    if (arguments[BOOKING_SLOT_INDEX].matches(REGEX_INDEX)) {
+                        int bookingSlotIndex = tryParseAsIndex(arguments[BOOKING_SLOT_INDEX]);
+                        int listIndex = tryParseAsIndex(arguments[TASK_INDEX]);
                         return new EditBookingCommand(listIndex, bookingSlotIndex);
                     }
-                } else if (PREFIX_BOOK_CHANGE_DATE.getPrefix().equalsIgnoreCase(arguments[1])) {
-                    if (arguments[2].matches(REGEX_INDEX)) {
-                        String[] input = args.split(arguments[1] + " " + arguments[2]);
+                } else if (PREFIX_BOOK_CHANGE_DATE.getPrefix().equalsIgnoreCase(arguments[ACTION_INDEX])) {
+                    if (arguments[BOOKING_SLOT_INDEX].matches(REGEX_INDEX)) {
+                        String[] input = args.split(arguments[ACTION_INDEX] + " " + arguments[BOOKING_SLOT_INDEX]);
                         int bookingSlotIndex = tryParseAsIndex(arguments[2]);
-                        int listIndex = tryParseAsIndex(arguments[0]);
-                        if (bookingSlotIndex > 0 && listIndex > 0) {
+                        int listIndex = tryParseAsIndex(arguments[TASK_INDEX]);
+                        if (bookingSlotIndex > VALID_INDEX && listIndex > VALID_INDEX) {
                             return new EditBookingCommand(listIndex,
                                     bookingSlotIndex,
-                                    input[1]);
+                                    input[ACTION_INDEX]);
                         }
                     }
                 } else {
@@ -84,7 +90,7 @@ public class EditBookingCommandParser {
         if (index.isPresent()) {
             return index.get();
         } else {
-            return -1;
+            return INVALID_INDEX;
         }
     }
 

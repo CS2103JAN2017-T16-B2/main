@@ -15,6 +15,9 @@ import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
 
 //@@author A0162877N
+/**
+ * Editbooking command GUI jUnit test
+ */
 public class EditBookingCommandTest extends TaskManagerGuiTest {
 
     @Test

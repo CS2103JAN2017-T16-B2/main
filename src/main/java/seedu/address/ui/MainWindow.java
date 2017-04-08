@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.Model;
@@ -29,6 +30,7 @@ import seedu.address.model.UserPrefs;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Region> {
+
     private static final String ICON = "/images/app_icon.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 500;
@@ -141,12 +143,24 @@ public class MainWindow extends UiPart<Region> {
      * but only update appropriate components if already initialized
      */
     public void fillInnerParts() {
+        setTaskListPanel();
+        setLeftPanel();
+        setResultDisplay();
+        setStatusBarFooter();
+        setCommandBox();
+    }
+
+    //@@author A0162877N
+    private void setTaskListPanel() {
         if (taskListPanel == null) {
             taskListPanel = new TaskListPanel(getTaskListPlaceholder(), logic.getFilteredIncompleteTaskList());
         } else {
             taskListPanel.setConnections(logic.getFilteredIncompleteTaskList());
         }
+    }
 
+    //@@author A0162877N
+    private void setLeftPanel() {
         if (leftPanel == null) {
             leftPanel = new LeftPanel(getleftPanelPlaceholder(), model.getTaskManager().getTaskList());
         } else {
@@ -154,17 +168,26 @@ public class MainWindow extends UiPart<Region> {
             leftPanel.updateLabelCount();
             leftPanel.setTodayListView(model.getTaskManager().getTaskList());
         }
+    }
 
+    //@@author A0162877N
+    private void setResultDisplay() {
         if (resultDisplay == null) {
             resultDisplay = new ResultDisplay(getResultDisplayPlaceholder());
         }
+    }
 
+    //@@author A0162877N
+    private void setStatusBarFooter() {
         if (statusBarFooter == null) {
             statusBarFooter = new StatusBarFooter(getStatusbarPlaceholder(), config.getTaskManagerFilePath());
         } else {
             statusBarFooter.setSaveLocation(config.getTaskManagerFilePath());
         }
+    }
 
+    //@@author A0162877N
+    private void setCommandBox() {
         if (commandBox == null) {
             commandBox = new CommandBox(getCommandBoxPlaceholder(), logic);
         } else {
@@ -252,9 +275,9 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
-    //@@author A0140042A
+    //@@author A0162877N
     /**
-     * Updates task list with tasks containing the labels
+     * Display task with the label selected
      */
     public void loadLabelSelection(String label) {
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(label));
@@ -265,12 +288,14 @@ public class MainWindow extends UiPart<Region> {
      * Updates task list with tasks that starts after today
      */
     public void loadTodaySelection() {
-        Date endDate = new Date(2222, 1, 1, 23, 59, 59);
-        Date startDate = new Date(new Date().getYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
-        model.updateFilteredTaskList(startDate, endDate);
+        Date endDate = DateTimeUtil.getEndDate();
+        Date startDate = DateTimeUtil.getStartDate();
+        model.updateFilteredTaskList(startDate, endDate, false);
     }
-    //@@author
 
+    /**
+     * Display all incomplete task
+     */
     public void showAllTask() {
         model.updateFilteredTaskList(false);
     }

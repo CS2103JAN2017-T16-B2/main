@@ -33,21 +33,23 @@ public class EditBookingCommand extends Command {
     public static final String MESSAGE_NO_SUCH_BOOKING = "Index provided is invalid.\n" + MESSAGE_USAGE;
     public static final String MESSAGE_TASK_NO_BOOKING = "This task does not have bookings to update.";
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Edited Task: %1$s";
+    public static final int BOOKING_INDEX = 0;
+    public static final int VALID_INDEX = 0;
 
     private final int filteredTaskListIndex;
     private final int bookingSlotIndex;
     private final Set<Booking> bookingSet;
 
     public EditBookingCommand(int filteredTaskListIndex, int bookingSlotIndex) {
-        assert filteredTaskListIndex > 0;
-        assert bookingSlotIndex > 0;
+        assert filteredTaskListIndex > VALID_INDEX;
+        assert bookingSlotIndex > VALID_INDEX;
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
         this.bookingSlotIndex = bookingSlotIndex - 1;
         this.bookingSet = new HashSet<>();
     }
 
     public EditBookingCommand(int filteredTaskListIndex, String... dates) throws CommandException {
-        assert filteredTaskListIndex > 0;
+        assert filteredTaskListIndex > VALID_INDEX;
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
         bookingSlotIndex = -1;
         bookingSet = new HashSet<>();
@@ -58,7 +60,8 @@ public class EditBookingCommand extends Command {
 
     public EditBookingCommand(int filteredTaskListIndex, int bookingSlotIndex, String date)
             throws CommandException {
-        assert filteredTaskListIndex > 0;
+        assert filteredTaskListIndex > VALID_INDEX;
+        assert bookingSlotIndex > VALID_INDEX;
         this.filteredTaskListIndex = filteredTaskListIndex - 1;
         this.bookingSlotIndex = bookingSlotIndex - 1;
         bookingSet = new HashSet<>();
@@ -67,12 +70,13 @@ public class EditBookingCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        assert model != null;
         List<ReadOnlyTask> lastShownList = model.getFilteredTaskList();
         try {
             boolean bookingSuccess = false;
-            if (bookingSet.isEmpty() && bookingSlotIndex >= 0) {
+            if (bookingSet.isEmpty() && bookingSlotIndex >= VALID_INDEX) {
                 bookingSuccess = removeBookingsInTasks(lastShownList);
-            } else if (!bookingSet.isEmpty() && bookingSlotIndex >= 0) {
+            } else if (!bookingSet.isEmpty() && bookingSlotIndex >= VALID_INDEX) {
                 bookingSuccess = changeBookingsInTasks(lastShownList);
             } else if (!bookingSet.isEmpty()) {
                 bookingSuccess = addBookingsInTasks(lastShownList);
@@ -180,12 +184,12 @@ public class EditBookingCommand extends Command {
             UniqueBookingList bookings = task.getBookings();
             if (!bookings.isEmpty()) {
                 List<Booking> bookingList = bookings.toList();
-                if (bookingSlotIndex >= bookingList.size() || bookingSlotIndex < 0) {
+                if (bookingSlotIndex >= bookingList.size() || bookingSlotIndex < VALID_INDEX) {
                     throw new CommandException(MESSAGE_NO_SUCH_BOOKING);
                 }
-                if (!bookings.contains(new ArrayList<Booking>(bookingSet).get(0))) {
+                if (!bookings.contains(new ArrayList<Booking>(bookingSet).get(BOOKING_INDEX))) {
                     bookingList.remove(bookingSlotIndex);
-                    bookingList.add(new ArrayList<Booking>(bookingSet).get(0));
+                    bookingList.add(new ArrayList<Booking>(bookingSet).get(BOOKING_INDEX));
                 }
                 Collections.sort(bookingList);
                 task.setBookings(new UniqueBookingList(bookingList));

@@ -21,6 +21,8 @@ import seedu.address.model.task.ReadOnlyTask;
 public class TaskCard extends UiPart<Region> {
 
     private static final String FXML = "TaskListCard.fxml";
+    private static final int INVALID_INDEX = -1;
+    private static final int VALID_INDEX = 0;
 
     @FXML
     private HBox cardPane;
@@ -53,6 +55,9 @@ public class TaskCard extends UiPart<Region> {
     @FXML
     private Label recurrence;
 
+    /**
+     * Task Card initialization
+     */
     public TaskCard(ReadOnlyTask task, int displayedIndex) {
         super(FXML);
         title.setText(task.getTitle().title);
@@ -63,13 +68,14 @@ public class TaskCard extends UiPart<Region> {
         setBookings(task);
         removeStatus();
         setCheckBox(task, displayedIndex);
-        if (!(task.getStartTime().isPresent() && task.getDeadline().isPresent())) {
-            dateVBox.getChildren().remove(dashLabel);
-        }
-        if (task.isRecurring() && task.isCompleted()) {
-            completedCB.setDisable(true);
-        }
+        setDashLabel(task);
+        setIsRecurringLabel(task);
+    }
 
+    /**
+     * Set the recurring label text
+     */
+    private void setIsRecurringLabel(ReadOnlyTask task) {
         if (task.isRecurring()) {
             recurrence.setText("Repeats every " + task.getRecurrence().get().toString());
         } else {
@@ -77,11 +83,30 @@ public class TaskCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Set dash label to display only when both start date and deadline is present
+     */
+    private void setDashLabel(ReadOnlyTask task) {
+        if (!(task.getStartTime().isPresent() && task.getDeadline().isPresent())) {
+            dateVBox.getChildren().remove(dashLabel);
+        }
+    }
+
+    /**
+     * Initialize the checkbox and stores the display index in the style of checkbox
+     */
     private void setCheckBox(ReadOnlyTask task, int displayedIndex) {
         completedCB.setStyle(displayedIndex + "");
         completedCB.setSelected(task.isCompleted());
+        if (task.isRecurring() && task.isCompleted()) {
+            completedCB.setDisable(true);
+        }
     }
 
+    /**
+     * Initialize the start time. If start time is present, display,
+     * else dynamically delete the start time label from parent
+     */
     private void setStartTime(ReadOnlyTask task) {
         if (task.getStartTime().isPresent()) {
             startTime.setText(task.getStartTime().get().toString());
@@ -90,6 +115,10 @@ public class TaskCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Initialize the deadline. If deadline is present, display,
+     * else dynamically delete the deadline label from parent
+     */
     private void setDeadline(ReadOnlyTask task) {
         if (task.getDeadline().isPresent()) {
             deadline.setText(task.getDeadline().get().toString());
@@ -98,6 +127,10 @@ public class TaskCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Initialize the labels panel. If there exist label, display,
+     * else dynamically delete the label flow pane from parent
+     */
     private void setLabel(ReadOnlyTask task) {
         if (task.getLabels().isEmpty()) {
             leftVBox.getChildren().remove(labels);
@@ -106,6 +139,10 @@ public class TaskCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Initialize the deadline. If deadline is present, display,
+     * else dynamically delete the deadline label from parent
+     */
     private void setBookings(ReadOnlyTask task) {
         if (task.getBookings().isEmpty()) {
             dateVBox.getChildren().remove(reserveSlot);
@@ -117,6 +154,9 @@ public class TaskCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Remove the status label from task card
+     */
     private void removeStatus() {
         vBoxMain.getChildren().remove(status);
     }
@@ -127,7 +167,7 @@ public class TaskCard extends UiPart<Region> {
     @FXML
     private void handleCheckBoxChanged(ActionEvent event) {
         int id = tryParseAsIndex(completedCB.getStyle());
-        if (id > 0) {
+        if (id > VALID_INDEX) {
             raise(new CheckBoxSelectionChangedEvent(id, completedCB.isSelected()));
         }
     }
@@ -140,14 +180,20 @@ public class TaskCard extends UiPart<Region> {
         if (index.isPresent()) {
             return index.get();
         } else {
-            return -1;
+            return INVALID_INDEX;
         }
     }
 
+    /**
+     * Add the label flowpane with the labels in the task
+     */
     private void initLabels(ReadOnlyTask task) {
         task.getLabels().forEach(label -> labels.getChildren().add(new Label(label.labelName)));
     }
 
+    /**
+     * Add the booking flowpane with the booking time slots in a task
+     */
     private void initBookings(ReadOnlyTask task) {
         task.getBookings().forEach(booking -> bookings.getChildren().add(new Label(booking.toString() + "\n")));
     }

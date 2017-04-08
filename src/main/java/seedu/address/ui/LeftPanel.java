@@ -25,6 +25,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelTodaySelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowAllSelectionChangedEvent;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.model.label.Label;
 import seedu.address.model.task.ReadOnlyTask;
@@ -124,18 +125,18 @@ public class LeftPanel extends UiPart<Region> {
     public void setTodayListView(ObservableList<ReadOnlyTask> taskList) {
         todayLabel.setText("Today");
         int count = 0;
-        Date endTime = new Date(2222, 1, 1, 23, 59, 59);
-        Date startDate = new Date(new Date().getYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0);
+        Date endTime = DateTimeUtil.getEndDate();
+        Date startDate = DateTimeUtil.getStartDate();
 
         // Add all tasks that is not completed and deadline is after today
         for (ReadOnlyTask task : taskList) {
-            if (task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
+            if (!task.isCompleted() && task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
                 if ((task.getDeadline().get().getDateTime().before(endTime)
                         && task.getDeadline().get().getDateTime().after(startDate))
                         || task.getDeadline().get().getDateTime().equals(endTime)) {
                     count++;
                 }
-            } else if (task.getDeadline().isPresent() &&
+            } else if (!task.isCompleted() && task.getDeadline().isPresent() &&
                         (task.getDeadline().get().getDateTime().before(endTime)
                                 || task.getDeadline().get().getDateTime().equals(endTime))) {
                 count++;
