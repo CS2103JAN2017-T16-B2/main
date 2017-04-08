@@ -299,15 +299,17 @@ Certain properties of the application can be controlled (e.g App name, logging l
 ### 3.3 Design Decisions
 
 #### 3.3.1 AutocompleteManager
-* The AutocompleteManager implements a request and response design.
-* To use the Autocomplete feature, a response object is created with the command and the current cursor position and sent to the AutomcompleteManager.
+* The AutocompleteManager implements a request and response design. This is done to make autocomplete as modular as possible so that it is easy to use for other projects.
+* To use the Autocomplete feature, a request object is created with the command and the current cursor position and sent to the AutomcompleteManager.
 * The AutocompleteManager will create a response with the new command with the autocompleted command as well as the new cursor position.
 
 #### 3.3.2 CommandHistoryManager
 * CommandHistoryManager implements a Singleton design as all command history that has been typed previous affect data that persists throughout the application.
+* The underlying data structure used is a doubly linked list to iterate through previous successfully executed commands.
 
 #### 3.3.3 SaveAs & Load Feature
 * SaveAs and Load feature utilizes the EventsCenter to update the managers of each component (UI, Storage, Model, Logic)
+* This is done so future interactions from the user will persist into the new location provided
 
 ## 4. Testing
 
@@ -789,7 +791,7 @@ Precondition: User has opened the application<br />
 **MSS**
 
 1. User request to iterate through previous commands executed
-2. System retrieves a list previously used command and displays it to the user<br />
+2. System retrieves a list previously used command and displays the previous command from that point to the user<br />
 Use case ends
 
 **Extensions**
@@ -805,7 +807,7 @@ Precondition: User has opened the application<br />
 
 **MSS**
 
-1. User is in the midst of typing a command and request for an autocomplete option
+1. User is in the midst of typing a command and request for an auto complete.
 2. System searches through a dictionary and completes the command if there is a single term found<br />
 Use case ends
 
@@ -817,9 +819,9 @@ Use case ends
 
 2b. Multiple matches found
 
-> 2b1. System will display list of words that currently match whatever the user is typing
+> 2b1. System will display list of words that currently match the input as well as auto complete up to the longest common substring.
 
-> 2b2. User continues to enter more letters into the command and request for an autocomplete option again<br />
+> 2b2. User continues to enter more letters into the command and request for an auto complete again<br />
   Steps 2b1-2b2 are repeated until there is 0 or 1 word that matches the partial command<br />
   Use case resumes from step 2
 
@@ -831,7 +833,7 @@ Precondition: User has opened the application<br />
 **MSS**
 
 1. User requests to delete a specific label
-2. System deletes the label and display the updated list of tasks<br />
+2. System deletes the label from all tasks and displays the updated list of tasks<br />
 Use case ends
 
 **Extensions**

@@ -19,8 +19,8 @@ Please refer to the [Setting up](DeveloperGuide.md#setting-up) section to learn 
 2. Download the latest `doordie.jar` from the [releases](../../../releases) tab.
 3. Navigate to the location of the `doordie.jar` and double click the jar.
 4. The GUI should appear in a few seconds.
-<img src="images/Ui.png" width="600">
-
+<img src="images/Ui.png" width="600"><br />
+If you get an error on saving the file, try running the jar file as an administrator.
 5. Refer to the [Features](#features) section below for details of each command.<br />
 
 ## 2. Features
