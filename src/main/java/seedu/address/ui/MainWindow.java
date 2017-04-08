@@ -138,6 +138,7 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
+    //@@author A0140042A
     /**
      * Fill up components in the main window,
      * but only update appropriate components if already initialized
@@ -150,7 +151,6 @@ public class MainWindow extends UiPart<Region> {
         setCommandBox();
     }
 
-    //@@author A0162877N
     private void setTaskListPanel() {
         if (taskListPanel == null) {
             taskListPanel = new TaskListPanel(getTaskListPlaceholder(), logic.getFilteredIncompleteTaskList());
@@ -159,7 +159,6 @@ public class MainWindow extends UiPart<Region> {
         }
     }
 
-    //@@author A0162877N
     private void setLeftPanel() {
         if (leftPanel == null) {
             leftPanel = new LeftPanel(getleftPanelPlaceholder(), model.getTaskManager().getTaskList());
@@ -170,14 +169,12 @@ public class MainWindow extends UiPart<Region> {
         }
     }
 
-    //@@author A0162877N
     private void setResultDisplay() {
         if (resultDisplay == null) {
             resultDisplay = new ResultDisplay(getResultDisplayPlaceholder());
         }
     }
 
-    //@@author A0162877N
     private void setStatusBarFooter() {
         if (statusBarFooter == null) {
             statusBarFooter = new StatusBarFooter(getStatusbarPlaceholder(), config.getTaskManagerFilePath());
@@ -186,7 +183,6 @@ public class MainWindow extends UiPart<Region> {
         }
     }
 
-    //@@author A0162877N
     private void setCommandBox() {
         if (commandBox == null) {
             commandBox = new CommandBox(getCommandBoxPlaceholder(), logic);
@@ -194,7 +190,6 @@ public class MainWindow extends UiPart<Region> {
             commandBox.setLogic(logic);
         }
     }
-    //@@author
 
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
