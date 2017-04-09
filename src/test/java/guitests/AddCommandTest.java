@@ -121,13 +121,15 @@ public class AddCommandTest extends TaskManagerGuiTest {
                 .withRecurrenceStatus(true).withRecurrence("2 days")
                 .withStatus(false).build();
         assertAddSuccess(taskToAdd, currentList);
+        currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
         //add recurrence with interval in years
-        taskToAdd = new TaskBuilder().withTitle("Celebrate XYZ's birthday")
+        taskToAdd = new TaskBuilder().withTitle("Celebrate XYZ birthday")
                 .withDeadline("14th April")
                 .withRecurrenceStatus(true).withRecurrence("1 year")
                 .withStatus(false).build();
         assertAddSuccess(taskToAdd, currentList);
+        currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
         //add recurrence with interval in hours
         taskToAdd = new TaskBuilder().withTitle("Eat medicine")
@@ -135,6 +137,7 @@ public class AddCommandTest extends TaskManagerGuiTest {
                 .withRecurrenceStatus(true).withRecurrence("6 hours")
                 .withStatus(false).build();
         assertAddSuccess(taskToAdd, currentList);
+        currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
         //add recurrence with interval in minutes
         taskToAdd = new TaskBuilder().withTitle("Check something")
