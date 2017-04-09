@@ -13,10 +13,11 @@ import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
 import seedu.address.testutil.TestUtil;
 
+//@@author A0105287E
 public class AddCommandTest extends TaskManagerGuiTest {
 
     @Test
-    public void add() throws IllegalValueException, IllegalDateTimeValueException {
+    public void add_manually_success() throws IllegalValueException, IllegalDateTimeValueException {
         //add one task
         TestTask[] currentList = td.getTypicalTasks();
         TestTask taskToAdd = td.task8;
@@ -27,8 +28,12 @@ public class AddCommandTest extends TaskManagerGuiTest {
         taskToAdd = td.task9;
         assertAddSuccess(taskToAdd, currentList);
         currentList = TestUtil.addTasksToList(currentList, taskToAdd);
+    }
 
-        //add another task
+    @Test
+    public void add_deadlineTask_success() throws IllegalValueException, IllegalDateTimeValueException {
+        TestTask[] currentList = td.getTypicalTasks();
+        TestTask taskToAdd;
         taskToAdd = (new TaskBuilder())
                 .withTitle("Test Task")
                 .withDeadline("today")
@@ -37,7 +42,12 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertAddSuccess(taskToAdd, currentList);
         currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
-        //add another task
+    }
+
+    @Test
+    public void add_floatingTask_success() throws IllegalValueException {
+        TestTask[] currentList = td.getTypicalTasks();
+        TestTask taskToAdd;
         taskToAdd = (new TaskBuilder())
                 .withTitle("Test Task 2")
                 .withLabels("label1", "label2")
@@ -45,17 +55,34 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertAddSuccess(taskToAdd, currentList);
         currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
+    }
+
+    @Test
+    public void add_duplicateTask_failure() {
+        //add a task manually
+        TestTask[] currentList = td.getTypicalTasks();
+        TestTask taskToAdd = td.task8;
+        assertAddSuccess(taskToAdd, currentList);
+        currentList = TestUtil.addTasksToList(currentList, taskToAdd);
+
         //add duplicate task
         commandBox.runCommand(td.task8.getAddCommand());
         assertResultMessage(AddCommand.MESSAGE_DUPLICATE_TASK);
         assertTrue(taskListPanel.isListMatching(currentList));
+    }
 
-        //add to empty list
+    @Test
+    public void add_toEmptyList_success() {
         commandBox.runCommand("clear");
         assertAddSuccess(td.task1);
+    }
 
-        //invalid command
+    @Test
+    public void add_invalidCommand_failure() {
         commandBox.runCommand("addso do something");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("Add do something");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
@@ -71,7 +98,6 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(expectedList));
     }
 
-    //@@author A0105287E
     @Test
     public void add_swapDatesWhenStartIsAfterEnd_success() throws Exception {
         TestTask[] currentList = td.getTypicalTasks();
@@ -95,7 +121,7 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(expectedList));
     }
 
-    //@@author A0105287E
+
     @Test
     public void add_recurringTask_success() throws Exception {
         TestTask[] currentList = td.getTypicalTasks();
