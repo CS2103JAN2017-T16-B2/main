@@ -14,6 +14,16 @@ Responsibilities:
 > * Code Quality
 > * Scheduling and Tracking
 
+Features Implemented:
+> * Graphic User Interface
+> * Natty Date Parsing
+> * Undo
+> * Find Command (Power and Partial Search)
+> * List Command (Dates)
+> * Bookings
+>  * Editbooking (Remove, Add and Change Time Slots) 
+>  * Confirm Booking
+
 -----
 
 #### [Yip Mun Kit Bernard](http://github.com/bernardyip)
@@ -25,6 +35,15 @@ Responsibilities:
 > * Testing
 > * Code Quality
 > * Scheduling and Tracking
+> * Expert Debugger
+
+
+Features Implemented:
+> * Graphic User Interface
+> * Command Iteration
+> * Autocomplete of Command Input
+> * Delete / Edit Label
+> * Saveas and Load Command for data storage
 
 -----
 
@@ -38,6 +57,13 @@ Responsilibilies:
 > * Code Quality
 > * Scheduling and Tracking
 
+Features Implemented:
+> * Add Task Command
+> * Edit Task Command
+> * Mark Task Complete / Incomplete Command
+> * List Command (Completed and Incomplete Task)
+> * Sort Task by Dates and Status
+
 -----
 
 # Contributors
@@ -45,5 +71,5 @@ Responsilibilies:
 We welcome contributions. See [Contact Us](ContactUs.md) page for more info.
 
 * [NUS SoC CS2103 Teaching and Development Team](https://github.com/nus-cs2103-AY1617S2/addressbook-level4)
-* [Akshay Narayan](https://github.com/se-edu/addressbook-level4/pulls?q=is%3Apr+author%3Aokkhoy)
+* [Akshay Narayan <3](https://github.com/se-edu/addressbook-level4/pulls?q=is%3Apr+author%3Aokkhoy)
 * [Sam Yong](https://github.com/se-edu/addressbook-level4/pulls?q=is%3Apr+author%3Amauris)
