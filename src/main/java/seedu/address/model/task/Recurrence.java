@@ -5,7 +5,10 @@ import java.util.StringTokenizer;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.recurrenceparser.RecurrenceManager;
 import seedu.address.logic.recurrenceparser.RecurrenceParser;
-
+//@@author A0105287E
+/**
+ * Represents a Task's recurrence in the task manager.
+ */
 public class Recurrence {
 
     public static final String MESSAGE_RECURRENCE_CONSTRAINTS =
@@ -23,9 +26,9 @@ public class Recurrence {
     public final String intervalString;
 
     /**
-     * Validates given name.
+     * Validates given recurrence.
      *
-     * @throws IllegalValueException if given name string is invalid.
+     * @throws IllegalValueException if given input string is invalid or if it contains an invalid interval.
      */
     public Recurrence(String recurrence) throws IllegalValueException {
         assert recurrence != null;
@@ -46,7 +49,7 @@ public class Recurrence {
     }
 
     /**
-     * Returns true if a given string is a valid  name.
+     * Returns true if a given string is a valid input for recurrence.
      */
     public static boolean isValidRecurrence(String test) {
         return test.matches(RECURRENCE_VALIDATION_REGEX);

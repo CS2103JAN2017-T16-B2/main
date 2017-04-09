@@ -20,6 +20,9 @@ import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList;
 
 //@@author A0105287E
+/**
+ * Marks a task completed. If is a recurring task, it also generates the next instance
+ */
 public class MarkCommand extends Command {
 
     public static final String COMMAND_WORD = "mark";

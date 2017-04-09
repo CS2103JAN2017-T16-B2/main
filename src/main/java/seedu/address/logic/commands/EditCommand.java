@@ -15,7 +15,7 @@ import seedu.address.model.task.Recurrence;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList;
-
+//@@author A0105287E
 /**
  * Edits the details of an existing task in the task manager.
  */

@@ -15,7 +15,7 @@ import seedu.address.model.task.Recurrence;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList;
-
+//@@author A0105287E
 /**
  * Adds a task to the task manager.
  */
@@ -36,7 +36,7 @@ public class AddCommand extends Command {
     private final Task toAdd;
 
     /**
-     * Creates an AddCommand with no date using raw values.
+     * Creates an AddCommand for floating task with no date using raw values.
      *
      * @throws IllegalValueException
      *             if any of the raw values are invalid
@@ -59,7 +59,7 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Creates an AddCommand using raw values.
+     * Creates an AddCommand for deadline task using raw values.
      *
      * @throws IllegalValueException
      *             if any of the raw values are invalid
@@ -88,7 +88,7 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Creates an AddCommand using raw values.
+     * Creates an AddCommand for event task using raw values.
      *
      * @throws IllegalValueException
      *             if any of the raw values are invalid

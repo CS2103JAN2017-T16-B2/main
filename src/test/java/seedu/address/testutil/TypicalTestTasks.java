@@ -8,7 +8,7 @@ import seedu.address.model.task.Task;
 import seedu.address.model.task.UniqueTaskList;
 
 /**
- *
+ *  Contains sample tasks to be used for testing
  */
 public class TypicalTestTasks {
 
