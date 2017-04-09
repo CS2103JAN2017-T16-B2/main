@@ -33,8 +33,8 @@ If you get an error on saving the file, try running the jar file as an administr
 > * Parameters can be in any order.
 >
 > **Acceptable Date and Time Input Format**
->
->  Date Format | Example |
+> 
+Date Format | Example |
 -------- | :-------- |
 | Day Month | 1st Apr |
 | Day Month Year | 1st Apr 2017, 1st April 17 |
@@ -45,13 +45,12 @@ If you get an error on saving the file, try running the jar file as an administr
 | Month - Day - Year | 12-1-2017, 11-1-17 |
 | Relative | today, tmr, tomorrow, two days later |
 
-> Time Format | Example |
+Time Format | Example |
 -------- | :-------- |
 | Hour:Min | 23:00 |
 | Hour.Min | 23.00, 2.00, 02.00 |
 | Hour am/pm (12 hour format) | 2am, 2AM, 2pm, 2PM |
 
->
 > * Date specified without timing after the `by` and `to` keyword is default to 23:59 hr
 > * Date specified without timing after the `from` keyword is default to 00:00 hr
 
