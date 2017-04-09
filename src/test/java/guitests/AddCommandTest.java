@@ -13,6 +13,7 @@ import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
 import seedu.address.testutil.TestUtil;
 
+
 //@@author A0105287E
 public class AddCommandTest extends TaskManagerGuiTest {
 
@@ -86,17 +87,6 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
-    private void assertAddSuccess(TestTask taskToAdd, TestTask... currentList) {
-        commandBox.runCommand(taskToAdd.getAddCommand());
-
-        //confirm the new card contains the right data
-        TaskCardHandle addedCard = taskListPanel.navigateToTask(taskToAdd.getTitle().title);
-        assertMatching(taskToAdd, addedCard);
-
-        //confirm the list now contains all previous tasks plus the new tasks
-        TestTask[] expectedList = TestUtil.addTasksToList(currentList, taskToAdd);
-        assertTrue(taskListPanel.isListMatching(expectedList));
-    }
 
     @Test
     public void add_swapDatesWhenStartIsAfterEnd_success() throws Exception {
@@ -132,5 +122,18 @@ public class AddCommandTest extends TaskManagerGuiTest {
                 .withStatus(false).build();
 
         assertAddSuccess(taskToAdd, currentList);
+    }
+
+
+    private void assertAddSuccess(TestTask taskToAdd, TestTask... currentList) {
+        commandBox.runCommand(taskToAdd.getAddCommand());
+
+        //confirm the new card contains the right data
+        TaskCardHandle addedCard = taskListPanel.navigateToTask(taskToAdd.getTitle().title);
+        assertMatching(taskToAdd, addedCard);
+
+        //confirm the list now contains all previous tasks plus the new tasks
+        TestTask[] expectedList = TestUtil.addTasksToList(currentList, taskToAdd);
+        assertTrue(taskListPanel.isListMatching(expectedList));
     }
 }
