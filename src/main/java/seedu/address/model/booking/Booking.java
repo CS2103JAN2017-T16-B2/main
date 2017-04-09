@@ -69,4 +69,12 @@ public class Booking implements Comparable<Booking> {
         return this.getBookingStartDate().compareTo(compareObj.getBookingStartDate());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj == this // short circuit if same object
+                || (obj instanceof Booking // instanceof handles nulls
+                        && this.startTime.equals(((Booking) obj).startTime)
+                        && this.endTime.equals(((Booking) obj).endTime));
+    }
+
 }
