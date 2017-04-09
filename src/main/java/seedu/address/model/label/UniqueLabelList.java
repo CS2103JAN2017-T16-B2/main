@@ -7,9 +7,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -26,6 +28,7 @@ import seedu.address.commons.util.CollectionUtil;
  */
 public class UniqueLabelList implements Iterable<Label> {
 
+    private static final Logger logger = LogsCenter.getLogger(UniqueLabelList.class);
     private final ObservableList<Label> internalList = FXCollections.observableArrayList();
 
     /**
@@ -113,6 +116,7 @@ public class UniqueLabelList implements Iterable<Label> {
         internalList.clear();
     }
 
+    //@@author A0162877N
     @Override
     public UniqueLabelList clone() {
         UniqueLabelList labelList = new UniqueLabelList();
@@ -122,7 +126,7 @@ public class UniqueLabelList implements Iterable<Label> {
                 labelList.add(new Label(label.getLabelName()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return labelList;
     }

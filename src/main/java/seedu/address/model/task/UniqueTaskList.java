@@ -3,14 +3,17 @@ package seedu.address.model.task;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.UniqueLabelList;
 
+//@@author A0162877N
 /**
  * A list of tasks that enforces uniqueness between its elements and does not
  * allow nulls.
@@ -21,6 +24,7 @@ import seedu.address.model.label.UniqueLabelList;
  */
 public class UniqueTaskList implements Iterable<Task>, Cloneable {
 
+    private static final Logger logger = LogsCenter.getLogger(UniqueTaskList.class);
     private final ObservableList<Task> internalList = FXCollections.observableArrayList();
 
     /**
@@ -65,13 +69,11 @@ public class UniqueTaskList implements Iterable<Task>, Cloneable {
         }
 
         taskToUpdate.resetData(editedTask);
-        // TODO: The code below is just a workaround to notify observers of the
-        // updated task.
-        // The right way is to implement observable properties in the Task
-        // class.
-        // Then, TaskCard should then bind its text labels to those observable
-        // properties.
-        internalList.set(index, taskToUpdate);
+        try {
+            internalList.set(index, taskToUpdate);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
     }
 
     /**
@@ -113,7 +115,7 @@ public class UniqueTaskList implements Iterable<Task>, Cloneable {
                         task.getRecurrence()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return taskList;
     }
@@ -151,6 +153,10 @@ public class UniqueTaskList implements Iterable<Task>, Cloneable {
         return internalList.hashCode();
     }
 
+    //@author A0105287E
+    /**
+     * Sort the internal list in unique task list
+     */
     public void sortList() {
         Comparator<ReadOnlyTask> comparator = new Comparator<ReadOnlyTask> () {
             public int compare(ReadOnlyTask task1, ReadOnlyTask task2) {
@@ -169,7 +175,7 @@ public class UniqueTaskList implements Iterable<Task>, Cloneable {
             super("Operation would result in duplicate tasks");
         }
     }
-
+    //@author
     /**
      * Signals that an operation targeting a specified task in the list would
      * fail because there is no such matching task in the list.
