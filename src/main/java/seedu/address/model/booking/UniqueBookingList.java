@@ -8,10 +8,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -27,6 +29,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
 public class UniqueBookingList implements Iterable<Booking>, Cloneable {
+
+    private static final Logger logger = LogsCenter.getLogger(UniqueBookingList.class);
     private final ObservableList<Booking> internalList = FXCollections.observableArrayList();
 
     /**
@@ -136,7 +140,7 @@ public class UniqueBookingList implements Iterable<Booking>, Cloneable {
                 bookingList.add(new Booking(booking.getBookingStartDate(), booking.getBookingEndDate()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return bookingList;
     }
