@@ -232,6 +232,8 @@ Classes used by multiple components are in the `seedu.taskmanager.commons` packa
 
 ### 2.7. High level sequence diagrams for commands
 
+Author: All
+
 This section aims to shed more light on the high level design for different commands.
 
 The diagram below shows the interaction between different components for the `add` command. <br><br>
@@ -298,6 +300,10 @@ Certain properties of the application can be controlled (e.g App name, logging l
 
 ### 3.3 Design Decisions
 
+Author: All
+
+In this section, our team discusses the design patterns implemented or that can be implemented for further improvements.
+
 #### 3.3.1 AutocompleteManager
 * The AutocompleteManager implements a request and response design. This is done to make autocomplete as modular as possible so that it is easy to use for other projects.
 * To use the Autocomplete feature, a request object is created with the command and the current cursor position and sent to the AutomcompleteManager.
@@ -313,6 +319,11 @@ Certain properties of the application can be controlled (e.g App name, logging l
 
 #### 3.3.4 UndoManager
 * UndoManager implements a Singleton pattern design as all mutating command that has been typed previous affects data that persists throughout the application.
+
+#### 3.3.5 Recurring Tasks
+* Recurring tasks are currently implemented in such a way that a new recurrence instance is only created once the previous instance is completed. Also, when the user edits the recurrence interval or dates, it changes for all instances.
+* This design can be further improved by implementing an abstraction-occurrence design pattern. With that the user can be given a choice to edit instance specific details as well as task specific details.
+
 
 ## 4. Testing
 
@@ -414,6 +425,8 @@ b. Require developers to download those libraries manually (this creates extra w
 
 ## Appendix A : User Stories
 
+Author: All
+
 Priorities: High (must have) - `* * *`, Medium (nice to have)  - `* *`,  Low (unlikely to have) - `*`
 
 
@@ -422,9 +435,8 @@ Priority | As a ... | I want to ... | So that I can...
 `* * *` | new user | see usage instructions | refer to instructions when I forget how to use the App
 `* * *` | user | create a new task |
 `* * *` | user | delete a task | remove task that I no longer need
-`* * *` | user | update a task | update task details so that my task is update to date
-`* * *` | user | view an existing task | view the details of the task
-`* * *` | user | list outstanding/completed/overdue tasks in a chronological order | know what tasks I need to complete and in which order
+`* * *` | user | edit a task | update task details so that my task is update to date
+`* * *` | user | list incomplete/completed tasks in a chronological order | know what tasks I need to complete and in which order
 `* * *` | user | add attachments and links to a task | find all the resources and information I need to complete the task in one place
 `* * *` | user | undo my previous operation | can undo any mistakes executed in the previous command
 `* * *` | user | find task based on keywords | find out what are the tasks with the same nature
@@ -436,7 +448,6 @@ Priority | As a ... | I want to ... | So that I can...
 `* * *` | user | other slots to be freed when I confirm a particular slot | better allocate my time for other tasks
 `* * *` | user | add a recurring task | not need to create the same task every time
 `* * *` | user | mark the completion of a task | differentiate it from other outstanding tasks I need to complete
-`* * *` | user | view my completed tasks | keep track of what tasks I have completed
 `* * *` | user | save my task manager data to a different location | create a new copy of my data elsewhere
 `* * *` | user | load data into my task manager | start working on another set of data without changing the file settings myself
 `* *` | user | add location to a task | attach location for event type of tasks
@@ -450,16 +461,18 @@ Priority | As a ... | I want to ... | So that I can...
 
 ## Appendix B : Use Cases
 
+Author: All
+
 (For all use cases below, the **System** is the `DoOrDie Task Manger` and the **Actor** is the `user`, unless specified otherwise)
 
 #### Use case: Create new task
-Use case ID: UC01 Create new task<br />
+Use case ID: UC01 Create new task (non-recurring)<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
 **MSS**
 
-1. User enters command to create new task and details of the task.
+1. User enters command to create new task and details of the task. The task can be of 3 types, floating task, deadline task (only end date), event task (has start and end date). Deadline and event tasks can further specified to be recurring, if no recurrence is specified a non-recurring task is created by default.
 2. System verify task details and creates the new task.
 3. System displays the details of the new task created.<br />
 Use case ends.
@@ -490,10 +503,11 @@ Use case ends.
 > 1a1. System shows an error message<br />
   Use case resumes at step 1
 
-#### Use case: Update a task
-Use case ID: UC03 Update a task<br />
+#### Use case: Edit a task
+Use case ID: UC03 Edit a task<br />
 Actor: User<br />
 Precondition: A list of tasks is being displayed<br />
+Description: This function can be used to not only change the existing details of the task but also to change the type of task, the user can switch between floating, deadline and event tasks as well as between recurring and non-recurring tasks.
 
 **MSS**
 
@@ -508,49 +522,29 @@ Use case ends
 > 3a1. System shows error to the user<br />
   3a2. System asks user to reenter the attributes (timeslot)<br />
   Resume at step 2.
+  
 
-#### Use case: View an existing task
-Use case ID: UC04 View an existing task<br />
-Actor: User<br />
-Precondition: A list of tasks is being displayed<br />
-
-**MSS**
-
-1. User identifies the task to view
-2. System displays the details of the task<br />
-Use case ends
-
-#### Use case: View all outstanding tasks in a chronological order
-Use case ID: UC05 View all outstanding tasks in a chronological order<br />
+#### Use case: View all incomplete tasks in a chronological order
+Use case ID: UC04 View all incomplete tasks in a chronological order<br />
 Actor: User<br />
 Precondition: User has opened the application.<br />
 
 **MSS**
 
-1. User prompts the system to list all outstanding tasks
-2. System displays a list of all outstanding tasks<br />
+1. User prompts the system to list all incomplete tasks
+2. System displays a list of all incomplete tasks<br />
 Use case ends
 
 **Extensions**
 
-2a. There are no outstanding tasks
+2a. There are no incomplete tasks
 
 > 2a1. System notifies user that there are no outstanding tasks<br />
   Use case ends
 
-#### Use case: Add attachments and links to a task
-Use case ID: UC06 Add attachments and links to a task<br />
-Actor: User<br />
-Precondition: User has opened the application and a list of task is being displayed<br />
-
-**MSS**
-
-1. User identifies the task to attach a file/hyperlink and specifies the location of the file or hyperlink
-2. System adds the links and attachments to the task and displays the updated task<br />
-Use case ends
 
 #### Use case: Undo previous operation
-Use case ID: UC07 Undo previous operation<br />
+Use case ID: UC05 Undo previous operation<br />
 Actor: User<br />
 
 **MSS**
@@ -567,7 +561,7 @@ Use case ends
   Use case ends
 
 #### Use case: Find a task
-Use case ID: UC08 Find a task<br />
+Use case ID: UC06 Find a task<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -585,7 +579,7 @@ Use case ends
   Use case ends
 
 #### Use case: Add a label to an outstanding task
-Use case ID: UC09 Add a label to an outstanding task<br />
+Use case ID: UC07 Add a label to an outstanding task<br />
 Actor: User<br />
 Precondition: User has opened the application and a list of tasks is being displayed<br />
 
@@ -603,7 +597,7 @@ Use case ends
   Use case ends
 
 #### Use case: Remove a label from a task
-Use case ID: UC10 Remove a label from a task<br />
+Use case ID: UC08 Remove a label from a task<br />
 Actor: User<br />
 Precondition: User has opened the application and a list of task is being displayed<br />
 
@@ -620,7 +614,7 @@ Precondition: User has opened the application and a list of task is being displa
   Use case ends
 
 #### Use case: Edit a label
-Use case ID: UC11 Edit a label<br />
+Use case ID: UC09 Edit a label<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -638,7 +632,7 @@ Use case ends
   Use case ends
 
 #### Use case: List all tasks under a label
-Use case ID: UC12 List all outstanding tasks under a label<br />
+Use case ID: UC10 List all outstanding tasks under a label<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -656,7 +650,7 @@ Use case ends
   Use case ends
 
 #### Use case: Booking multiple slots for a task
-Use case ID: UC13 Booking multiple slots for a task<br />
+Use case ID: UC11 Booking multiple slots for a task<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -679,7 +673,7 @@ Use case ends.
   Use case ends
 
 #### Use case: Free-ing slot when user confirms a slot for a task
-Use case ID: UC14 Free-ing slot when user confirms a slot for a task<br />
+Use case ID: UC12 Free-ing slot when user confirms a slot for a task<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -696,26 +690,9 @@ Use case ends
 > 1a1. System shows a error message to the user<br />
   Use case ends
 
-#### Use case: Add a recurring task
-Use case ID: UC15 Add a recurring task<br />
-Actor: User<br />
-Precondition: User has opened the application<br />
-
-**MSS**
-
-1. User request to add a recurring task and inputs the information required
-2. System creates recurring task and displays the task<br />
-Use case ends
-
-**Extensions**
-
-2a. The input in invalid or insufficient
-
-> 2a1. System shows error message<br />
-  Resume at step 1
 
 #### Use case: Mark a task as completed
-Use case ID: UC16 Mark a task as completed<br />
+Use case ID: UC13 Mark a task as completed<br />
 Actor: User<br />
 Precondition: A list of tasks is being displayed<br />
 
@@ -733,7 +710,7 @@ Use case ends
   Use case resumes at step 1
 
 #### Use case: View completed tasks
-Use case ID: UC17 View completed tasks<br />
+Use case ID: UC14 View completed tasks<br />
 Actor: User<br />
 Precondition: User has opened the applications<br />
 
@@ -751,19 +728,8 @@ Use case ends
   Use case ends
 
 
-#### Use case: Add location to a task
-Use case ID: UC18 Add location to a task<br />
-Actor: User<br />
-Precondition: User has opened the application and a list of tasks is being displayed<br />
-
-**MSS**
-
-1. User selects a task to add location to the task and specifies location
-2. System adds the location attribute to the task and displays updated task<br />
-Use case ends
-
 #### Use case: List down agenda for the day
-Use case ID: UC19 List down agenda for the day<br />
+Use case ID: UC15 List down agenda for the day<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -781,7 +747,7 @@ Use case ends
   Use case ends
 
 #### Use case: Iterate through command history
-Use case ID: UC20 Iterate through command history<br />
+Use case ID: UC16 Iterate through command history<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -798,7 +764,7 @@ Use case ends
 > Use case ends
 
 #### Use case: Autocomplete words that user is typing
-Use case ID: UC21 Autocomplete words that user is typing<br />
+Use case ID: UC17 Autocomplete words that user is typing<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -823,7 +789,7 @@ Use case ends
   Use case resumes from step 2
 
 #### Use case: Delete a label
-Use case ID: UC22 Delete a label<br />
+Use case ID: UC18 Delete a label<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -840,26 +806,9 @@ Use case ends
 > 2a1. System notifies the user that such a label is invalid/does not exist<br />
   Use case ends
 
-#### Use case: View overdue tasks
-Use case ID: UC23 View Overdue tasks<br />
-Actor: User<br />
-Precondition: User has opened the applications<br />
-
-**MSS**
-
-1. User request to list overdue tasks
-2. System shows a list of overdue task<br />
-Use case ends
-
-**Extensions**
-
-2a. The list is empty
-
-> 2a1. System notifies the user that there are no overdue tasks<br />
-  Use case ends
 
 #### Use case: Save current data to a new file location
-Use case ID: UC24 Save data to new file location<br />
+Use case ID: UC19 Save data to new file location<br />
 Actor: User<br />
 Precondition: User has opened the applications<br />
 
@@ -877,7 +826,7 @@ Use case ends
   Use case ends
 
 #### Use case: Replace data in task manager with new file specified
-Use case ID: UC25 Load data from new location<br />
+Use case ID: UC20 Load data from new location<br />
 Actor: User<br />
 Precondition: User has opened the applications<br />
 
@@ -895,7 +844,7 @@ Use case ends
   Use case ends
 
 #### Use case: Remove a booking
-Use case ID: UC26 Remove a booking<br />
+Use case ID: UC21 Remove a booking<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -913,7 +862,7 @@ Use case ends
   Use case ends
 
 #### Use case: Change a booking
-Use case ID: UC27 Change a booking<br />
+Use case ID: UC22 Change a booking<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -936,7 +885,7 @@ Use case ends
   Use case ends
 
 #### Use case: Add booking time slots
-Use case ID: UC28 Add booking time slots<br />
+Use case ID: UC23 Add booking time slots<br />
 Actor: User<br />
 Precondition: User has opened the application<br />
 
@@ -985,17 +934,33 @@ Use case ends
 
 > Windows, Linux, Unix, OS-X
 
-##### Floating Tasks
+##### Floating Task
 
-> Tasks without any deadline associated with them.
+> Task without any deadline or start and end time.
 
-##### Bookings
+##### Deadline Task
+
+> Tasks with a deadline.
+
+##### Event Task
+
+> Tasks with a start and end date.
+
+##### Recurring Task
+
+> Tasks that repeat after a specified interval. A recurring task has to be a deadline or event task. 
+
+##### Booking
 
 > Tasks with multiple time slots selected due to the lack of a confirmed slot.
 
+##### Label
+
+> A category that a task can be classified using. Examples: #school, #personal #projectXYZ
+
 ##### Relative Dates
 
-> Dates that are relative to the current day. e.g. Today, Tomorrow, Yesterday, etc.
+> Dates that are relative to the current day. Examples: Today, Tomorrow, Yesterday, etc.
 
 
 ## Appendix E : Product Survey
@@ -1067,4 +1032,3 @@ Cons:
 * Extensive location based reminders are only available to premium users.
 * Limits the size on attachments.
 * Timed and location based services only available to premium users.
-
