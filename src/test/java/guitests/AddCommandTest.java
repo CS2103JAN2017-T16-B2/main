@@ -113,14 +113,34 @@ public class AddCommandTest extends TaskManagerGuiTest {
 
 
     @Test
-    public void add_recurringTask_success() throws Exception {
+    public void add_recurringTasks_success() throws Exception {
         TestTask[] currentList = td.getTypicalTasks();
-
+        //add recurrence with interval in days
         TestTask taskToAdd = new TaskBuilder().withTitle("Complete task 11").withStartTime("today")
                 .withDeadline("tomorrow")
                 .withRecurrenceStatus(true).withRecurrence("2 days")
                 .withStatus(false).build();
+        assertAddSuccess(taskToAdd, currentList);
 
+        //add recurrence with interval in years
+        taskToAdd = new TaskBuilder().withTitle("Celebrate XYZ's birthday")
+                .withDeadline("14th April")
+                .withRecurrenceStatus(true).withRecurrence("1 year")
+                .withStatus(false).build();
+        assertAddSuccess(taskToAdd, currentList);
+
+        //add recurrence with interval in hours
+        taskToAdd = new TaskBuilder().withTitle("Eat medicine")
+                .withDeadline("today 8am")
+                .withRecurrenceStatus(true).withRecurrence("6 hours")
+                .withStatus(false).build();
+        assertAddSuccess(taskToAdd, currentList);
+
+        //add recurrence with interval in minutes
+        taskToAdd = new TaskBuilder().withTitle("Check something")
+                .withDeadline("today 10pm")
+                .withRecurrenceStatus(true).withRecurrence("30 minutes")
+                .withStatus(false).build();
         assertAddSuccess(taskToAdd, currentList);
     }
 

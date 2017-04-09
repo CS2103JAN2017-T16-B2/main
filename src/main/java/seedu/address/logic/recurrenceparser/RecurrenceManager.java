@@ -61,9 +61,6 @@ public class RecurrenceManager implements RecurrenceParser {
         case "minutes": case "minute":
             interval = Calendar.MINUTE;
             break;
-        case "seconds": case "second":
-            interval = Calendar.SECOND;
-            break;
         default:
             throw new IllegalArgumentException("Invalid interval");
         }
