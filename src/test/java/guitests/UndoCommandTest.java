@@ -6,9 +6,12 @@ import org.junit.Test;
 
 import guitests.guihandles.TaskCardHandle;
 import seedu.address.commons.core.Messages;
+import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.undo.UndoManager;
+import seedu.address.testutil.TaskBuilder;
 import seedu.address.testutil.TestTask;
 import seedu.address.testutil.TestUtil;
 
@@ -97,6 +100,29 @@ public class UndoCommandTest extends TaskManagerGuiTest {
 
         //empty list and undo
         commandBox.runCommand("clear");
+        commandBox.runCommand("undo");
+        assertTrue(taskListPanel.isListMatching(td.getTypicalTasks()));
+    }
+
+    @Test
+    public void undo_BookTask_ReturnTrue()
+            throws IllegalValueException, CommandException, IllegalDateTimeValueException {
+        UndoManager.getInstance().clear();
+        //add one booking
+        TestTask taskToAdd = (new TaskBuilder())
+                .withTitle("Complete booking")
+                .withDeadline("")
+                .withLabels("friends")
+                .withBookings("10-10-2017 2pm to 5pm",
+                        "11-10-2017 2pm to 5pm",
+                        "12-10-2017 2pm to 5pm")
+                .build();
+        commandBox.runCommand("book Complete booking #friends on 10-10-2017 2pm to 5pm,"
+                + " 11-10-2017 2pm to 5pm, 12-10-2017 2pm to 5pm");
+        TaskCardHandle addedCard = taskListPanel.navigateToTask("Complete booking");
+        assertTrue(addedCard.getTitle().equals("Complete booking"));
+        assertTrue(addedCard.isSameTask(taskToAdd));
+
         commandBox.runCommand("undo");
         assertTrue(taskListPanel.isListMatching(td.getTypicalTasks()));
     }
