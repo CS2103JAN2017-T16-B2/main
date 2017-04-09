@@ -55,8 +55,9 @@ public class Label implements Comparable<Label> {
     }
 
     /**
-     * Format state as text for viewing.
+     * Formats state as text for viewing.
      */
+    @Override
     public String toString() {
         return '[' + labelName + ']';
     }

@@ -58,7 +58,6 @@ public class StatusBarFooter extends UiPart<Region> {
     public void setSaveLocation(String location) {
         this.saveLocationLabel.setText(location);
     }
-    //@@author
 
     private void setSyncStatus(String status) {
         this.syncStatus.setText(status);

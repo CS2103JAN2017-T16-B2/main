@@ -50,6 +50,7 @@ public class ConfirmCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        assert model != null;
         List<ReadOnlyTask> lastShownList = model.getFilteredTaskList();
 
         if (filteredTaskListIndex >= lastShownList.size()) {

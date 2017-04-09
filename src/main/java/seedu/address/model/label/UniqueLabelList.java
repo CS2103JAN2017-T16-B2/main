@@ -179,6 +179,9 @@ public class UniqueLabelList implements Iterable<Label> {
         return internalList.iterator();
     }
 
+    /**
+     * Returns an unmodifiable observable list of this uniquelabellist
+     */
     public UnmodifiableObservableList<Label> asObservableList() {
         return new UnmodifiableObservableList<>(internalList);
     }
@@ -190,6 +193,9 @@ public class UniqueLabelList implements Iterable<Label> {
                         && this.internalList.equals(((UniqueLabelList) other).internalList));
     }
 
+    /**
+     * Checks if this list and the other list have the same components (order does not matter)
+     */
     public boolean equalsOrderInsensitive(UniqueLabelList other) {
         return this == other || new HashSet<>(this.internalList).equals(new HashSet<>(other.internalList));
     }
@@ -199,6 +205,9 @@ public class UniqueLabelList implements Iterable<Label> {
         return internalList.hashCode();
     }
 
+    /**
+     * Returns true if the list is empty
+     */
     public boolean isEmpty() {
         return internalList.isEmpty();
     }

@@ -27,7 +27,7 @@ public class TrieNode {
     }
 
     /**
-     * Get the children of the current node
+     * Gets the children of the current node
      */
     public Collection<TrieNode> getChildren() {
         return children.values();

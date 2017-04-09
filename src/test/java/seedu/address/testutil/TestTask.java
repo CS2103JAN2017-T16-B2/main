@@ -9,6 +9,7 @@ import seedu.address.model.task.ReadOnlyTask;
 import seedu.address.model.task.Recurrence;
 import seedu.address.model.task.Title;
 
+//@@author A0105287E
 /**
  * A mutable task object. For testing only.
  */
@@ -74,7 +75,6 @@ public class TestTask implements ReadOnlyTask {
         return getAsText();
     }
 
-    //@@author A0105287E
     /**
      * Returns an AddCommand that can be used to create this task.
      */
@@ -96,7 +96,6 @@ public class TestTask implements ReadOnlyTask {
         return addCommand;
     }
 
-    //@@author A0105287E
     private String getAddCommandWithoutDate() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
@@ -104,7 +103,6 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-    //@@author A0105287E
     private String getAddCommandWithDeadline() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
@@ -113,7 +111,6 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-    //@@author A0105287E
     private String getAddCommandWithInterval() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
@@ -123,7 +120,7 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-    //@@author A0105287E
+
     private String getAddCommandWithIntervalRecurring() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");
@@ -134,7 +131,6 @@ public class TestTask implements ReadOnlyTask {
         return sb.toString();
     }
 
-    //@@author A0105287E
     private String getAddCommandWithDeadlineRecurring() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().title + " ");

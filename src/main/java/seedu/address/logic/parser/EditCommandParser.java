@@ -26,11 +26,13 @@ import seedu.address.logic.commands.EditLabelCommand;
 import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.model.label.UniqueLabelList;
 
+
 /**
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser {
 
+    private static final int PREAMBLE_FIRST_INDEX = 0;
     private static final int EDIT_LABEL_ARGUMENT_LENGTH = 2;
     private static final int EDIT_LABEL_ARGUMENT_NEW_LABEL_INDEX = 1;
     private static final int EDIT_LABEL_ARGUMENT_LABEL_TO_CHANGE_INDEX = 0;
@@ -49,8 +51,8 @@ public class EditCommandParser {
         List<Optional<String>> preambleFields = ParserUtil.splitPreamble(argsTokenizer.getPreamble().orElse(""), 2);
 
         //@@author A0140042A
-        Optional<Integer> index = preambleFields.get(0).flatMap(ParserUtil::parseIndex);
-        if (isEditLabel(preambleFields, argsTokenizer)) {
+        Optional<Integer> index = preambleFields.get(PREAMBLE_FIRST_INDEX).flatMap(ParserUtil::parseIndex);
+        if (isEditLabelCommand(preambleFields, argsTokenizer)) {
             List<String> labelInputs = argsTokenizer.getAllValues(PREFIX_LABEL).get();
             try {
                 return new EditLabelCommand(labelInputs.get(EDIT_LABEL_ARGUMENT_LABEL_TO_CHANGE_INDEX),
@@ -64,6 +66,7 @@ public class EditCommandParser {
         }
         //@@author
 
+        //@@author A0105287E
         EditTaskDescriptor editTaskDescriptor = new EditTaskDescriptor();
         try {
             editTaskDescriptor.setName(ParserUtil.parseName(preambleFields.get(1)));
@@ -97,6 +100,7 @@ public class EditCommandParser {
         } catch (IllegalDateTimeValueException ipve) {
             return new IncorrectCommand(ipve.getMessage());
         }
+        //@@author
 
         if (!editTaskDescriptor.isAnyFieldEdited()) {
             return new IncorrectCommand(EditCommand.MESSAGE_NOT_EDITED);
@@ -110,13 +114,12 @@ public class EditCommandParser {
      * Checks if the intention of the edit command is to edit labels or not
      * An edit command format that edits a label: edit #OLD_LABEL #NEW_LABEL
      */
-    private boolean isEditLabel(List<Optional<String>> preambleFields, ArgumentTokenizer argsTokenizer) {
-        Optional<Integer> index = preambleFields.get(0).flatMap(ParserUtil::parseIndex);
+    private boolean isEditLabelCommand(List<Optional<String>> preambleFields, ArgumentTokenizer argsTokenizer) {
+        Optional<Integer> index = preambleFields.get(PREAMBLE_FIRST_INDEX).flatMap(ParserUtil::parseIndex);
         List<String> labelInputs = argsTokenizer.getAllValues(PREFIX_LABEL).orElse(new LinkedList<String>());
-        return !index.isPresent() && labelInputs.size() == EDIT_LABEL_ARGUMENT_LENGTH;
+        return !index.isPresent() && (labelInputs.size() == EDIT_LABEL_ARGUMENT_LENGTH);
     }
     //@@author
-
     /**
      * Parses {@code Collection<String> labels} into an {@code Optional<UniqueTagList>} if {@code labels} is non-empty.
      * If {@code labels} contain only one element which is an empty string, it will be parsed into a

@@ -6,10 +6,10 @@ import java.util.Optional;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.UniqueLabelList;
-
+//@@author A0105287E
 /**
  * Represents a Task in the task manager.
- * Guarantees: details are present and not null, field values are validated.
+ * Guarantees: details are present and not null (unless they of type Optional), field values are validated.
  */
 public class Task implements ReadOnlyTask {
 
@@ -24,7 +24,7 @@ public class Task implements ReadOnlyTask {
     private UniqueBookingList bookings;
 
     /**
-     * Every field must be present and not null.
+     * Every non-optional field must be present and not null.
      */
     public Task(Title title, Optional<Deadline> startTime, Optional<Deadline> deadline,
             boolean isCompleted, UniqueLabelList labels, boolean isRecurring, Optional<Recurrence> recurrence) {
@@ -40,7 +40,7 @@ public class Task implements ReadOnlyTask {
     }
 
     /**
-     * Every field except bookingList must be present and not null.
+     * Every non-optional field except bookingList must be present and not null.
      */
     public Task(Title title, Optional<Deadline> startTime, Optional<Deadline> deadline,
             boolean isCompleted, UniqueLabelList labels, UniqueBookingList bookings, boolean isRecurring,

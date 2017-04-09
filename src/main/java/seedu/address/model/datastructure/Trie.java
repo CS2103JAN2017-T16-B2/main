@@ -25,7 +25,6 @@ public class Trie implements AutocompleteDataStructure {
 
     /**
      * Loads phrases used for auto completion into the Trie
-     * @param phrases
      */
     @Override
     public void load(String... phrases) {

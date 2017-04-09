@@ -79,13 +79,11 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         try {
             value = compareCompletionStatus(other);
         } catch (IllegalValueException | IllegalDateTimeValueException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return value;
     }
 
-    //@@author A0105287E
     default int compareCompletionStatus(ReadOnlyTask other) throws IllegalValueException,
                         IllegalDateTimeValueException {
         if (this.isCompleted() && !other.isCompleted()) {
@@ -97,7 +95,6 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         }
     }
 
-    //@@author A0105287E
     default int compareDates(ReadOnlyTask other) throws IllegalValueException, IllegalDateTimeValueException {
         Deadline dateToCompareForOther = getEarliestDateForTask(other);
         Deadline dateToCompareForThis = getEarliestDateForTask(this);
@@ -112,7 +109,6 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         }
     }
 
-    //@@author A0105287E
     default Deadline getEarliestDateForTask(ReadOnlyTask task)
             throws IllegalValueException, IllegalDateTimeValueException {
         Deadline date;
@@ -127,6 +123,7 @@ public interface ReadOnlyTask extends Comparable<ReadOnlyTask> {
         }
         return date;
     }
+    //@@author
 
     default String getAsSearchText() {
         final StringBuilder builder = new StringBuilder();

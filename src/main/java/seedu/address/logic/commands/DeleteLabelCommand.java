@@ -68,6 +68,7 @@ public class DeleteLabelCommand extends Command {
             }
         }
 
+        //If the label did not exist, then we delete the saved state we saved earlier since there's no change
         if (!labelExist) {
             deleteCurrentState();
         }

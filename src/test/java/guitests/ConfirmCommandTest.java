@@ -14,6 +14,9 @@ import seedu.address.logic.commands.ConfirmCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 
 //@@author A0162877N
+/**
+ * Confirm command GUI jUnit test
+ */
 public class ConfirmCommandTest extends TaskManagerGuiTest {
 
     public static final String COMMAND_WORD = "confirm";
@@ -46,6 +49,12 @@ public class ConfirmCommandTest extends TaskManagerGuiTest {
         assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
 
         commandBox.runCommand("confirm a b");
+        assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+
+        commandBox.runCommand("confirm something something");
+        assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+
+        commandBox.runCommand("confirm ! ?");
         assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
     }
 

@@ -11,6 +11,9 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.testutil.TestTask;
 
 //@@author A0162877N
+/**
+ * List command GUI jUnit test
+ */
 public class ListCommandTest extends TaskManagerGuiTest {
 
     @Test
@@ -23,8 +26,6 @@ public class ListCommandTest extends TaskManagerGuiTest {
     public void list_AllTask_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         commandBox.runCommand("list");
-
-        //No change should occur
         assertTrue(taskListPanel.isListMatching(currentList));
     }
 
@@ -32,7 +33,7 @@ public class ListCommandTest extends TaskManagerGuiTest {
     public void list_TaskByDate_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
         commandBox.runCommand("list by 12-12-2017");
-        //No change should occur
+
         assertTrue(taskListPanel.isListMatching(currentList));
 
         commandBox.runCommand("list by christmas");
@@ -54,18 +55,13 @@ public class ListCommandTest extends TaskManagerGuiTest {
     @Test
     public void list_TaskByDateTime_ReturnTrue() {
         TestTask[] currentList = td.getTypicalTasks();
-
         commandBox.runCommand("list by 12-12-2017 0000");
-
         assertTrue(taskListPanel.isListMatching(currentList)); // No change should occur
 
         commandBox.runCommand("list by ");
-
         assertTrue(taskListPanel.isListMatching(currentList)); // No change should occur
-
         assertListResult("list by 2301 10-11-2017", td.task6); // Only task 6 should appear
         assertListResult("list from 0000 10-11-2017 to 2359 10-11-2017", td.task6); // Only task 6 should appear
-
     }
 
     //@@author A0105287E
@@ -84,7 +80,6 @@ public class ListCommandTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(new TestTask[]{td.task7, td.task4, td.task1}));
     }
 
-  //@@author A0105287E
     @Test
     public void list_listIncompleteTasks_success() {
         commandBox.runCommand("mark 1 completed"); //mark some tasks completed from the default list
@@ -95,6 +90,7 @@ public class ListCommandTest extends TaskManagerGuiTest {
 
         assertTrue(taskListPanel.isListMatching(new TestTask[]{td.task2, td.task3, td.task5, td.task6}));
     }
+    //@@author
 
     private void assertListResult(String command, TestTask... expectedHits) {
         commandBox.runCommand(command);
