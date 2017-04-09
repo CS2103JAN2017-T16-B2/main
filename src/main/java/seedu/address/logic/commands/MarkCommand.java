@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,41 +120,19 @@ public class MarkCommand extends Command {
         Optional<Deadline> updatedStartTime;
         Optional<Deadline> updatedDeadline;
         if (task.getStartTime().isPresent()) {
-            updatedStartTime = Optional.ofNullable(getRecurringDate(task.getStartTime().get(),
+            updatedStartTime = Optional.ofNullable(recurrenceParser.getRecurringDate(task.getStartTime().get(),
                 task.getRecurrence().get()));
-            updatedDeadline = Optional.ofNullable(getRecurringDate(task.getDeadline().get(),
+            updatedDeadline = Optional.ofNullable(recurrenceParser.getRecurringDate(task.getDeadline().get(),
                 task.getRecurrence().get()));
         } else {
             updatedStartTime = task.getStartTime();
-            updatedDeadline = Optional.ofNullable(getRecurringDate(task.getDeadline().get(),
+            updatedDeadline = Optional.ofNullable(recurrenceParser.getRecurringDate(task.getDeadline().get(),
                     task.getRecurrence().get()));
         }
-        Title updatedTitle = task.getTitle();
-        UniqueLabelList updatedLabels = task.getLabels();
-        UniqueBookingList updatedBookings = task.getBookings().clone();
-        Boolean isRecurring = task.isRecurring();
-        Optional<Recurrence> updatedRecurrence = task.getRecurrence();
         Boolean isCompleted = AddCommand.DEFAULT_TASK_STATE;
 
-        return new Task(updatedTitle, updatedStartTime, updatedDeadline, isCompleted,
-                updatedLabels, updatedBookings, isRecurring, updatedRecurrence);
-    }
-
-
-
-    /**
-     * Creates and returns a {@code Deadline} a new instance of the updated deadline passed in
-     */
-    private static Deadline getRecurringDate(Deadline date, Recurrence recurrence)
-            throws IllegalValueException, IllegalDateTimeValueException {
-        try {
-            Date oldDate = date.getDateTime();
-            return new Deadline (recurrenceParser.getNextDate(oldDate, recurrence).toString());
-        } catch (IllegalValueException e) {
-            throw new IllegalValueException(e.getMessage());
-        } catch (IllegalDateTimeValueException e) {
-            throw new IllegalDateTimeValueException();
-        }
+        return new Task(task.getTitle(), updatedStartTime, updatedDeadline, isCompleted,
+                task.getLabels(), task.getBookings(), task.isRecurring(), task.getRecurrence());
     }
 
 
