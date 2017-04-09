@@ -25,10 +25,15 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.commons.events.ui.LeftPanelTodaySelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowAllSelectionChangedEvent;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.model.label.Label;
 import seedu.address.model.task.ReadOnlyTask;
 
+//@@author @A0140042A
+/**
+ *  Controller class for the LeftPanel of Ui
+ */
 public class LeftPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
@@ -47,7 +52,7 @@ public class LeftPanel extends UiPart<Region> {
     private javafx.scene.control.Label todayCounterLabel;
 
     @FXML
-    private javafx.scene.control.Label calendarLabel;
+    private javafx.scene.control.Label showAllLabel;
 
     @FXML
     private javafx.scene.control.Label labelCounterLabel;
@@ -59,7 +64,7 @@ public class LeftPanel extends UiPart<Region> {
     private FontAwesomeIconView todayIconLabel;
 
     @FXML
-    private FontAwesomeIconView calendarIconLabel;
+    private FontAwesomeIconView showAllIconLabel;
 
     @FXML
     private FontAwesomeIconView labelArrow;
@@ -74,9 +79,8 @@ public class LeftPanel extends UiPart<Region> {
     private HBox todayHeader;
 
     @FXML
-    private HBox calendarHeader;
+    private HBox showAllHeader;
 
-    //@@author A0162877N
     public LeftPanel(AnchorPane leftListPlaceholder,
             ObservableList<ReadOnlyTask> taskList) {
         super(FXML);
@@ -84,12 +88,14 @@ public class LeftPanel extends UiPart<Region> {
         initIcons();
         updateLabelCount();
         setTodayListView(taskList);
-        setCalendarListView(taskList);
+        initializeShowAllLabel(taskList);
         addToPlaceholder(leftListPlaceholder);
         registerAsAnEventHandler(this);
     }
 
-    //@@author A0140042A
+    /**
+     * Updates the count in the LeftPanel labelList
+     */
     public void updateLabelCount() {
         labelCount = new HashMap<Label, Integer>();
 
@@ -103,36 +109,34 @@ public class LeftPanel extends UiPart<Region> {
         setConnections(labelCount);
     }
 
+    /**
+     * Initializes the icons on the LeftPanel
+     */
     private void initIcons() {
         todayIconLabel.setIcon(FontAwesomeIcon.CALENDAR_ALT);
-        calendarIconLabel.setIcon(FontAwesomeIcon.LIST);
+        showAllIconLabel.setIcon(FontAwesomeIcon.LIST);
         labelIconLabel.setIcon(FontAwesomeIcon.HASHTAG);
         labelArrow.setIcon(FontAwesomeIcon.ANGLE_UP);
     }
 
-    //@@author A0162877N
-    @SuppressWarnings("deprecation")
+    /**
+     * Sets the counter beside the today button with tasks that start after today midnight
+     */
     public void setTodayListView(ObservableList<ReadOnlyTask> taskList) {
         todayLabel.setText("Today");
         int count = 0;
-        Date endTime = new Date(2222, 1, 1);
-        Date startDate = new Date();
-        endTime.setHours(23);
-        endTime.setMinutes(59);
-        endTime.setSeconds(59);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setSeconds(0);
+        Date endTime = DateTimeUtil.getEndDate();
+        Date startDate = DateTimeUtil.getStartDate();
 
         // Add all tasks that is not completed and deadline is after today
         for (ReadOnlyTask task : taskList) {
-            if (task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
+            if (!task.isCompleted() && task.getDeadline().isPresent() && task.getStartTime().isPresent()) {
                 if ((task.getDeadline().get().getDateTime().before(endTime)
                         && task.getDeadline().get().getDateTime().after(startDate))
                         || task.getDeadline().get().getDateTime().equals(endTime)) {
                     count++;
                 }
-            } else if (task.getDeadline().isPresent() &&
+            } else if (!task.isCompleted() && task.getDeadline().isPresent() &&
                         (task.getDeadline().get().getDateTime().before(endTime)
                                 || task.getDeadline().get().getDateTime().equals(endTime))) {
                 count++;
@@ -142,12 +146,17 @@ public class LeftPanel extends UiPart<Region> {
         setEventHandlerForTodaySelectionChangeEvent();
     }
 
-    //@@author A0140042A
-    public void setCalendarListView(ObservableList<ReadOnlyTask> taskList) {
-        calendarLabel.setText("Show All");
+    /**
+     * Sets the showAll label as well as the event handler for it
+     */
+    public void initializeShowAllLabel(ObservableList<ReadOnlyTask> taskList) {
+        showAllLabel.setText("Show All");
         setEventHandlerForCalendarSelectionChangeEvent();
     }
 
+    /**
+     * Sets the connections for the label list and the counter
+     */
     public void setConnections(HashMap<Label, Integer> labelList) {
         labels = getLabelsWithCount(labelList);
         labelCounterLabel.setText(Integer.toString(labelList.size()));
@@ -176,6 +185,9 @@ public class LeftPanel extends UiPart<Region> {
         this.taskList = taskList;
     }
 
+    /**
+     * Toggles the visibility of the labelList
+     */
     @FXML
     private void toggleLabelList() {
         labelListView.setVisible(!labelListView.isVisible());
@@ -186,15 +198,17 @@ public class LeftPanel extends UiPart<Region> {
         }
     }
 
+    /**
+     * Adds this item to the placeHolderPane
+     */
     private void addToPlaceholder(AnchorPane placeHolderPane) {
         SplitPane.setResizableWithParent(placeHolderPane, false);
         FxViewUtil.applyAnchorBoundaryParameters(getRoot(), 0.0, 0.0, 0.0, 0.0);
         placeHolderPane.getChildren().add(getRoot());
     }
 
-    //@@author A0162877N
     /**
-     * Event handler today selection
+     * Creates an event handler to show all task that
      */
     private void setEventHandlerForTodaySelectionChangeEvent() {
         todayHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -206,12 +220,11 @@ public class LeftPanel extends UiPart<Region> {
         });
     }
 
-    //@@author A0162877N
     /**
-     * Event handler show all selection
+     * Creates an event handler to show all the incomplete task on the task panel
      */
     private void setEventHandlerForCalendarSelectionChangeEvent() {
-        calendarHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        showAllHeader.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 logger.fine("Clicked on show all menu");
@@ -220,7 +233,9 @@ public class LeftPanel extends UiPart<Region> {
         });
     }
 
-    //@@author A0162877N
+    /**
+     * Scrolls to the index of the task
+     */
     public void scrollTo(int index) {
         Platform.runLater(() -> {
             labelListView.scrollTo(index);
@@ -228,6 +243,9 @@ public class LeftPanel extends UiPart<Region> {
         });
     }
 
+    /**
+     *  Updates the label counts and today counts when the task manager has been changed
+     */
     @Subscribe
     public void handleTaskManagerChangedEvent(TaskManagerChangedEvent tmce) {
         updateLabelCount();
@@ -236,7 +254,6 @@ public class LeftPanel extends UiPart<Region> {
                 "Updating label list count and total number of tasks for today"));
     }
 
-    //@@author A0140042A
     class LabelListViewCell extends ListCell<Label> {
 
         @Override

@@ -1,4 +1,4 @@
-package seedu.address.logic.autocomplete;
+package seedu.address.model.datastructure;
 
 import java.util.List;
 

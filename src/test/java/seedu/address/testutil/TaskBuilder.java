@@ -13,7 +13,7 @@ import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Recurrence;
 import seedu.address.model.task.Title;
 
-
+//@@author A0105287E
 /**
  * Task Builder class which builds the details of the task for testing
  */
@@ -32,7 +32,7 @@ public class TaskBuilder {
         this.task = new TestTask(taskToCopy);
     }
 
-    //@@author A0105287E
+
     public TaskBuilder withTitle(String title) throws IllegalValueException {
         this.task.setTitle(new Title(title));
         return this;
@@ -46,7 +46,7 @@ public class TaskBuilder {
         return this;
     }
 
-    //@@author A0162877N
+
     public TaskBuilder withBookings(String ... bookings) throws IllegalValueException, CommandException {
         task.setBookings(new UniqueBookingList());
         for (String booking: bookings) {
@@ -55,7 +55,7 @@ public class TaskBuilder {
         return this;
     }
 
-    //@@author A0105287E
+
     public TaskBuilder withStartTime(String startTime) throws IllegalValueException, IllegalDateTimeValueException {
         if (startTime != null) {
             this.task.setStartTime(Optional.ofNullable(new Deadline(startTime)));
@@ -65,7 +65,7 @@ public class TaskBuilder {
         return this;
     }
 
-    //@@author A0105287E
+
     public TaskBuilder withDeadline(String deadline) throws IllegalValueException, IllegalDateTimeValueException {
         if (deadline != null) {
             this.task.setDeadline(Optional.ofNullable(new Deadline(deadline)));
@@ -75,7 +75,7 @@ public class TaskBuilder {
         return this;
     }
 
-    //@@author A0105287E
+
     public TaskBuilder withStatus(boolean isCompleted) {
         this.task.setIsCompleted(isCompleted);
         return this;
@@ -85,13 +85,13 @@ public class TaskBuilder {
         return this.task;
     }
 
-    //@@author A0105287E
+
     public TaskBuilder withRecurrenceStatus(boolean isRecurring) {
         this.task.setIsRecurring(isRecurring);
         return this;
     }
 
-    //@@author A0105287E
+
     public TaskBuilder withRecurrence(String recurrence) throws IllegalValueException {
         if (recurrence != null) {
             this.task.setRecurrence(Optional.ofNullable(new Recurrence(recurrence)));

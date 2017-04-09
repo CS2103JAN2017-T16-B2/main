@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import seedu.address.logic.autocomplete.AutocompleteDataStructure;
-
 //@@author A0140042A
 /**
  * Data structure used to store auto complete data
@@ -25,7 +23,6 @@ public class Trie implements AutocompleteDataStructure {
 
     /**
      * Loads phrases used for auto completion into the Trie
-     * @param phrases
      */
     @Override
     public void load(String... phrases) {

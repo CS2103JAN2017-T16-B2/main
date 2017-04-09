@@ -15,16 +15,22 @@ import seedu.address.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.model.task.ReadOnlyTask;
 
+//@@author A0162877N
 /**
  * Panel containing the list of tasks.
  */
 public class TaskListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
     private static final String FXML = "TaskListPanel.fxml";
+    private static final double PERIMETER_DEFAULT_LENGTH = 0.0;
 
     @FXML
     private ListView<ReadOnlyTask> taskListView;
 
+    /**
+     * Initialization of the task list panel and
+     * add the task panel to the task list place holder
+     */
     public TaskListPanel(AnchorPane taskListPlaceholder, ObservableList<ReadOnlyTask> taskList) {
         super(FXML);
         setConnections(taskList);
@@ -32,6 +38,9 @@ public class TaskListPanel extends UiPart<Region> {
         setEventHandlerForSelectionChangeEvent();
     }
 
+    /**
+     * Set the connections for task list panel
+     */
     public void setConnections(ObservableList<ReadOnlyTask> taskList) {
         taskListView.setItems(taskList);
         taskListView.setCellFactory(listView -> new TaskListViewCell());
@@ -39,10 +48,17 @@ public class TaskListPanel extends UiPart<Region> {
 
     private void addToPlaceholder(AnchorPane placeHolderPane) {
         SplitPane.setResizableWithParent(placeHolderPane, false);
-        FxViewUtil.applyAnchorBoundaryParameters(getRoot(), 0.0, 0.0, 0.0, 0.0);
+        FxViewUtil.applyAnchorBoundaryParameters(getRoot(),
+                PERIMETER_DEFAULT_LENGTH,
+                PERIMETER_DEFAULT_LENGTH,
+                PERIMETER_DEFAULT_LENGTH,
+                PERIMETER_DEFAULT_LENGTH);
         placeHolderPane.getChildren().add(getRoot());
     }
 
+    /**
+     * Set the event handler for selection change of the task card
+     */
     private void setEventHandlerForSelectionChangeEvent() {
         taskListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
@@ -53,6 +69,9 @@ public class TaskListPanel extends UiPart<Region> {
                 });
     }
 
+    /**
+     * Set the task list to scroll to the index in the task panel
+     */
     public void scrollTo(int index) {
         Platform.runLater(() -> {
             taskListView.scrollTo(index);

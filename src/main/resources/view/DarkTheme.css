@@ -399,7 +399,7 @@ Vbox, SplitPane {
     -fx-pref-width: 500;
 }
 
-#labelTitle, #calendarLabel, #todayLabel {
+#labelTitle, #showAllLabel, #todayLabel {
     -fx-padding: 20 20 20 10;
     -fx-font-family: "Roboto";
     -fx-text-fill: #000000;

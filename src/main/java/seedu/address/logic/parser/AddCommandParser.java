@@ -21,6 +21,7 @@ import seedu.address.model.task.Recurrence;
  */
 public class AddCommandParser extends Parser {
 
+    public static final int START_STRING_INDEX = 0;
     public static final int VALID_DATEARR_SIZE = 1;
 
     /**
@@ -43,22 +44,26 @@ public class AddCommandParser extends Parser {
                 Boolean isRecurring = false;
 
                 if (isDateParseable(startDT) && isDateParseable(endDT)) {
+                    //@@author A0105287E
                     //swap dates if start is after the end
                     if (!isBefore(startDT, endDT)) {
                         String temp = startDT;
                         startDT = endDT;
                         endDT = temp;
                     }
-                    title = args.substring(0, args.lastIndexOf("from"));
+                    //@@author
+                    title = args.substring(START_STRING_INDEX, args.lastIndexOf("from"));
                     if (!args.contains(PREFIX_RECURRENCE.getPrefix())) {
                         return new AddCommand(title, startDT, endDT,
                             ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring, Optional.empty());
                     } else {
+                        //@@author A0105287E
                         isRecurring = true;
                         return new AddCommand(title, startDT, endDT,
-                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring,
-                                    Optional.ofNullable(new Recurrence(argsTokenizer
-                                            .getValue(PREFIX_RECURRENCE).get())));
+                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
+                                isRecurring,
+                                Optional.ofNullable(new Recurrence(argsTokenizer.getValue(PREFIX_RECURRENCE).get())));
+                        //@@author
                     }
                 }
             }
@@ -75,10 +80,13 @@ public class AddCommandParser extends Parser {
                         return new AddCommand(title, deadline.trim(),
                             ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring, Optional.empty());
                     } else {
+                        //@@author A0105287E
                         isRecurring = true;
                         return new AddCommand(title, deadline.trim(),
-                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring,
+                                ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
+                                isRecurring,
                                 Optional.ofNullable(new Recurrence(argsTokenizer.getValue(PREFIX_RECURRENCE).get())));
+                      //@@author
                     }
                 }
             }
@@ -86,7 +94,6 @@ public class AddCommandParser extends Parser {
         } catch (NoSuchElementException nsee) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         } catch (Exception e) {
-            e.printStackTrace();
             return new IncorrectCommand(e.getMessage());
         }
     }

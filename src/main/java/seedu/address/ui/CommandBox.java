@@ -75,25 +75,12 @@ public class CommandBox extends UiPart<Region> {
 
     //@@author A0140042A
     /**
-     * Hijacks the tab character for auto-completion, up/down for iterating through the command
+     * Handles the tab character for auto-completion, up/down for iterating through the command
      */
     @FXML
     private void handleOnKeyPressed(KeyEvent ke) {
         if (ke.getCode() == KeyCode.TAB) {
-            //Extract the command as well as the caret position
-            String command = commandTextField.getText();
-            int caretPosition = commandTextField.getCaretPosition();
-
-            //Create a auto complete request
-            AutocompleteRequest request = new AutocompleteRequest(command, caretPosition);
-            //Get the response using the auto complete manager
-            AutocompleteResponse response = autocompleteManager.getSuggestions(request);
-
-            //Update fields with the response
-            updateAutocompleteFeedback(response);
-            commandTextField.setText(response.getPhrase());
-            commandTextField.positionCaret(response.getCaretPosition());
-
+            handleAutocomplete();
             //Consume the event so the text field will not go to the next ui component
             ke.consume();
         } else if (ke.getCode() == KeyCode.UP) {
@@ -103,6 +90,25 @@ public class CommandBox extends UiPart<Region> {
             getNextCommand();
             ke.consume();
         }
+    }
+
+    /**
+     * Handles the auto-completion when a request to auto complete is invoked
+     */
+    private void handleAutocomplete() {
+        //Extract the command as well as the caret position
+        String command = commandTextField.getText();
+        int caretPosition = commandTextField.getCaretPosition();
+
+        //Create a auto complete request
+        AutocompleteRequest request = new AutocompleteRequest(command, caretPosition);
+        //Get the response using the auto complete manager
+        AutocompleteResponse response = autocompleteManager.getSuggestions(request);
+
+        //Update fields with the response
+        updateAutocompleteFeedback(response);
+        commandTextField.setText(response.getPhrase());
+        commandTextField.positionCaret(response.getCaretPosition());
     }
 
     /**
@@ -148,10 +154,16 @@ public class CommandBox extends UiPart<Region> {
         }
     }
 
+    /**
+     * Sets the logic
+     */
     public void setLogic(Logic logic) {
         this.logic = logic;
     }
 
+    /**
+     * Gets the text field component of commandBox
+     */
     public TextField getCommandTextField() {
         return commandTextField;
     }

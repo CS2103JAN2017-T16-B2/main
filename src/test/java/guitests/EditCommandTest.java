@@ -120,7 +120,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
-    //@@author A0105287E
+
     @Test
     public void edit_clearDates_success() throws Exception {
         String detailsToEdit = "clear dates";
@@ -133,7 +133,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
-    //@@author A0105287E
+
     @Test
     public void edit_changeFromTwoToOneDate_success() throws Exception {
         String detailsToEdit = "by next week 12pm";
@@ -145,7 +145,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
-    //@@author A0105287E
+
     @Test
     public void edit_changeFromOneToTwoDates_success() throws Exception {
         String detailsToEdit = "from today to next week";
@@ -157,7 +157,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
-    //@@author A0105287E
+
     @Test
     public void edit_changeDeadline_success() throws Exception {
         //change to deadline task
@@ -180,7 +180,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
 
     }
 
-    //@@author A0105287E
+
     @Test
     public void edit_removeRecurrence_success() throws Exception {
         //add recurring task
@@ -202,7 +202,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
 
-    //@@author A0105287E
+
     @Test
     public void edit_changeRecurrence_success() throws Exception {
         //add a recurring task
@@ -223,6 +223,7 @@ public class EditCommandTest extends TaskManagerGuiTest {
 
         assertEditSuccess(taskManagerIndex, taskManagerIndex, detailsToEdit, editedTask);
     }
+    //@@author
 
     /**
      * Checks whether the edited task has the correct updated details.

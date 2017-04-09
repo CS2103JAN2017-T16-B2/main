@@ -14,6 +14,7 @@ import seedu.address.commons.util.ConfigUtil;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.LoadCommand;
 import seedu.address.logic.commands.SaveAsCommand;
+import seedu.address.logic.commands.UndoCommand;
 import seedu.address.testutil.TestTask;
 import seedu.address.testutil.TestUtil;
 
@@ -75,6 +76,17 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
     }
 
     @Test
+    public void testSaveAsAndLoad_IntegrationTestingWithUndo_ReturnTrue() {
+        //Save current data to a new location
+        commandBox.runCommand(SaveAsCommand.COMMAND_WORD + " " + file1);
+        commandBox.runCommand(UndoCommand.COMMAND_WORD);
+        assertResultMessage(UndoCommand.MESSAGE_UNSUCCESSFUL_UNDO);
+        commandBox.runCommand(LoadCommand.COMMAND_WORD + " " + file1);
+        commandBox.runCommand(UndoCommand.COMMAND_WORD);
+        assertResultMessage(UndoCommand.MESSAGE_UNSUCCESSFUL_UNDO);
+    }
+
+    @Test
     public void testSaveAs_Folder_ReturnTrue() {
         commandBox.runCommand(SaveAsCommand.COMMAND_WORD + " " + rootFolder + "noXmlExtension");
         assertResultMessage(SaveAsCommand.MESSAGE_DOES_NOT_END_WITH_XML);
@@ -98,6 +110,9 @@ public class LoadAndSaveAsCommandTest extends TaskManagerGuiTest {
         assertResultMessage(LoadCommand.MESSAGE_FILE_DOES_NOT_EXIST);
     }
 
+    /**
+     * Cleans up by deleting the files as well as reset the config.json after testing
+     */
     @After
     public void cleanup() {
         //Overwrite the config.json back to the default one

@@ -20,7 +20,7 @@ public class Title {
     public final String title;
 
     /**
-     * Validates given name.
+     * Validates given title.
      *
      * @throws IllegalValueException if given name string is invalid.
      */

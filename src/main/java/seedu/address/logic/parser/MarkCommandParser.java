@@ -11,6 +11,10 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.logic.commands.MarkCommand;
 
+//@@author A0105287E
+/**
+ * Parses input arguments and creates a new MarkCommand object
+ */
 public class MarkCommandParser {
     /**
      * Parses the given {@code String} of arguments in the context of the Command

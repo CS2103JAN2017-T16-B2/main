@@ -34,6 +34,9 @@ public class LabelCard extends UiPart<Region> {
     }
 
     //@@author A0140042A
+    /**
+     * Initializes the label with an icon and the number of tasks with that label
+     */
     private void initLabel(seedu.address.model.label.Label labelToSet, int count) {
         icon.setIcon(FontAwesomeIcon.TAG);
         labelText.setText(labelToSet.getLabelName());

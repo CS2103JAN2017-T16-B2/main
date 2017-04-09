@@ -19,6 +19,10 @@ public class ConfirmCommandParser extends Parser {
 
     private static final String DELIMITER = " ";
     private static final int ARGUMENT_LENGTH = 2;
+    private static final int BOOKING_SLOT_INDEX = 1;
+    private static final int INVALID_INDEX = -1;
+    private static final int TASK_INDEX = 0;
+    private static final int VALID_INDEX = 0;
     private static final String REGEX_INDEX = "^[0-9]*";
 
     public Command parse(String args) {
@@ -30,11 +34,11 @@ public class ConfirmCommandParser extends Parser {
                 throw new CommandException(ConfirmCommand.MESSAGE_USAGE);
             }
 
-            if (arguments[0].matches(REGEX_INDEX)
-                    && arguments[1].matches(REGEX_INDEX)) { //matches 0-9 for the first 2 characters
-                int filteredTaskListIndex = tryParseAsIndex(arguments[0]);
-                int bookingSlotIndex = tryParseAsIndex(arguments[1]);
-                if (filteredTaskListIndex > 0 && bookingSlotIndex > 0) {
+            if (arguments[TASK_INDEX].matches(REGEX_INDEX)
+                    && arguments[BOOKING_SLOT_INDEX].matches(REGEX_INDEX)) {
+                int filteredTaskListIndex = tryParseAsIndex(arguments[TASK_INDEX]);
+                int bookingSlotIndex = tryParseAsIndex(arguments[BOOKING_SLOT_INDEX]);
+                if (filteredTaskListIndex > VALID_INDEX && bookingSlotIndex > VALID_INDEX) {
                     return new ConfirmCommand(filteredTaskListIndex, bookingSlotIndex);
                 } else {
                     return new IncorrectCommand(
@@ -59,7 +63,7 @@ public class ConfirmCommandParser extends Parser {
         if (index.isPresent()) {
             return index.get();
         } else {
-            return -1;
+            return INVALID_INDEX;
         }
     }
 }

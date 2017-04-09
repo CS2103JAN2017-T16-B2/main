@@ -135,7 +135,7 @@ public class DateTimeManager implements DateTimeParser {
         if (group != null && !group.getDates().isEmpty()
                 && (streams.size() == 1 || !group.isDateInferred() || !isAllNumeric(lastStream))) {
 
-            // Additionally, we'll only accept this group if the associated
+            // Additionally, only accept this group if the associated
             // text does not have an
             // alphabetic character to the immediate left or right, which
             // would indicate a portion
@@ -204,7 +204,6 @@ public class DateTimeManager implements DateTimeParser {
         }
 
         try {
-            // parse
             ParseListener listener = new ParseListener();
             DateParser parser = new DateParser(stream, listener);
             DateParser.parse_return parseReturn = parser.parse();
