@@ -20,6 +20,7 @@ public interface RecurrenceParser {
             throws IllegalValueException, IllegalDateTimeValueException;
 
     /**
+     * Returns java.util.Calendar constant integer value for the interval string entered
      */
     int getInterval(String input);
 }

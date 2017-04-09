@@ -40,6 +40,7 @@ public class RecurrenceManager implements RecurrenceParser {
     }
 
     /**
+     * Returns java.util.Calendar constant integer value for the interval string entered
      */
     @Override
     public int getInterval(String input) {
