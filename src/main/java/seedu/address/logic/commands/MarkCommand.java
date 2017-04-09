@@ -7,8 +7,6 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.exceptions.IllegalDateTimeValueException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.recurrenceparser.RecurrenceManager;
-import seedu.address.logic.recurrenceparser.RecurrenceParser;
 import seedu.address.logic.undo.UndoManager;
 import seedu.address.model.booking.UniqueBookingList;
 import seedu.address.model.label.UniqueLabelList;
@@ -38,7 +36,7 @@ public class MarkCommand extends Command {
     public static final String MESSAGE_TYPE_BOOKING = "Booking type of tasks cannot be marked as completed.";
     public static final String MESSAGE_RECURRING_INCOMPLETE_DISABLE = "Status of completed recurring task "
             + "cannot be changed.";
-    private static final RecurrenceParser recurrenceParser = new RecurrenceManager();
+
 
     private final int filteredTaskListIndex;
     private final Boolean isCompleted;
