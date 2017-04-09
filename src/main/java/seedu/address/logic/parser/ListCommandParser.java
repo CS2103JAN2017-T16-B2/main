@@ -33,11 +33,13 @@ public class ListCommandParser {
                         argsTokenizer.getValue(PREFIX_TIMEINTERVAL_END).get());
             } else if (args.trim().contains(PREFIX_DEADLINE.getPrefix())) {
                 return new ListCommand(argsTokenizer.getValue(PREFIX_DEADLINE).get());
+            //@@author A0105287E
             } else if (args.trim().contains(PREFIX_STATUS_COMPLETED.getPrefix())) {
                 return new ListCommand(Boolean.TRUE);
             } else if (args.trim().contains(PREFIX_STATUS_INCOMPLETE.getPrefix())) {
                 return new ListCommand(Boolean.FALSE);
             }
+            //@@author
         } catch (Exception e) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }

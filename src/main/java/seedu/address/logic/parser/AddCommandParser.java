@@ -44,22 +44,26 @@ public class AddCommandParser extends Parser {
                 Boolean isRecurring = false;
 
                 if (isDateParseable(startDT) && isDateParseable(endDT)) {
+                    //@@author A0105287E
                     //swap dates if start is after the end
                     if (!isBefore(startDT, endDT)) {
                         String temp = startDT;
                         startDT = endDT;
                         endDT = temp;
                     }
+                    //@@author
                     title = args.substring(START_STRING_INDEX, args.lastIndexOf("from"));
                     if (!args.contains(PREFIX_RECURRENCE.getPrefix())) {
                         return new AddCommand(title, startDT, endDT,
                             ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring, Optional.empty());
                     } else {
+                        //@@author A0105287E
                         isRecurring = true;
                         return new AddCommand(title, startDT, endDT,
                                 ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
                                 isRecurring,
                                 Optional.ofNullable(new Recurrence(argsTokenizer.getValue(PREFIX_RECURRENCE).get())));
+                        //@@author
                     }
                 }
             }
@@ -76,11 +80,13 @@ public class AddCommandParser extends Parser {
                         return new AddCommand(title, deadline.trim(),
                             ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)), isRecurring, Optional.empty());
                     } else {
+                        //@@author A0105287E
                         isRecurring = true;
                         return new AddCommand(title, deadline.trim(),
                                 ParserUtil.toSet(argsTokenizer.getAllValues(PREFIX_LABEL)),
                                 isRecurring,
                                 Optional.ofNullable(new Recurrence(argsTokenizer.getValue(PREFIX_RECURRENCE).get())));
+                      //@@author
                     }
                 }
             }

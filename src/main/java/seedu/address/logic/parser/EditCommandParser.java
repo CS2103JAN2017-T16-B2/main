@@ -26,6 +26,7 @@ import seedu.address.logic.commands.EditLabelCommand;
 import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.model.label.UniqueLabelList;
 
+
 /**
  * Parses input arguments and creates a new EditCommand object
  */
@@ -65,6 +66,7 @@ public class EditCommandParser {
         }
         //@@author
 
+        //@@author A0105287E
         EditTaskDescriptor editTaskDescriptor = new EditTaskDescriptor();
         try {
             editTaskDescriptor.setName(ParserUtil.parseName(preambleFields.get(1)));
@@ -98,6 +100,7 @@ public class EditCommandParser {
         } catch (IllegalDateTimeValueException ipve) {
             return new IncorrectCommand(ipve.getMessage());
         }
+        //@@author
 
         if (!editTaskDescriptor.isAnyFieldEdited()) {
             return new IncorrectCommand(EditCommand.MESSAGE_NOT_EDITED);
@@ -117,7 +120,6 @@ public class EditCommandParser {
         return !index.isPresent() && (labelInputs.size() == EDIT_LABEL_ARGUMENT_LENGTH);
     }
     //@@author
-
     /**
      * Parses {@code Collection<String> labels} into an {@code Optional<UniqueTagList>} if {@code labels} is non-empty.
      * If {@code labels} contain only one element which is an empty string, it will be parsed into a

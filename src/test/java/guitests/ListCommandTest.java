@@ -80,7 +80,6 @@ public class ListCommandTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(new TestTask[]{td.task7, td.task4, td.task1}));
     }
 
-  //@@author A0105287E
     @Test
     public void list_listIncompleteTasks_success() {
         commandBox.runCommand("mark 1 completed"); //mark some tasks completed from the default list
@@ -91,6 +90,7 @@ public class ListCommandTest extends TaskManagerGuiTest {
 
         assertTrue(taskListPanel.isListMatching(new TestTask[]{td.task2, td.task3, td.task5, td.task6}));
     }
+    //@@author
 
     private void assertListResult(String command, TestTask... expectedHits) {
         commandBox.runCommand(command);

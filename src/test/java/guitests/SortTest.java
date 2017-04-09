@@ -66,24 +66,4 @@ public class SortTest extends TaskManagerGuiTest {
         assertTrue(taskListPanel.isListMatching(new TestTask[]{task2, task1}));
     }
 
-    /* TODO: Fix in V0.5 after consulting Zhi Yuan
-    @Test
-    public void sort_testBookingByDate_success() throws IllegalValueException, CommandException,
-                                                                IllegalDateTimeValueException {
-        commandBox.runCommand("clear"); //clears the default list
-
-        TestTask task1 = new TaskBuilder().withTitle("Complete task 2")
-                .withBookings("9-9-2017 0100 to 10-10-2017 0100", "11-11-2017 0100 to 11-11-2017 2300")
-                .withStatus(false).build();
-        TestTask task2 = new TaskBuilder().withTitle("Complete task 2").withStartTime("10-10-2017 0100")
-                .withDeadline("11-11-2017 2300").withLabels("owesMoney", "friends")
-                .withStatus(false).build();; //should be placed on top of task1 because it starts earlier
-
-        commandBox.runCommand("book Complete task 2 on 9-9-2017 0100 to 10-10-2017 0100,"
-                + " 11-11-2017 2am to 11pm"); //default status will be false
-        commandBox.runCommand(task2.getAddCommand());
-
-        assertTrue(taskListPanel.isListMatching(new TestTask[]{task2, task1}));
-    }
-    */
 }

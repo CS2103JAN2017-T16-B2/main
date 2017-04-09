@@ -25,12 +25,14 @@ public class ListCommand extends Command {
         startDate = "";
     }
 
+    //@@author A0105287E
     public ListCommand(Boolean isCompleted) {
         this.isCompleted = isCompleted;
         endDate = "";
         startDate = "";
 
     }
+    //@@author
 
     public ListCommand(String endDate) throws IllegalDateTimeValueException {
         isCompleted = null;
