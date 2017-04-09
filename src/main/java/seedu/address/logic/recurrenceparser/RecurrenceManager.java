@@ -13,7 +13,6 @@ import seedu.address.model.task.Recurrence;
  */
 public class RecurrenceManager implements RecurrenceParser {
 
-    public static final String MESSAGE_INVALID_INTERVAL = "Invalid interval entered.";
 
     @Override
     public Date getNextDate(Date oldDate, Recurrence recurrence) {
@@ -46,7 +45,7 @@ public class RecurrenceManager implements RecurrenceParser {
             interval = Calendar.SECOND;
             break;
         default:
-            throw new IllegalArgumentException(MESSAGE_INVALID_INTERVAL);
+            throw new IllegalArgumentException("Invalid interval");
         }
         return interval;
     }

@@ -10,6 +10,7 @@ public class Recurrence {
 
     public static final String MESSAGE_RECURRENCE_CONSTRAINTS =
             "A recurrence should contain a number followed by a word";
+    public static final String MESSAGE_INVALID_INTERVAL = "Invalid interval entered.";
     private static final RecurrenceParser intervalParser = new RecurrenceManager();
 
     /*
@@ -34,7 +35,11 @@ public class Recurrence {
             this.value = Integer.parseInt(st.nextToken());
 
             this.intervalString = st.nextToken();
-            this.interval = intervalParser.getInterval(intervalString);
+            if (isValidInterval(this.intervalString)) {
+                this.interval = intervalParser.getInterval(intervalString);
+            } else {
+                throw new IllegalValueException(MESSAGE_INVALID_INTERVAL);
+            }
         } else {
             throw new IllegalValueException(MESSAGE_RECURRENCE_CONSTRAINTS);
         }
@@ -45,6 +50,20 @@ public class Recurrence {
      */
     public static boolean isValidRecurrence(String test) {
         return test.matches(RECURRENCE_VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if a given string is a valid interval
+     */
+    public static boolean isValidInterval(String test) {
+        switch (test) {
+        case "year": case "years": case "month": case "months":
+        case "day": case "days": case "hour": case "hours":
+        case "minutes": case "minute": case "seconds": case "second":
+            return true;
+        default:
+            return false;
+        }
     }
 
 
@@ -60,5 +79,6 @@ public class Recurrence {
                 && (this.interval == ((Recurrence) other).interval)
                 && (this.value == ((Recurrence) other).value));
     }
+
 
 }
